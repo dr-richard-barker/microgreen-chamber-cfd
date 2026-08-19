@@ -1,0 +1,26 @@
+# GitHub Pages Configuration
+title: "Spaceflight Plant Growth CFD & Aerodynamics"
+description: "A Multi-Chamber OpenFOAM CFD Framework under Variable Gravity (Earth, Mars, Moon, Microgravity)"
+author: "Richard Barker, Henry Ewald, Astrobotany Consortium"
+affiliation: "Department of Agricultural and Biological Engineering, Purdue University"
+baseurl: ""
+url: "https://dr-richard-barker.github.io/microgreen-chamber-cfd"
+
+# Markdown & Syntax Highlighting
+markdown: kramdown
+kramdown:
+  input: GFM
+  syntax_highlighter: rouge
+
+# Plugins
+plugins:
+  - jekyll-feed
+  - jekyll-seo-tag
+  - jekyll-sitemap
+
+# Exclude unneeded files from Jekyll processing
+exclude:
+  - Gemfile
+  - Gemfile.lock
+  - node_modules
+  - vendor

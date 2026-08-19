@@ -1,0 +1,367 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Spaceflight Plant Growth CFD & Aerodynamics | Purdue ABE & Astrobotany</title>
+  <link rel="stylesheet" href="style.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+<body>
+
+  <!-- HERO SECTION -->
+  <header class="hero">
+    <div class="hero-content">
+      <span class="badge-tag"><i class="fas fa-rocket"></i> NASA Spaceflight Plant Growth CFD Study</span>
+      <h1>Aerodynamic Boundary-Layer Scaling and Enclosure Regimes Across Spaceflight Plant Growth Hardware</h1>
+      <div class="authors">
+        <strong>Richard Barker*</strong>, <strong>Henry Ewald</strong>, and the <strong>Astrobotany Consortium</strong>
+      </div>
+      <div class="affiliation">
+        Department of Agricultural and Biological Engineering, Purdue University, West Lafayette, IN 47907, USA
+      </div>
+      <div class="hero-actions">
+        <a href="assets/pdf/npj_manuscript.pdf" class="btn btn-primary" target="_blank">
+          <i class="fas fa-file-pdf"></i> Download Publication PDF (9-Page)
+        </a>
+        <a href="https://github.com/dr-richard-barker/microgreen-chamber-cfd" class="btn btn-outline" target="_blank">
+          <i class="fab fa-github"></i> GitHub Repository
+        </a>
+        <a href="#explorer" class="btn btn-outline">
+          <i class="fas fa-cube"></i> Launch 3D Explorer
+        </a>
+        <a href="#animations" class="btn btn-outline">
+          <i class="fas fa-play-circle"></i> 4D Animations
+        </a>
+      </div>
+    </div>
+  </header>
+
+  <!-- NAVIGATION BAR -->
+  <nav class="nav-bar">
+    <div class="nav-container">
+      <a href="#abstract" class="nav-link active"><i class="fas fa-info-circle"></i> Overview</a>
+      <a href="#explorer" class="nav-link"><i class="fas fa-cube"></i> Interactive 3D Explorer</a>
+      <a href="#animations" class="nav-link"><i class="fas fa-film"></i> 4D Flow Dynamics</a>
+      <a href="#figures" class="nav-link"><i class="fas fa-chart-area"></i> Figures (1–7)</a>
+      <a href="#tables" class="nav-link"><i class="fas fa-table"></i> Data Tables</a>
+      <a href="#methods" class="nav-link"><i class="fas fa-cogs"></i> CFD Methods</a>
+      <a href="#cite" class="nav-link"><i class="fas fa-quote-right"></i> Cite</a>
+    </div>
+  </nav>
+
+  <!-- MAIN CONTENT -->
+  <main class="container">
+
+    <!-- SECTION: ABSTRACT & OVERVIEW -->
+    <section id="abstract">
+      <div class="abstract-box">
+        <h3><i class="fas fa-flask"></i> Executive Abstract</h3>
+        <p>
+          Plants cultivated in extraterrestrial habitats encounter a physical environment devoid of natural gravity-driven buoyancy (\(Gr \to 0\)), 
+          expanding unstirred fluid boundary layers around vegetative canopies and drastically elevating aerodynamic resistance (\(r_a = 1/g_{bl}\)). 
+          Here, we present a systematic, multi-chamber 3D computational fluid dynamics (CFD) investigation comparing three distinct spaceflight and 
+          controlled-environment agricultural hardware architectures across four gravitational regimes: <strong>Earth (1.0 g)</strong>, 
+          <strong>Mars (0.38 g)</strong>, <strong>Moon (0.166 g)</strong>, and <strong>Microgravity (0 g)</strong>. 
+          Using an OpenFOAM v2606 finite-volume framework with conformal multi-solid analytic geometries, we model: 
+          (i) the compact <strong>Microgreen Chamber</strong> (2.33 L, through-flow confined jet), 
+          (ii) the <strong>NASA Vegetable Production System (VEGGIE/VPS)</strong> (37.6 L, top suction with passive cabin air induction), and 
+          (iii) the <strong>NASA Advanced Plant Habitat (APH)</strong> (83.4 L, ducted closed-loop opposing cross-flow).
+        </p>
+      </div>
+
+      <!-- KEY METRICS ROW -->
+      <div class="metrics-row">
+        <div class="metric-card">
+          <div class="metric-val">3</div>
+          <div class="metric-label">Hardware Architectures</div>
+        </div>
+        <div class="metric-card">
+          <div class="metric-val">4</div>
+          <div class="metric-label">Gravity Regimes (1g, Mars, Moon, 0g)</div>
+        </div>
+        <div class="metric-card">
+          <div class="metric-val">52.8%</div>
+          <div class="metric-label">VEGGIE 0g Stagnant Vol (Low Fan)</div>
+        </div>
+        <div class="metric-card">
+          <div class="metric-val">1.07</div>
+          <div class="metric-label">APH Conductance \(g_{bl}\) (mol m⁻²s⁻¹)</div>
+        </div>
+        <div class="metric-card">
+          <div class="metric-val">0%</div>
+          <div class="metric-label">APH Cabin Spore Export (HEPA)</div>
+        </div>
+      </div>
+    </section>
+
+    <!-- SECTION: INTERACTIVE 3D EXPLORER -->
+    <section id="explorer">
+      <div class="section-header">
+        <h2><i class="fas fa-cube"></i> Interactive 3D WebGL Flow Explorer</h2>
+        <p>Explore 3D velocity streamlines, cross-sectional clipping planes, and hardware geometries directly in your browser.</p>
+      </div>
+      <div class="explorer-frame-container">
+        <iframe src="explorer.html" class="explorer-frame" title="Interactive 3D WebGL Explorer"></iframe>
+      </div>
+      <div style="margin-top: 0.8rem; font-size: 0.85rem; color: var(--text-muted); text-align: right;">
+        <a href="explorer.html" target="_blank"><i class="fas fa-external-link-alt"></i> Open 3D Explorer in Fullscreen Tab</a>
+      </div>
+    </section>
+
+    <!-- SECTION: 4D FLOW DYNAMICS -->
+    <section id="animations">
+      <div class="section-header">
+        <h2><i class="fas fa-film"></i> 4D Time-Resolved Flow Dynamics & Simulations</h2>
+        <p>Time-dependent velocity oscillations, buoyancy plume collapse, opposing jet collisions, and bioaerosol clearance.</p>
+      </div>
+      <div class="grid-2">
+        <!-- Animation 1 -->
+        <div class="media-card">
+          <img src="assets/animations/4D_microgreen_jet_flapping.gif" alt="4D Microgreen Jet Flapping">
+          <div class="media-card-body">
+            <span class="media-badge primary">Microgreen Chamber</span>
+            <h4>4D Jet Flapping & Vortex Shedding</h4>
+            <p>Time-accurate PIMPLE simulation of the confined high-speed jet core (\(U_{in} = 2.6\text{ m/s}\)). Visualizes lateral shear-layer flapping (\(\pm18.2\%\) RMS) and secondary corner eddies trapping \(31.0\%\) of tray air.</p>
+          </div>
+        </div>
+        <!-- Animation 2 -->
+        <div class="media-card">
+          <img src="assets/animations/4D_veggie_suction_dynamics.gif" alt="4D VEGGIE Suction Dynamics">
+          <div class="media-card-body">
+            <span class="media-badge accent">NASA VEGGIE (VPS)</span>
+            <h4>4D Suction Draft vs. Buoyancy Collapse</h4>
+            <p>Demonstrates the transition from 1g (buoyancy chimney assistance) to 0g microgravity. Under Low Fan (\(0.065\text{ m/s}\)), natural convection vanishes, causing a critical \(52.8\%\) stagnant dead-volume zone.</p>
+          </div>
+        </div>
+        <!-- Animation 3 -->
+        <div class="media-card">
+          <img src="assets/animations/4D_aph_lateral_collision.gif" alt="4D APH Lateral Collision">
+          <div class="media-card-body">
+            <span class="media-badge primary">NASA APH</span>
+            <h4>4D Dual Lateral Jet Collision & Updraft Sweep</h4>
+            <p>Dual symmetric opposing wall jets sweep horizontally over the Science Carrier at \(0.60\text{ m/s}\), colliding at the midline to generate a uniform vertical updraft sweep (\(\varepsilon_a \approx 45\%\)).</p>
+          </div>
+        </div>
+        <!-- Animation 4 -->
+        <div class="media-card">
+          <img src="assets/animations/4D_bioaerosol_plume_clearance.gif" alt="4D Bioaerosol Clearance">
+          <div class="media-card-body">
+            <span class="media-badge accent">Biosecurity Trade Space</span>
+            <h4>4D Bioaerosol Plume Clearance & Containment</h4>
+            <p>Comparative tracking of aerosolized fungal spores (*Fusarium oxysporum*): VEGGIE exports \(100\%\) directly into astronaut living quarters (\(t_{50} = 13.8\text{ s}\)), whereas APH achieves rapid internal HEPA scrubbing (\(t_{50} = 18.4\text{ s}\)).</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- SECTION: PUBLICATION FIGURES 1-7 -->
+    <section id="figures">
+      <div class="section-header">
+        <h2><i class="fas fa-chart-area"></i> Publication Figures (1–7)</h2>
+        <p>High-resolution vector figures from the <em>npj Microgravity</em> manuscript.</p>
+      </div>
+      <div class="grid-2">
+        <!-- Fig 1 -->
+        <div class="media-card">
+          <img src="assets/figures/Fig1_hardware_domains.png" alt="Figure 1">
+          <div class="media-card-body">
+            <span class="media-badge primary">Figure 1</span>
+            <h4>Hardware Fluid Domains & Flow Architectures</h4>
+            <p>Cross-sectional schematics of Microgreen (2.33 L), VEGGIE (37.6 L), and APH (83.4 L), with growth footprint, flow rate, and air exchange comparisons.</p>
+          </div>
+        </div>
+        <!-- Fig 2 -->
+        <div class="media-card">
+          <img src="assets/figures/Fig2_gravity_richardson.png" alt="Figure 2">
+          <div class="media-card-body">
+            <span class="media-badge primary">Figure 2</span>
+            <h4>Richardson Number (\(Ri\)) Gravity Scaling</h4>
+            <p>\(Ri = Gr/Re^2\) trajectories from Earth (1.0g) to Microgravity (0g), showing the collapse of ceiling thermal stratification and aerodynamic resistance.</p>
+          </div>
+        </div>
+        <!-- Fig 3 -->
+        <div class="media-card">
+          <img src="assets/figures/Fig3_canopy_aerodynamics.png" alt="Figure 3">
+          <div class="media-card-body">
+            <span class="media-badge primary">Figure 3</span>
+            <h4>Canopy Boundary Layer Conductance (\(g_{bl}\)) & TKE</h4>
+            <p>Vertical velocity profiles \(u(z)\), boundary layer conductance \(g_{bl}\) vs. forced speed, turbulent kinetic energy, and stagnant volume fractions.</p>
+          </div>
+        </div>
+        <!-- Fig 4 -->
+        <div class="media-card">
+          <img src="assets/figures/Fig4_scalar_ventilation.png" alt="Figure 4">
+          <div class="media-card-body">
+            <span class="media-badge primary">Figure 4</span>
+            <h4>Scalar Age of Air & Ventilation Efficiency</h4>
+            <p>Cumulative air age CDFs (\(\tau/\tau_0\)), air exchange efficiency (\(\varepsilon_a\)), mean canopy residence times, and steady-state \(CO_2\) depletion.</p>
+          </div>
+        </div>
+        <!-- Fig 5 -->
+        <div class="media-card">
+          <img src="assets/figures/Fig5_biosecurity_trades.png" alt="Figure 5">
+          <div class="media-card-body">
+            <span class="media-badge primary">Figure 5</span>
+            <h4>Habitat Biosecurity & Bioaerosol Clearance</h4>
+            <p>Aerosol spore clearance curves, cabin export percentages, surface deposition vs. filtration, and the 2D architectural design matrix.</p>
+          </div>
+        </div>
+        <!-- Fig 6 -->
+        <div class="media-card">
+          <img src="assets/figures/Fig6_3d_flow_topologies.png" alt="Figure 6">
+          <div class="media-card-body">
+            <span class="media-badge primary">Figure 6</span>
+            <h4>3D Spatial Flow Topologies & Canopy Shear</h4>
+            <p>Isometric 3D velocity ribbons, jet vortex core structures, and quantitative wall shear stress (\(\tau_w\)) distributions across the plant beds.</p>
+          </div>
+        </div>
+        <!-- Fig 7 -->
+        <div class="media-card" style="grid-column: span 2;">
+          <img src="assets/figures/Fig7_airflow_extremes.png" alt="Figure 7">
+          <div class="media-card-body">
+            <span class="media-badge accent">Figure 7</span>
+            <h4>Operational Airflow Extremes Matrix (\(3\times 4\))</h4>
+            <p>Comparative cross-sectional velocity matrix mapping Zero Airflow (Fan Failure), Low Draft (Seedling/Low Fan), Flight Nominal, and High Blast across all platforms with boundary layer conductance badges.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- SECTION: DATA TABLES -->
+    <section id="tables">
+      <div class="section-header">
+        <h2><i class="fas fa-table"></i> Scientific Data Tables</h2>
+        <p>Direct access to formatted quantitative results and raw CSV datasets.</p>
+      </div>
+
+      <!-- Table 1 -->
+      <div class="card">
+        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1rem;">
+          <h3 style="color: var(--primary-dark); font-size: 1.1rem;">Table 1 | Hardware Physical & Aerodynamic Specifications</h3>
+          <a href="assets/tables/T1_hardware_dimensions.csv" class="btn btn-outline" style="color: var(--primary); border-color: var(--primary); padding: 0.4rem 0.8rem; font-size: 0.8rem;" download>
+            <i class="fas fa-download"></i> Download CSV
+          </a>
+        </div>
+        <div class="table-wrapper">
+          <table class="scientific-table">
+            <thead>
+              <tr>
+                <th>Parameter</th>
+                <th>Microgreen Chamber</th>
+                <th>VEGGIE (VPS)</th>
+                <th>Advanced Plant Habitat (APH)</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr><td><strong>Payload Class</strong></td><td>Benchtop Phenotyping</td><td>Deployable Space Garden</td><td>Closed-Loop Research Phytotron</td></tr>
+              <tr><td><strong>Growth Area (\(A\))</strong></td><td>0.0224 m² (120×187 mm)</td><td>0.1075 m² (292×368 mm)</td><td>0.1708 m² (454×408 mm)</td></tr>
+              <tr><td><strong>Canopy Air Vol. (\(V_{air}\))</strong></td><td>2.33 L</td><td>37.61 L (nominal)</td><td>83.36 L (shoot zone)</td></tr>
+              <tr><td><strong>Growth Height</strong></td><td>96.7 mm</td><td>350.0 mm</td><td>450.0 mm</td></tr>
+              <tr><td><strong>Flow Driver</strong></td><td>1× Axial Fan (Ø40mm)</td><td>1× Top Suction Fan (Ø50mm)</td><td>2× Symmetric ECS Blowers</td></tr>
+              <tr><td><strong>Airflow Topology</strong></td><td>Through-flow confined jet</td><td>Bottom-up forced suction</td><td>Opposing lateral cross-flow → sweep</td></tr>
+              <tr><td><strong>Nominal Flow Rate (\(Q\))</strong></td><td>11.8 m³/h (3.27 L/s)</td><td>85.0 m³/h (23.61 L/s)</td><td>26.4 m³/h (7.34 L/s)</td></tr>
+              <tr><td><strong>Forced Velocity</strong></td><td>0.262 m/s (bulk)</td><td>0.150 m/s (mean draft)</td><td>0.300 - 1.500 m/s (regulated)</td></tr>
+              <tr><td><strong>Air Exchange (\(\text{ACH}\))</strong></td><td>5,051 h⁻¹ (\(\tau = 0.71\text{ s}\))</td><td>2,260 h⁻¹ (\(\tau = 1.60\text{ s}\))</td><td>317 h⁻¹ (\(\tau = 11.35\text{ s}\))</td></tr>
+              <tr><td><strong>Cabin Coupling</strong></td><td>Sealed phenotyping unit</td><td>Open continuous exchange</td><td>Closed-loop in EXPRESS Rack</td></tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+      <!-- Table 3 -->
+      <div class="card">
+        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1rem;">
+          <h3 style="color: var(--primary-dark); font-size: 1.1rem;">Table 3 | Canopy Boundary Layer Conductance (\(g_{bl}\)) Across Platforms</h3>
+          <a href="assets/tables/T3_boundary_layer_conductance.csv" class="btn btn-outline" style="color: var(--primary); border-color: var(--primary); padding: 0.4rem 0.8rem; font-size: 0.8rem;" download>
+            <i class="fas fa-download"></i> Download CSV
+          </a>
+        </div>
+        <div class="table-wrapper">
+          <table class="scientific-table">
+            <thead>
+              <tr>
+                <th>Hardware</th>
+                <th>Gravity</th>
+                <th>Operating Mode</th>
+                <th>\(U_{canopy}\) (m/s)</th>
+                <th>TKE (m²/s²)</th>
+                <th>\(\delta_{bl}\) (mm)</th>
+                <th>\(g_{bl}\) (mol m⁻²s⁻¹)</th>
+                <th>Stagnant Vol (%)</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr><td><strong>Microgreen</strong></td><td>1.0 g</td><td>Baseline</td><td>0.262</td><td>4.82e-3</td><td>2.41</td><td>0.724</td><td>14.2%</td></tr>
+              <tr><td><strong>Microgreen</strong></td><td>0.0 g</td><td>Microgravity</td><td>0.262</td><td>4.40e-3</td><td>2.54</td><td>0.688</td><td>9.6%</td></tr>
+              <tr><td><strong>VEGGIE</strong></td><td>1.0 g</td><td>Low Fan</td><td>0.065</td><td>1.12e-3</td><td>4.82</td><td>0.362</td><td>32.4%</td></tr>
+              <tr><td><strong>VEGGIE</strong></td><td>1.0 g</td><td>High Fan</td><td>0.150</td><td>3.45e-3</td><td>3.18</td><td>0.551</td><td>11.2%</td></tr>
+              <tr><td><strong>VEGGIE</strong></td><td>0.0 g</td><td>Low Fan</td><td>0.065</td><td>0.68e-3</td><td>7.95</td><td><strong style="color: var(--accent);">0.219 (Bottleneck)</strong></td><td><strong style="color: var(--accent);">52.8% (Severe Risk)</strong></td></tr>
+              <tr><td><strong>VEGGIE</strong></td><td>0.0 g</td><td>High Fan</td><td>0.150</td><td>3.02e-3</td><td>3.40</td><td>0.515</td><td>15.4%</td></tr>
+              <tr><td><strong>APH</strong></td><td>1.0 g</td><td>Nominal (0.6 m/s)</td><td>0.600</td><td>1.24e-2</td><td>1.58</td><td>1.102</td><td>2.1%</td></tr>
+              <tr><td><strong>APH</strong></td><td>0.0 g</td><td>Nominal (0.6 m/s)</td><td>0.600</td><td>1.19e-2</td><td>1.63</td><td>1.071</td><td>2.6%</td></tr>
+              <tr><td><strong>APH</strong></td><td>0.0 g</td><td>High (1.5 m/s)</td><td>1.500</td><td>3.65e-2</td><td>0.98</td><td>1.745</td><td>0.4%</td></tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </section>
+
+    <!-- SECTION: METHODS & REPRODUCIBILITY -->
+    <section id="methods">
+      <div class="section-header">
+        <h2><i class="fas fa-cogs"></i> Numerical CFD Framework & Reproducibility</h2>
+        <p>OpenFOAM v2606 finite-volume solver setup, Low-Mach Navier-Stokes equations, and boundary layer resolution.</p>
+      </div>
+      <div class="card">
+        <h4 style="margin-bottom: 0.8rem; color: var(--primary-dark);">Governing Conservation Equations</h4>
+        <pre class="code-block">
+// Continuity & Momentum (Low-Mach Navier-Stokes)
+∂ρ/∂t + ∇·(ρu) = 0
+∂(ρu)/∂t + ∇·(ρuu) = -∇p_rgh - (g·r)∇ρ + ∇·[μ_eff(∇u + (∇u)^T - 2/3(∇·u)I)] + S_m
+
+// Energy / Enthalpy Equation
+∂(ρh)/∂t + ∇·(ρuh) = ∇·(α_eff ∇h) + ρ(u·g) + S_h
+
+// Turbulence Model: k-ω SST (Menter 1994) with near-wall y⁺ ~ 1-5 prism layers</pre>
+      </div>
+    </section>
+
+    <!-- SECTION: CITATION -->
+    <section id="cite">
+      <div class="section-header">
+        <h2><i class="fas fa-quote-right"></i> How to Cite</h2>
+        <p>If you use these CFD models, 3D meshes, or aerodynamic datasets in your research, please cite:</p>
+      </div>
+      <div class="card">
+        <pre class="code-block">
+@article{barker2026spaceflightCFD,
+  title   = {Aerodynamic Boundary-Layer Scaling and Enclosure Regimes Across Spaceflight Plant Growth Hardware: A Multi-Chamber OpenFOAM CFD Framework under Variable Gravity},
+  author  = {Barker, Richard and Ewald, Henry and {Astrobotany Consortium}},
+  journal = {npj Microgravity},
+  year    = {2026},
+  volume  = {12},
+  pages   = {1--9},
+  doi     = {10.1038/s41526-026-00000-x}
+}</pre>
+      </div>
+    </section>
+
+  </main>
+
+  <!-- FOOTER -->
+  <footer class="footer">
+    <p><strong>Spaceflight Plant Growth CFD Project</strong> &bull; Department of Agricultural and Biological Engineering, Purdue University</p>
+    <p style="margin-top: 0.5rem;">
+      <a href="https://github.com/dr-richard-barker/microgreen-chamber-cfd"><i class="fab fa-github"></i> View on GitHub</a> &bull; 
+      <a href="assets/pdf/npj_manuscript.pdf"><i class="fas fa-file-pdf"></i> Manuscript PDF</a> &bull; 
+      <a href="explorer.html"><i class="fas fa-cube"></i> 3D Explorer</a>
+    </p>
+  </footer>
+
+  <!-- MathJax for rendering LaTeX equations -->
+  <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
+  <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+
+</body>
+</html>
