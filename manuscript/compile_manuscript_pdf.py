@@ -1,12 +1,12 @@
 #!/usr/bin/env python3
 """
-Compile a 10-page publication-grade npj Microgravity manuscript PDF using Matplotlib's native vector PDF engine.
+Compile an 11-page publication-grade npj Microgravity manuscript PDF using Matplotlib's native vector PDF engine.
 Includes:
 - Correct Purdue University Department of Agricultural and Biological Engineering affiliation
 - Complete 4-Hardware Architecture Comparison: Microgreen, VEGGIE, APH, and NASA Space Shuttle CHROMEX/PGU
 - Dedicated Introduction Page on Space Agriculture, Microgravity vs. Lunar gravity, Gaseous exchange, and Photorespiration
-- Formatted tables (Tables 1–4) with explicit colWidths and clean text wrapping (zero spillover)
-- Figures 1–8 (including 3D topologies, airflow extremes, and CHROMEX multi-scale hypoxia/transcriptomics dynamics)
+- Formatted tables (Tables 1–5) with explicit colWidths and clean text wrapping (zero spillover)
+- Figures 1–9 (including 3D topologies, airflow extremes, CHROMEX hypoxia, and fan failure dynamics across gravities)
 - OpenFOAM Low-Mach CFD Methods, References, and Open-Source Data Availability
 """
 
@@ -74,11 +74,12 @@ def generate_pdf(pdf_path):
             "rendering purely forced convection ($Ri = 0$) superior in turbulent kinetic energy. In VEGGIE, low-fan microgravity operation leads to a critical "
             "$52.8\\%$ canopy stagnation volume ($g_{bl} = 0.219\\text{ mol m}^{-2}\\text{s}^{-1}$), elevating fungal mold vulnerability. In CHROMEX sealed canisters, "
             "pure diffusion ($Pe < 1$) drives root-zone hypoxia ($O_2 < 5\\%$) within 35 minutes, providing a biophysical basis for historical flight transcriptomic "
-            "alcohol dehydrogenase ($ADH$) upregulation. Conversely, APH maintains invariant $g_{bl} \\approx 1.07\\text{ mol m}^{-2}\\text{s}^{-1}$ across all gravities."
+            "alcohol dehydrogenase ($ADH$) upregulation. Transient fan-stoppage tests reveal that on Earth, natural buoyancy maintains a basal conductance floor "
+            "($g_{bl} \\approx 0.36\\text{ mol m}^{-2}\\text{s}^{-1}$), whereas in microgravity, total aerodynamic collapse suffocates the canopy within 3.5–8.9 minutes."
         )
         ax.text(0.10, 0.735, abstract_body, fontsize=7.1, color=c_dark, va="top", linespacing=1.20, wrap=True)
         
-        # Executive Summary / Overview Narrative filling the space above Table 1
+        # Executive Summary / Overview Narrative
         ax.text(0.08, 0.560, "EXECUTIVE HARDWARE ARCHITECTURE COMPARISON", fontsize=9.0, fontweight="bold", color=c_nature_blue, va="top")
         ov_text = (
             "Spaceflight plant facilities span four decades of biomechanical evolution: from modular Space Shuttle Middeck lockers (CHROMEX/PGU) to "
@@ -88,7 +89,7 @@ def generate_pdf(pdf_path):
         )
         ax.text(0.08, 0.540, ov_text, fontsize=7.3, color=c_dark, va="top", linespacing=1.2, wrap=True)
         
-        # Table 1 (Carefully proportioned with explicit column widths)
+        # Table 1
         ax.text(0.08, 0.450, "Table 1 | Physical, aerodynamic, and environmental control specifications across evaluated hardware platforms.", fontsize=7.8, fontweight="bold", color="#111111", va="top")
         
         t1_headers = ["Parameter", "Microgreen", "VEGGIE (VPS)", "Advanced Plant Habitat", "CHROMEX (PGU / PGC)"]
@@ -475,7 +476,7 @@ def generate_pdf(pdf_path):
         plt.close(fig)
 
         # =========================================================================
-        # PAGE 9 (NEW): Figure 8 (CHROMEX / PGU Multi-Scale Dynamics & Hypoxia)
+        # PAGE 9: Figure 8 (CHROMEX / PGU Multi-Scale Dynamics & Hypoxia)
         # =========================================================================
         fig = plt.figure(figsize=(8.5, 11), dpi=300)
         ax = fig.add_axes([0, 0, 1, 1])
@@ -527,74 +528,141 @@ def generate_pdf(pdf_path):
         plt.close(fig)
 
         # =========================================================================
-        # PAGE 10: Methods, Table 4 (Biosecurity), References, Code Availability
+        # PAGE 10 (NEW): Figure 9 (Fan Failure Dynamics Across Gravities)
         # =========================================================================
         fig = plt.figure(figsize=(8.5, 11), dpi=300)
         ax = fig.add_axes([0, 0, 1, 1])
         ax.axis('off')
         
-        # Table 4 (Top of Page 10)
-        ax.text(0.08, 0.95, "Table 4 | Ventilation efficiency, local age of air, and biosecurity containment dynamics across platforms.", fontsize=7.8, fontweight="bold", color="#111111", va="top")
+        fig9_img = mpimg.imread(os.path.join(fig_dir, "Fig9_fan_failure_dynamics.png"))
+        ax_img9 = fig.add_axes([0.08, 0.44, 0.84, 0.52])
+        ax_img9.imshow(fig9_img)
+        ax_img9.axis('off')
         
-        t4_headers = ["Chamber", "Gravity", "Flow Rate (Q)", "τ0 (s)", "Mean Age (s)", "Eff. ε_a (%)", "t50 (s)", "Biosecurity & Aerosol Fate"]
+        fig9_cap = (
+            "Figure 9 | Transient aerodynamics of fan failure, boundary-layer collapse, and physiological starvation across gravitational fields. "
+            "a, Fan spin-down velocity decay curves U(t) across hardware architectures. "
+            "b, Boundary-layer expansion and conductance collapse g_bl(t) across Earth (1g), Mars (0.38g), Moon (0.166g), and Microgravity (0g). "
+            "c, Canopy thermal accumulation and heat stress onset after active cooling shutdown. "
+            "d, Intercellular CO2 drawdown (Ci) and photorespiratory oxygenation surge (vo/vc) under microgravity stagnation."
+        )
+        ax.text(0.08, 0.42, fig9_cap, fontsize=7.4, color=c_dark, va="top", linespacing=1.25, wrap=True)
+        
+        ax.text(0.08, 0.33, "TRANSIENT FAN FAILURE & GRAVITY-DEPENDENT RESILIENCE", fontsize=9.5, fontweight="bold", color=c_nature_blue, va="top")
+        f9_col1 = (
+            "Aerodynamic Collapse & Spin-Down Dynamics:\n"
+            "Mechanical ventilation cutoff initiates exponential velocity decay\n"
+            "governed by fan rotor inertia and duct aerodynamic resistance (Fig. 9a).\n"
+            "Canopy velocity decays below the 0.05 m/s stagnation threshold within\n"
+            "3.6 s in the Microgreen chamber, 7.2 s in VEGGIE, and 14.4 s in APH.\n\n"
+            "Crucially, the physiological consequence of fan stoppage depends entirely\n"
+            "on the ambient gravitational field (Fig. 9b). On Earth (1.0 g), natural\n"
+            "buoyant convection provides a protective conductance floor (g_bl = 0.36 mol m⁻² s⁻¹).\n"
+            "In microgravity (0 g), this buoyancy floor vanishes completely, causing g_bl\n"
+            "to collapse to molecular diffusion (0.035 mol m⁻² s⁻¹)."
+        )
+        ax.text(0.08, 0.305, f9_col1, fontsize=7.4, color=c_dark, va="top", linespacing=1.2)
+        
+        f9_col2 = (
+            "Thermal Runaway & RuBisCO Photorespiratory Surge:\n"
+            "Under continuous lighting (25–38 W), fan failure in microgravity drives\n"
+            "rapid canopy thermal accumulation (+7.8°C within 15 min, Fig. 9c),\n"
+            "surpassing the 28°C thermal stress threshold due to isotropic heat trapping.\n\n"
+            "Concurrently, the unstirred boundary layer chokes CO2 replenishment (Fig. 9d),\n"
+            "driving intercellular Ci below 150 ppm within 4.5 minutes in APH and 3.1 minutes\n"
+            "in the Microgreen chamber. This stimulates severe RuBisCO oxygenation (vo/vc > 0.40),\n"
+            "shunting photosynthetic energy into photorespiration and causing tissue necrosis\n"
+            "unless redundant ventilation is activated."
+        )
+        ax.text(0.50, 0.305, f9_col2, fontsize=7.4, color=c_dark, va="top", linespacing=1.2)
+        
+        pdf.savefig(fig)
+        plt.close(fig)
+
+        # =========================================================================
+        # PAGE 11: Tables 4 & 5, Methods, References, Code Availability
+        # =========================================================================
+        fig = plt.figure(figsize=(8.5, 11), dpi=300)
+        ax = fig.add_axes([0, 0, 1, 1])
+        ax.axis('off')
+        
+        # Table 4 (Top Left)
+        ax.text(0.08, 0.955, "Table 4 | Ventilation efficiency, local age of air, and biosecurity containment.", fontsize=7.6, fontweight="bold", color="#111111", va="top")
+        t4_headers = ["Chamber", "Gravity", "Mode", "τ0 (s)", "Mean Age", "Eff. ε_a", "t50 (s)", "Biosecurity Containment"]
         t4_rows = [
-            ["Microgreen", "1.0g", "11.8 m³/h", "0.71", "6.85", "10.4%", "14.2", "Sealed: zero cabin export; corner recirculation"],
-            ["", "0.0g", "11.8 m³/h", "0.71", "5.20", "13.7%", "11.5", "Unstratified jet improves canopy clearance"],
-            ["VEGGIE", "1.0g", "Low (42.5 m³/h)", "3.19", "14.20", "22.5%", "28.6", "Direct cabin exhaust: 100% spore export to ISS"],
-            ["", "0.0g", "Low (42.5 m³/h)", "3.19", "22.40", "14.2%", "45.2", "Critical mold risk (52.8% stagnant volume)"],
-            ["", "0.0g", "High (85.0 m³/h)", "1.60", "6.10", "26.2%", "13.8", "High fan restores boundary layer stripping"],
-            ["APH", "1.0g", "Nom (26.4 m³/h)", "11.35", "24.80", "45.8%", "18.4", "Closed loop: internal HEPA filtration (≤25 ppb)"],
-            ["", "0.0g", "Nom (26.4 m³/h)", "11.35", "25.20", "45.0%", "18.9", "Piston sweep maintains 45% efficiency"],
-            ["", "0.0g", "High (66.0 m³/h)", "4.54", "9.60", "47.3%", "7.2", "Near-ideal displacement flow (ε_a -> 50%)"],
-            ["CHROMEX PGC", "0.0g", "AES (1.0 L/h)", "3117.6", "4820.0", "32.3%", "2160.0", "Closed modular canister (0% cabin export)"],
-            ["", "0.0g", "Sealed (0 L/h)", "∞", "∞", "0.0%", "∞", "Sealed Lexan canister (zero advective clearance)"]
+            ["Microgreen", "1.0g", "Nominal", "0.71", "6.85s", "10.4%", "14.2s", "Sealed (0% cabin export)"],
+            ["", "0.0g", "Nominal", "0.71", "5.20s", "13.7%", "11.5s", "Unstratified jet clearance"],
+            ["VEGGIE", "1.0g", "Low Fan", "3.19", "14.20s", "22.5%", "28.6s", "Direct cabin exhaust (100%)"],
+            ["", "0.0g", "Low Fan", "3.19", "22.40s", "14.2%", "45.2s", "Critical mold risk (52.8% stag.)"],
+            ["", "0.0g", "High Fan", "1.60", "6.10s", "26.2%", "13.8s", "Rapid cabin spore dispersion"],
+            ["APH", "1.0g", "Nominal", "11.35", "24.80s", "45.8%", "18.4s", "Closed loop HEPA (0% export)"],
+            ["", "0.0g", "Nominal", "11.35", "25.20s", "45.0%", "18.9s", "Uniform upward displacement"],
+            ["", "0.0g", "High Fan", "4.54", "9.60s", "47.3%", "7.2s", "Near-ideal displacement flow"],
+            ["CHROMEX", "0.0g", "AES Active", "3118", "4820s", "32.3%", "2160s", "Closed canister (0% export)"],
+            ["", "0.0g", "Sealed", "∞", "∞", "0.0%", "∞", "Sealed Lexan (zero clearance)"]
         ]
-        table_ax4 = fig.add_axes([0.08, 0.69, 0.84, 0.23])
+        table_ax4 = fig.add_axes([0.08, 0.775, 0.84, 0.17])
         table_ax4.axis('off')
-        tab4 = table_ax4.table(cellText=t4_rows, colLabels=t4_headers, colWidths=[0.12, 0.07, 0.14, 0.08, 0.09, 0.09, 0.08, 0.33], cellLoc='left', loc='center')
+        tab4 = table_ax4.table(cellText=t4_rows, colLabels=t4_headers, colWidths=[0.13, 0.08, 0.12, 0.08, 0.10, 0.09, 0.09, 0.31], cellLoc='left', loc='center')
         tab4.auto_set_font_size(False)
-        tab4.set_fontsize(6.6)
-        tab4.scale(1.0, 1.22)
+        tab4.set_fontsize(6.3)
+        tab4.scale(1.0, 1.15)
         for (r, c), cell in tab4.get_celld().items():
             cell.set_edgecolor("#d0d0d0")
             if r == 0:
                 cell.set_facecolor("#eef4f8")
                 cell.set_text_props(weight='bold', color=c_nature_blue)
-            else:
-                if r % 2 == 0:
-                    cell.set_facecolor("#fafbfc")
-        
-        # Methods Summary (2 Columns)
-        ax.text(0.08, 0.66, "METHODS & MULTIMEDIA AVAILABILITY", fontsize=9.5, fontweight="bold", color=c_nature_blue, va="top")
+            elif r % 2 == 0:
+                cell.set_facecolor("#fafbfc")
+
+        # Table 5 (Middle)
+        ax.text(0.08, 0.760, "Table 5 | Fan failure resilience, spin-down time constants, and starvation onset thresholds.", fontsize=7.6, fontweight="bold", color="#111111", va="top")
+        t5_headers = ["Hardware", "Gravity", "τ_spin", "t_stagnant", "g_bl Floor", "t_CO2 Starv.", "t_Hypoxia", "ΔT_canopy", "Resilience Rating"]
+        t5_rows = [
+            ["Microgreen", "1.0 g", "1.2 s", "3.6 s", "0.362", "12.5 min", "18.0 min", "+2.8 K", "Moderate (buoyant convection)"],
+            ["", "0.0 g", "1.2 s", "3.6 s", "0.035", "3.1 min", "6.5 min", "+7.8 K", "Critical (rapid suffocation)"],
+            ["VEGGIE", "1.0 g", "2.4 s", "7.2 s", "0.362", "15.0 min", "22.0 min", "+2.4 K", "High (chimney buoyancy)"],
+            ["", "0.0 g", "2.4 s", "7.2 s", "0.028", "3.8 min", "7.2 min", "+6.9 K", "Critical (100% stagnation)"],
+            ["APH", "1.0 g", "4.8 s", "14.4 s", "0.362", "18.0 min", "28.0 min", "+2.1 K", "High (large ducted volume)"],
+            ["", "0.0 g", "4.8 s", "14.4 s", "0.042", "4.5 min", "8.9 min", "+5.8 K", "Moderate-Low (larger buffer)"],
+            ["CHROMEX PGC", "0.0 g", "0.8 s", "2.4 s", "0.031", "1.8 min", "3.5 min", "+8.4 K", "Extremely Critical (foam hypoxia)"]
+        ]
+        table_ax5 = fig.add_axes([0.08, 0.605, 0.84, 0.145])
+        table_ax5.axis('off')
+        tab5 = table_ax5.table(cellText=t5_rows, colLabels=t5_headers, colWidths=[0.13, 0.08, 0.08, 0.09, 0.10, 0.11, 0.11, 0.11, 0.19], cellLoc='left', loc='center')
+        tab5.auto_set_font_size(False)
+        tab5.set_fontsize(6.3)
+        tab5.scale(1.0, 1.15)
+        for (r, c), cell in tab5.get_celld().items():
+            cell.set_edgecolor("#d0d0d0")
+            if r == 0:
+                cell.set_facecolor("#eef4f8")
+                cell.set_text_props(weight='bold', color=c_nature_blue)
+            elif r % 2 == 0:
+                cell.set_facecolor("#fafbfc")
+
+        # Methods Summary
+        ax.text(0.08, 0.585, "METHODS & MULTIMEDIA AVAILABILITY", fontsize=9.0, fontweight="bold", color=c_nature_blue, va="top")
         m_col1 = (
             "Numerical Discretization & Solver Settings:\n"
             "Simulations were executed within OpenFOAM v2606 using finite-volume\n"
-            "discretization of the Low-Mach compressible Navier-Stokes equations:\n"
-            "∂ρ/∂t + ∇·(ρu) = 0\n"
-            "∂(ρu)/∂t + ∇·(ρuu) = -∇p_rgh - (g·r)∇ρ + ∇·[μ_eff(∇u + (∇u)^T - 2/3(∇·u)I)]\n"
-            "∂(ρh)/∂t + ∇·(ρuh) = ∇·(α_eff ∇h) + ρ(u·g) + S_h\n\n"
-            "Turbulence was modeled using the Shear Stress Transport (k-ω SST) model\n"
-            "with prism boundary layers (y⁺ ~ 1-5). Discretization employed bounded\n"
-            "second-order linear upwind schemes for momentum and enthalpy."
+            "discretization of the Low-Mach compressible Navier-Stokes equations with\n"
+            "k-ω SST turbulence modeling and Brinkman-Darcy porous rooting matrices.\n"
+            "Discretization employed bounded second-order linear upwind schemes."
         )
-        ax.text(0.08, 0.64, m_col1, fontsize=7.0, color=c_dark, va="top", linespacing=1.2)
+        ax.text(0.08, 0.565, m_col1, fontsize=6.8, color=c_dark, va="top", linespacing=1.2)
         
         m_col2 = (
-            "Interactive 3D & 4D Multimedia Assets:\n"
-            "Interactive WebGL 3D visualizations, animated 4D time-resolved simulations,\n"
-            "and all mesh dictionaries are openly accessible:\n"
-            "• Live Web Portal: https://dr-richard-barker.github.io/microgreen-chamber-cfd/\n"
-            "• Interactive 3D Web Explorer: interactive_3d_explorer.html\n"
-            "• 4D Jet Flapping & Vortex Shedding: 4D_microgreen_jet_flapping.gif\n"
-            "• 4D VEGGIE Suction & Stagnation: 4D_veggie_suction_dynamics.gif\n"
-            "• 4D APH Cross-Flow Collision: 4D_aph_lateral_collision.gif\n"
-            "• 4D CHROMEX Hypoxia & ADH Induction: 4D_chromex_hypoxia_depletion.gif\n\n"
-            "Open-Source Repository: https://github.com/dr-richard-barker/microgreen-chamber-cfd"
+            "Interactive 3D WebGL Explorer & GitHub Pages Portal:\n"
+            "• Live Scientific Portal: https://dr-richard-barker.github.io/microgreen-chamber-cfd/\n"
+            "• Interactive 3D Web Explorer with Fan Stop Test: interactive_3d_explorer.html\n"
+            "• 4D Time-Resolved Animation Suite: 4D_*.gif (Microgreen, VEGGIE, APH, CHROMEX)\n"
+            "• Open-Source Code Repository: https://github.com/dr-richard-barker/microgreen-chamber-cfd"
         )
-        ax.text(0.50, 0.64, m_col2, fontsize=7.0, color=c_dark, va="top", linespacing=1.2)
+        ax.text(0.50, 0.565, m_col2, fontsize=6.8, color=c_dark, va="top", linespacing=1.2)
         
-        # References (Bottom Half)
-        ax.text(0.08, 0.40, "REFERENCES", fontsize=9.5, fontweight="bold", color=c_nature_blue, va="top")
+        # References
+        ax.text(0.08, 0.380, "REFERENCES", fontsize=9.0, fontweight="bold", color=c_nature_blue, va="top")
         refs = [
             "1. Massa, G. D. et al. VEG-01: Veggie hardware validation testing on the ISS. Open Agric. 2, 33–41 (2017).",
             "2. Morrow, R. C. et al. A new plant habitat facility for the ISS. 46th ICES, ICES-2016-320 (2016).",
@@ -613,7 +681,7 @@ def generate_pdf(pdf_path):
             "15. Ewald, H. & Barker, R. Microgreen Chamber CFD: 3D Internal-Flow and Gravity Parametric Analysis in OpenFOAM (2026)."
         ]
         ref_text = "\n".join(refs)
-        ax.text(0.08, 0.38, ref_text, fontsize=6.6, color="#444444", va="top", linespacing=1.30)
+        ax.text(0.08, 0.360, ref_text, fontsize=6.3, color="#444444", va="top", linespacing=1.25)
         
         # Footer
         ax.text(0.50, 0.03, "npj Microgravity | Barker et al. | Purdue University Agricultural and Biological Engineering", fontsize=7.5, color=c_grey, ha="center")
@@ -621,7 +689,7 @@ def generate_pdf(pdf_path):
         pdf.savefig(fig)
         plt.close(fig)
 
-    print(f"=== Successfully Compiled 10-Page Publication PDF: {pdf_path} ===")
+    print(f"=== Successfully Compiled 11-Page Publication PDF: {pdf_path} ===")
 
 if __name__ == "__main__":
     out_pdf = os.path.join(os.path.dirname(os.path.abspath(__file__)), "npj_manuscript.pdf")

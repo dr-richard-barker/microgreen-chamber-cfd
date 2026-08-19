@@ -280,17 +280,12 @@ class ChamberFlowModel:
             xs = np.random.uniform(Lx/2 - 0.008, Lx/2 + 0.008, num_seeds)
             ys = np.random.uniform(Ly/2 - 0.008, Ly/2 + 0.008, num_seeds)
             zs = np.random.uniform(0.002, 0.010, num_seeds)
-            xs_left = np.full(n_half, 0.008)
-            xs_right = np.full(num_seeds - n_half, Lx - 0.008)
-            xs = np.concatenate([xs_left, xs_right])
-            ys = np.random.uniform(0.02, Ly - 0.02, num_seeds)
-            zs = np.random.uniform(0.052, 0.065, num_seeds)
 
         return np.column_stack([xs, ys, zs])
 
-    def trace_streamlines(self, num_seeds=60, max_steps=180, dt=0.004):
+    def trace_streamlines(self, num_seeds=60, max_steps=180, dt=0.004, t=0.0):
         """Integrate 3D streamlines through the synthesized velocity field."""
-        flow = self.compute_flow_field(nx=35, ny=35, nz=35)
+        flow = self.compute_flow_field(nx=35, ny=35, nz=35, t=t)
         X, Y, Z = flow["X"], flow["Y"], flow["Z"]
         U, V, W = flow["U"], flow["V"], flow["W"]
         Speed = flow["Speed"]

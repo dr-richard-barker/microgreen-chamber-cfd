@@ -22,7 +22,7 @@
       </div>
       <div class="hero-actions">
         <a href="assets/pdf/npj_manuscript.pdf" class="btn btn-primary" target="_blank">
-          <i class="fas fa-file-pdf"></i> Download Publication PDF (10-Page)
+          <i class="fas fa-file-pdf"></i> Download Publication PDF (11-Page)
         </a>
         <a href="https://github.com/dr-richard-barker/microgreen-chamber-cfd" class="btn btn-outline" target="_blank">
           <i class="fab fa-github"></i> GitHub Repository
@@ -43,8 +43,8 @@
       <a href="#abstract" class="nav-link active"><i class="fas fa-info-circle"></i> Overview</a>
       <a href="#explorer" class="nav-link"><i class="fas fa-cube"></i> Interactive 3D Explorer</a>
       <a href="#animations" class="nav-link"><i class="fas fa-film"></i> 4D Flow Dynamics</a>
-      <a href="#figures" class="nav-link"><i class="fas fa-chart-area"></i> Figures (1–8)</a>
-      <a href="#tables" class="nav-link"><i class="fas fa-table"></i> Data Tables</a>
+      <a href="#figures" class="nav-link"><i class="fas fa-chart-area"></i> Figures (1–9)</a>
+      <a href="#tables" class="nav-link"><i class="fas fa-table"></i> Data Tables (1–5)</a>
       <a href="#methods" class="nav-link"><i class="fas fa-cogs"></i> CFD Methods</a>
       <a href="#cite" class="nav-link"><i class="fas fa-quote-right"></i> Cite</a>
     </div>
@@ -82,8 +82,8 @@
           <div class="metric-label">Gravity Regimes (1g, Mars, Moon, 0g)</div>
         </div>
         <div class="metric-card">
-          <div class="metric-val">35 min</div>
-          <div class="metric-label">CHROMEX Hypoxia Trigger (O₂ &lt; 5%)</div>
+          <div class="metric-val">3.1 min</div>
+          <div class="metric-label">Microgravity CO₂ Starvation Post-Fan Stop</div>
         </div>
         <div class="metric-card">
           <div class="metric-val">9.8×</div>
@@ -100,7 +100,7 @@
     <section id="explorer">
       <div class="section-header">
         <h2><i class="fas fa-cube"></i> Interactive 3D WebGL Flow Explorer</h2>
-        <p>Explore 3D velocity streamlines, cross-sectional clipping planes, and hardware geometries directly in your browser.</p>
+        <p>Dynamically switch between hardware platforms, gravity fields, and airflow regimes. Includes 4D unsteady time animation controls and an interactive <strong>Fan Failure / Stop Airflow Test</strong>.</p>
       </div>
       <div class="explorer-frame-container">
         <iframe src="explorer.html" class="explorer-frame" title="Interactive 3D WebGL Explorer"></iframe>
@@ -165,11 +165,11 @@
       </div>
     </section>
 
-    <!-- SECTION: PUBLICATION FIGURES 1-8 -->
+    <!-- SECTION: PUBLICATION FIGURES 1-9 -->
     <section id="figures">
       <div class="section-header">
-        <h2><i class="fas fa-chart-area"></i> Publication Figures (1–8)</h2>
-        <p>High-resolution vector figures from the <em>npj Microgravity</em> manuscript.</p>
+        <h2><i class="fas fa-chart-area"></i> Publication Figures (1–9)</h2>
+        <p>High-resolution vector figures from the 11-page <em>npj Microgravity</em> manuscript.</p>
       </div>
       <div class="grid-2">
         <!-- Fig 1 -->
@@ -230,7 +230,7 @@
         <div class="media-card">
           <img src="assets/figures/Fig7_airflow_extremes.png" alt="Figure 7">
           <div class="media-card-body">
-            <span class="media-badge accent">Figure 7</span>
+            <span class="media-badge primary">Figure 7</span>
             <h4>Operational Airflow Extremes Matrix (\(3\times 4\))</h4>
             <p>Comparative cross-sectional velocity matrix mapping Zero Airflow (Fan Failure), Low Draft, Flight Nominal, and High Blast across all platforms.</p>
           </div>
@@ -242,6 +242,15 @@
             <span class="media-badge primary">Figure 8</span>
             <h4>CHROMEX Multi-Scale Dynamics & Transcriptomic Hypoxia Linkage</h4>
             <p>Macro PGU thermal field (20–28°C), micro PGC Péclet number (\(\text{Pe} = uL/D\)), transient \(O_2\) depletion, and biophysical linkage to 9.8-fold *ADH* upregulation in flight.</p>
+          </div>
+        </div>
+        <!-- Fig 9 -->
+        <div class="media-card" style="grid-column: span 2;">
+          <img src="assets/figures/Fig9_fan_failure_dynamics.png" alt="Figure 9">
+          <div class="media-card-body">
+            <span class="media-badge accent">Figure 9</span>
+            <h4>Transient Aerodynamics of Fan Failure & Stagnation Response Across Gravities</h4>
+            <p>Mechanical fan spin-down decay (\(U(t)\)), boundary layer collapse (\(g_{bl}(t)\)) across Earth, Mars, Moon, and 0g, canopy thermal accumulation (\(+7.8^\circ\text{C}\)), and RuBisCO \(CO_2\) starvation trajectory (\(C_i < 150\text{ ppm}\)).</p>
           </div>
         </div>
       </div>
@@ -289,11 +298,11 @@
         </div>
       </div>
 
-      <!-- Table 3 -->
+      <!-- Table 5 -->
       <div class="card">
         <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1rem;">
-          <h3 style="color: var(--primary-dark); font-size: 1.1rem;">Table 3 | Canopy Boundary Layer Conductance (\(g_{bl}\)) Across Platforms</h3>
-          <a href="assets/tables/T3_boundary_layer_conductance.csv" class="btn btn-outline" style="color: var(--primary); border-color: var(--primary); padding: 0.4rem 0.8rem; font-size: 0.8rem;" download>
+          <h3 style="color: var(--primary-dark); font-size: 1.1rem;">Table 5 | Fan Failure Resilience, Spin-Down Times & Hypoxia Onset</h3>
+          <a href="assets/tables/T5_fan_failure_resilience.csv" class="btn btn-outline" style="color: var(--primary); border-color: var(--primary); padding: 0.4rem 0.8rem; font-size: 0.8rem;" download>
             <i class="fas fa-download"></i> Download CSV
           </a>
         </div>
@@ -303,26 +312,23 @@
               <tr>
                 <th>Hardware</th>
                 <th>Gravity</th>
-                <th>Operating Mode</th>
-                <th>\(U_{canopy}\) (m/s)</th>
-                <th>TKE (m²/s²)</th>
-                <th>\(\delta_{bl}\) (mm)</th>
-                <th>\(g_{bl}\) (mol m⁻²s⁻¹)</th>
-                <th>Stagnant Vol (%)</th>
+                <th>\(\tau_{spin}\) (s)</th>
+                <th>\(t_{stagnant}\) (s)</th>
+                <th>\(g_{bl}\) Floor</th>
+                <th>\(t_{CO2}\) Starv.</th>
+                <th>\(t_{Hypoxia}\)</th>
+                <th>\(\Delta T_{canopy}\)</th>
+                <th>Resilience Rating</th>
               </tr>
             </thead>
             <tbody>
-              <tr><td><strong>Microgreen</strong></td><td>1.0 g</td><td>Baseline</td><td>0.262</td><td>4.82e-3</td><td>2.41</td><td>0.724</td><td>14.2%</td></tr>
-              <tr><td><strong>Microgreen</strong></td><td>0.0 g</td><td>Microgravity</td><td>0.262</td><td>4.40e-3</td><td>2.54</td><td>0.688</td><td>9.6%</td></tr>
-              <tr><td><strong>VEGGIE</strong></td><td>1.0 g</td><td>Low Fan</td><td>0.065</td><td>1.12e-3</td><td>4.82</td><td>0.362</td><td>32.4%</td></tr>
-              <tr><td><strong>VEGGIE</strong></td><td>1.0 g</td><td>High Fan</td><td>0.150</td><td>3.45e-3</td><td>3.18</td><td>0.551</td><td>11.2%</td></tr>
-              <tr><td><strong>VEGGIE</strong></td><td>0.0 g</td><td>Low Fan</td><td>0.065</td><td>0.68e-3</td><td>7.95</td><td><strong style="color: var(--accent);">0.219 (Bottleneck)</strong></td><td><strong style="color: var(--accent);">52.8% (Severe Risk)</strong></td></tr>
-              <tr><td><strong>VEGGIE</strong></td><td>0.0 g</td><td>High Fan</td><td>0.150</td><td>3.02e-3</td><td>3.40</td><td>0.515</td><td>15.4%</td></tr>
-              <tr><td><strong>APH</strong></td><td>1.0 g</td><td>Nominal (0.6 m/s)</td><td>0.600</td><td>1.24e-2</td><td>1.58</td><td>1.102</td><td>2.1%</td></tr>
-              <tr><td><strong>APH</strong></td><td>0.0 g</td><td>Nominal (0.6 m/s)</td><td>0.600</td><td>1.19e-2</td><td>1.63</td><td>1.071</td><td>2.6%</td></tr>
-              <tr><td><strong>APH</strong></td><td>0.0 g</td><td>High (1.5 m/s)</td><td>1.500</td><td>3.65e-2</td><td>0.98</td><td>1.745</td><td>0.4%</td></tr>
-              <tr><td><strong>CHROMEX</strong></td><td>0.0 g</td><td>AES Active (1.0 L/h)</td><td>0.0098</td><td>2.50e-5</td><td>12.40</td><td>0.097 (Creeping)</td><td>68.5%</td></tr>
-              <tr><td><strong>CHROMEX</strong></td><td>0.0 g</td><td>Static Sealed</td><td>0.0000</td><td>0.00e+00</td><td>25.00</td><td><strong style="color: var(--accent);">0.031 (Hypoxic)</strong></td><td><strong style="color: var(--accent);">100.0% (Diffusion)</strong></td></tr>
+              <tr><td><strong>Microgreen</strong></td><td>1.0 g</td><td>1.2 s</td><td>3.6 s</td><td>0.362</td><td>12.5 min</td><td>18.0 min</td><td>+2.8 K</td><td>Moderate (buoyant convection)</td></tr>
+              <tr><td><strong>Microgreen</strong></td><td>0.0 g</td><td>1.2 s</td><td>3.6 s</td><td>0.035</td><td>3.1 min</td><td>6.5 min</td><td>+7.8 K</td><td><strong style="color: var(--accent);">Critical (rapid suffocation)</strong></td></tr>
+              <tr><td><strong>VEGGIE</strong></td><td>1.0 g</td><td>2.4 s</td><td>7.2 s</td><td>0.362</td><td>15.0 min</td><td>22.0 min</td><td>+2.4 K</td><td>High (chimney buoyancy)</td></tr>
+              <tr><td><strong>VEGGIE</strong></td><td>0.0 g</td><td>2.4 s</td><td>7.2 s</td><td>0.028</td><td>3.8 min</td><td>7.2 min</td><td>+6.9 K</td><td><strong style="color: var(--accent);">Critical (100% stagnation)</strong></td></tr>
+              <tr><td><strong>APH</strong></td><td>1.0 g</td><td>4.8 s</td><td>14.4 s</td><td>0.362</td><td>18.0 min</td><td>28.0 min</td><td>+2.1 K</td><td>High (large ducted volume)</td></tr>
+              <tr><td><strong>APH</strong></td><td>0.0 g</td><td>4.8 s</td><td>14.4 s</td><td>0.042</td><td>4.5 min</td><td>8.9 min</td><td>+5.8 K</td><td>Moderate-Low (larger buffer)</td></tr>
+              <tr><td><strong>CHROMEX PGC</strong></td><td>0.0 g</td><td>0.8 s</td><td>2.4 s</td><td>0.031</td><td>1.8 min</td><td>3.5 min</td><td>+8.4 K</td><td><strong style="color: var(--accent);">Extremely Critical (foam hypoxia)</strong></td></tr>
             </tbody>
           </table>
         </div>
@@ -366,7 +372,7 @@
   journal = {npj Microgravity},
   year    = {2026},
   volume  = {12},
-  pages   = {1--10},
+  pages   = {1--11},
   doi     = {10.1038/s41526-026-00000-x}
 }</pre>
       </div>
