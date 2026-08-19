@@ -1,0 +1,36 @@
+/*--------------------------------*- C++ -*----------------------------------*\
+| APH Chamber CFD -- turbulent viscosity                                       |
+\*---------------------------------------------------------------------------*/
+FoamFile
+{
+    version     2.0;
+    format      ascii;
+    class       volScalarField;
+    object      nut;
+}
+// * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //
+
+dimensions      [0 2 -1 0 0 0 0];
+
+internalField   uniform 0;
+
+boundaryField
+{
+    "(left_inlet|right_inlet)"
+    {
+        type            calculated;
+        value           uniform 0;
+    }
+
+    "exhaust_.*"
+    {
+        type            calculated;
+        value           uniform 0;
+    }
+
+    "(floor|walls|ceiling|carrier_tray)"
+    {
+        type            nutkWallFunction;
+        value           uniform 0;
+    }
+}

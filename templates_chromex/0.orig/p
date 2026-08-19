@@ -1,0 +1,36 @@
+/*--------------------------------*- C++ -*----------------------------------*\
+| APH Chamber CFD -- Pressure                                                  |
+\*---------------------------------------------------------------------------*/
+FoamFile
+{
+    version     2.0;
+    format      ascii;
+    class       volScalarField;
+    object      p;
+}
+// * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //
+
+dimensions      [0 2 -2 0 0 0 0];
+
+internalField   uniform 0;
+
+boundaryField
+{
+    "(left_inlet|right_inlet)"
+    {
+        type            fixedFluxPressure;
+        value           uniform 0;
+    }
+
+    "exhaust_.*"
+    {
+        type            fixedValue;
+        value           uniform 0;
+    }
+
+    "(floor|walls|ceiling|carrier_tray)"
+    {
+        type            fixedFluxPressure;
+        value           uniform 0;
+    }
+}

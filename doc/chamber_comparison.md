@@ -1,27 +1,28 @@
-# Spaceflight Plant Growth Chamber Aerodynamic Comparison: Microgreen vs. VEGGIE vs. APH
+# Spaceflight Plant Growth Chamber Aerodynamic Comparison: Microgreen vs. VEGGIE vs. APH vs. CHROMEX
 
-Reference engineering specification and CFD modeling comparison across three spaceflight and controlled-environment plant growth chambers:
+Reference engineering specification and CFD modeling comparison across four spaceflight and controlled-environment plant growth chambers:
 1. **Microgreen Chamber** (Barker Lab / AIRI baseline)
 2. **VEGGIE / VPS** (NASA Vegetable Production System; Massa et al., 2017)
 3. **APH** (NASA Advanced Plant Habitat; Morrow et al., 2016 ICES-2016-320)
+4. **CHROMEX / PGU** (NASA Space Shuttle Plant Growth Unit; Levine & Krikorian, 1996; Porterfield et al., 1997)
 
 ---
 
 ## 1. Executive Summary
 
-| Feature | Microgreen Chamber | VEGGIE (VPS) | APH |
-|:---|:---|:---|:---|
-| **Role / Class** | Compact phenotyping / educational | Space crop garden (semi-open) | Research-grade phytotron (closed-loop) |
-| **Enclosure Type** | Sealed box with curved parabolic hood | Flexible transparent FEP bellows | Rigid sealed carbon-fiber composite |
-| **Growth Area** | 0.0224 m² (120 × 186.7 mm) | 0.1075 m² (292 × 368 mm) | 0.1708 m² (454 × 408 mm effective) |
-| **Usable Canopy Volume** | 2.33 L (max height 96.7 mm) | 37.6 L – 45.0 L (at 350 mm bellows) | 83.4 L shoot volume (450 mm clear height) |
-| **Total Enclosure Volume** | 2.33 L | ~40.6 L (including pillows) | 92.8 L (shoot + root zone) |
-| **Root Zone Module** | Flush bottom tray (25 mm) | 6x arcillite plant pillows (40 mm) | 4-quadrant Science Carrier (51 mm) |
-| **Airflow Driver** | 1x Sunon MF50100V2 axial blower | 1x Top centrifugal suction fan | 2x Lateral ECS recirculation blowers |
-| **Inlet / Outlet Path** | Ø40 mm inlet port → Ø40 mm outlet | 4x Base perimeter slots → top exhaust | 2x Lower lateral slots → 4x ceiling perimeter |
-| **Bulk Velocity Target** | ~0.26 m/s (11.8 m³/h operating point) | Variable (Low / High settings) | 0.3 – 1.5 m/s (software-regulated, 0.1 m/s step) |
-| **Environmental Control** | None (ambient laboratory) | ISS cabin-dependent | Full automated control (T, RH, CO₂, C₂H₄) |
-| **Cabin Interface** | Independent / sealed | Direct open mass/thermal exchange | Express Rack quad-locker closed loop |
+| Feature | Microgreen Chamber | VEGGIE (VPS) | APH | CHROMEX (PGU / PGC) |
+|:---|:---|:---|:---|:---|
+| **Role / Class** | Compact phenotyping / educational | Space crop garden (semi-open) | Research-grade phytotron (closed-loop) | Historical Shuttle Middeck Locker (modular) |
+| **Enclosure Type** | Sealed box with curved parabolic hood | Flexible transparent FEP bellows | Rigid sealed carbon-fiber composite | Shuttle Middeck chassis with 6 Lexan canisters |
+| **Growth Area** | 0.0224 m² (120 × 186.7 mm) | 0.1075 m² (292 × 368 mm) | 0.1708 m² (454 × 408 mm effective) | 0.0274 m² (6 canisters × 95×48 mm) |
+| **Usable Canopy Volume** | 2.33 L (max height 96.7 mm) | 37.6 L – 45.0 L (at 350 mm bellows) | 83.4 L shoot volume (450 mm clear height) | 4.10 L total canopy (0.684 L / canister) |
+| **Total Enclosure Volume** | 2.33 L | ~40.6 L (including pillows) | 92.8 L (shoot + root zone) | 49.57 L (PGU chassis) / 0.866 L (single PGC) |
+| **Root Zone Module** | Flush bottom tray (25 mm) | 6x arcillite plant pillows (40 mm) | 4-quadrant Science Carrier (51 mm) | Synthetic foam matrix block (40 mm) |
+| **Airflow Driver** | 1x Sunon MF50100V2 axial blower | 1x Top centrifugal suction fan | 2x Lateral ECS recirculation blowers | PGU chassis fan + optional PGC needle aeration |
+| **Inlet / Outlet Path** | Ø40 mm inlet port → Ø40 mm outlet | 4x Base perimeter slots → top exhaust | 2x Lower lateral slots → 4x ceiling perimeter | Base manifold needle → perimeter lid slots |
+| **Bulk Velocity Target** | ~0.26 m/s (11.8 m³/h operating point) | Variable (Low / High settings) | 0.3 – 1.5 m/s (software-regulated) | 0.001 – 0.010 m/s (creeping laminar, Re ≪ 100) |
+| **Environmental Control** | None (ambient laboratory) | ISS cabin-dependent | Full automated control (T, RH, CO₂, C₂H₄) | PGU lamp cooling; passive or low aeration |
+| **Cabin Interface** | Independent / sealed | Direct open mass/thermal exchange | Express Rack quad-locker closed loop | Space Shuttle Middeck Locker replacement |
 
 ---
 
@@ -30,17 +31,18 @@ Reference engineering specification and CFD modeling comparison across three spa
 ```
 A. Microgreen Chamber (Through-flow Jet)
     [Inlet Ø40mm] ───> Confined Jet ───> Wall impingement / Recirculation ───> [Outlet Ø40mm]
-    - Dominant mode: Unsteady flapping jet over short tray (186.7 mm depth)
 
 B. VEGGIE (Bottom-up Suction)
     [ISS Cabin Air] ───> [4x Base Slots] ───> Upward canopy wash ───> [Top Fan Exhaust] ───> [Cabin]
-    - Dominant mode: Upward forced draft driven by top suction; open to cabin humidity/CO2
 
 C. APH (Opposing Cross-flow & Upward Sweep)
     [Left ECS Slot]  ───> [Diffuser] ──┐
                                        ├──> Collision & Upward Sweep ───> [Ceiling Exhausts] ───> [ECS Loop]
     [Right ECS Slot] ───> [Diffuser] ──┘
-    - Dominant mode: Symmetrical opposing wall jets meeting over Science Carrier, rising through canopy
+
+D. CHROMEX / PGC (Creeping Needle Jet / Pure Diffusion)
+    [Base Needle Port] ───> Creeping Manifold (1.0 L/h) ───> [Foam Block] ───> [Canopy] ───> [Perimeter Slots]
+    - Dominant mode: Creeping laminar flow (Re ≪ 100) or static sealed diffusion (Pe ≪ 1, hypoxia bottleneck)
 ```
 
 ---

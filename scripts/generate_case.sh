@@ -102,10 +102,12 @@ set +eu
 set -eu
 
 case "$CHAMBER" in
-    microgreen) TEMPL_DIR="$ROOT/templates" ;;
-    veggie)     TEMPL_DIR="$ROOT/templates_veggie" ;;
-    aph)        TEMPL_DIR="$ROOT/templates_aph" ;;
-    *) echo "--chamber must be microgreen, veggie, or aph" >&2 ; exit 1 ;;
+    microgreen)  TEMPL_DIR="$ROOT/templates" ;;
+    veggie)      TEMPL_DIR="$ROOT/templates_veggie" ;;
+    aph)         TEMPL_DIR="$ROOT/templates_aph" ;;
+    chromex)     TEMPL_DIR="$ROOT/templates_chromex" ;;
+    chromex_pgc) TEMPL_DIR="$ROOT/templates_chromex_pgc" ;;
+    *) echo "--chamber must be microgreen, veggie, aph, chromex, or chromex_pgc" >&2 ; exit 1 ;;
 esac
 
 mkdir -p "$ROOT/runs"
@@ -135,6 +137,20 @@ elif [ "$CHAMBER" = "aph" ]; then
         m0) NX=69  ; NY=63  ; NZ=78  ;;
         m1) NX=138 ; NY=126 ; NZ=156 ;;
         m2) NX=276 ; NY=252 ; NZ=312 ;;
+        *)  echo "--mesh must be m0, m1, or m2" >&2 ; exit 1 ;;
+    esac
+elif [ "$CHAMBER" = "chromex" ]; then
+    case "$MESH" in
+        m0) NX=76  ; NY=54  ; NZ=40  ;;
+        m1) NX=153 ; NY=108 ; NZ=81  ;;
+        m2) NX=306 ; NY=216 ; NZ=162 ;;
+        *)  echo "--mesh must be m0, m1, or m2" >&2 ; exit 1 ;;
+    esac
+elif [ "$CHAMBER" = "chromex_pgc" ]; then
+    case "$MESH" in
+        m0) NX=28  ; NY=14  ; NZ=57  ;;
+        m1) NX=57  ; NY=28  ; NZ=114 ;;
+        m2) NX=114 ; NY=57  ; NZ=228 ;;
         *)  echo "--mesh must be m0, m1, or m2" >&2 ; exit 1 ;;
     esac
 fi

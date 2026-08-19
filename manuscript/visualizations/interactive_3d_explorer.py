@@ -241,16 +241,17 @@ def create_interactive_dashboard(html_path):
       <option value="aph" selected>NASA Advanced Plant Habitat (APH)</option>
       <option value="veggie">NASA VEGGIE (VPS)</option>
       <option value="microgreen">Microgreen Chamber</option>
+      <option value="chromex">NASA Shuttle CHROMEX (PGC Canister)</option>
     </select>
   </div>
   
   <div class="control-group">
     <label>Airflow Velocity Regime</label>
     <select id="selRegime" onchange="updateChamber()">
-      <option value="nominal" selected>Flight Baseline (Nominal)</option>
+      <option value="nominal" selected>Flight Baseline (Nominal / AES Active)</option>
       <option value="high">High Extreme (Max Blast)</option>
       <option value="low">Low Draft (Flight Extreme / Seedling)</option>
-      <option value="zero">Zero Airflow (Fan Failure / Stagnation)</option>
+      <option value="zero">Zero Airflow (Sealed Canister / Fan Failure)</option>
     </select>
   </div>
 
@@ -320,6 +321,12 @@ def create_interactive_dashboard(html_path):
       "high": {{ "vol": "2.33 L", "flow": "22.6 m³/h (5.00 m/s jet)", "gbl": "1.185 mol m⁻²s⁻¹", "stag": "3.1%", "bio": "High TKE Confined Jet" }},
       "low": {{ "vol": "2.33 L", "flow": "2.3 m³/h (0.50 m/s jet)", "gbl": "0.312 mol m⁻²s⁻¹", "stag": "28.5%", "bio": "Corner Recirculation Pocketing" }},
       "zero": {{ "vol": "2.33 L", "flow": "0.0 m³/h (0.00 m/s)", "gbl": "0.035 mol m⁻²s⁻¹", "stag": "100%", "bio": "Sealed Stagnation Failure" }}
+    }},
+    "chromex": {{
+      "nominal": {{ "vol": "0.684 L (Canister)", "flow": "1.0 L/h AES (9.8 mm/s)", "gbl": "0.097 mol m⁻²s⁻¹", "stag": "68.5%", "bio": "Closed Canister (0% Cabin Export)" }},
+      "high": {{ "vol": "0.684 L (Canister)", "flow": "2.5 L/h AES (25 mm/s)", "gbl": "0.185 mol m⁻²s⁻¹", "stag": "42.0%", "bio": "Creeping Aeration (Re ~ 5)" }},
+      "low": {{ "vol": "0.684 L (Canister)", "flow": "0.2 L/h AES (2.0 mm/s)", "gbl": "0.052 mol m⁻²s⁻¹", "stag": "88.0%", "bio": "Diffusion Dominated (Pe < 1)" }},
+      "zero": {{ "vol": "0.684 L (Canister)", "flow": "0.0 L/h (Sealed)", "gbl": "0.031 mol m⁻²s⁻¹", "stag": "100%", "bio": "Critical Hypoxia (ADH Upregulation)" }}
     }}
   }};
 

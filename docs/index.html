@@ -22,7 +22,7 @@
       </div>
       <div class="hero-actions">
         <a href="assets/pdf/npj_manuscript.pdf" class="btn btn-primary" target="_blank">
-          <i class="fas fa-file-pdf"></i> Download Publication PDF (9-Page)
+          <i class="fas fa-file-pdf"></i> Download Publication PDF (10-Page)
         </a>
         <a href="https://github.com/dr-richard-barker/microgreen-chamber-cfd" class="btn btn-outline" target="_blank">
           <i class="fab fa-github"></i> GitHub Repository
@@ -43,7 +43,7 @@
       <a href="#abstract" class="nav-link active"><i class="fas fa-info-circle"></i> Overview</a>
       <a href="#explorer" class="nav-link"><i class="fas fa-cube"></i> Interactive 3D Explorer</a>
       <a href="#animations" class="nav-link"><i class="fas fa-film"></i> 4D Flow Dynamics</a>
-      <a href="#figures" class="nav-link"><i class="fas fa-chart-area"></i> Figures (1–7)</a>
+      <a href="#figures" class="nav-link"><i class="fas fa-chart-area"></i> Figures (1–8)</a>
       <a href="#tables" class="nav-link"><i class="fas fa-table"></i> Data Tables</a>
       <a href="#methods" class="nav-link"><i class="fas fa-cogs"></i> CFD Methods</a>
       <a href="#cite" class="nav-link"><i class="fas fa-quote-right"></i> Cite</a>
@@ -60,37 +60,38 @@
         <p>
           Plants cultivated in extraterrestrial habitats encounter a physical environment devoid of natural gravity-driven buoyancy (\(Gr \to 0\)), 
           expanding unstirred fluid boundary layers around vegetative canopies and drastically elevating aerodynamic resistance (\(r_a = 1/g_{bl}\)). 
-          Here, we present a systematic, multi-chamber 3D computational fluid dynamics (CFD) investigation comparing three distinct spaceflight and 
+          Here, we present a systematic, multi-chamber 3D computational fluid dynamics (CFD) investigation comparing four distinct spaceflight and 
           controlled-environment agricultural hardware architectures across four gravitational regimes: <strong>Earth (1.0 g)</strong>, 
           <strong>Mars (0.38 g)</strong>, <strong>Moon (0.166 g)</strong>, and <strong>Microgravity (0 g)</strong>. 
           Using an OpenFOAM v2606 finite-volume framework with conformal multi-solid analytic geometries, we model: 
           (i) the compact <strong>Microgreen Chamber</strong> (2.33 L, through-flow confined jet), 
-          (ii) the <strong>NASA Vegetable Production System (VEGGIE/VPS)</strong> (37.6 L, top suction with passive cabin air induction), and 
-          (iii) the <strong>NASA Advanced Plant Habitat (APH)</strong> (83.4 L, ducted closed-loop opposing cross-flow).
+          (ii) the <strong>NASA Vegetable Production System (VEGGIE/VPS)</strong> (37.6 L, top suction with passive cabin air induction), 
+          (iii) the <strong>NASA Advanced Plant Habitat (APH)</strong> (83.4 L, ducted closed-loop opposing cross-flow), and 
+          (iv) the <strong>NASA Space Shuttle CHROMEX / Plant Growth Unit (PGU/PGC)</strong> (49.57 L macro chassis, 0.866 L canisters with Brinkman-Darcy rooting foam).
         </p>
       </div>
 
       <!-- KEY METRICS ROW -->
       <div class="metrics-row">
         <div class="metric-card">
-          <div class="metric-val">3</div>
-          <div class="metric-label">Hardware Architectures</div>
+          <div class="metric-val">4</div>
+          <div class="metric-label">Hardware Platforms Evaluated</div>
         </div>
         <div class="metric-card">
           <div class="metric-val">4</div>
           <div class="metric-label">Gravity Regimes (1g, Mars, Moon, 0g)</div>
         </div>
         <div class="metric-card">
-          <div class="metric-val">52.8%</div>
-          <div class="metric-label">VEGGIE 0g Stagnant Vol (Low Fan)</div>
+          <div class="metric-val">35 min</div>
+          <div class="metric-label">CHROMEX Hypoxia Trigger (O₂ &lt; 5%)</div>
+        </div>
+        <div class="metric-card">
+          <div class="metric-val">9.8×</div>
+          <div class="metric-label">ADH Flight Transcript Upregulation</div>
         </div>
         <div class="metric-card">
           <div class="metric-val">1.07</div>
           <div class="metric-label">APH Conductance \(g_{bl}\) (mol m⁻²s⁻¹)</div>
-        </div>
-        <div class="metric-card">
-          <div class="metric-val">0%</div>
-          <div class="metric-label">APH Cabin Spore Export (HEPA)</div>
         </div>
       </div>
     </section>
@@ -113,7 +114,7 @@
     <section id="animations">
       <div class="section-header">
         <h2><i class="fas fa-film"></i> 4D Time-Resolved Flow Dynamics & Simulations</h2>
-        <p>Time-dependent velocity oscillations, buoyancy plume collapse, opposing jet collisions, and bioaerosol clearance.</p>
+        <p>Time-dependent velocity oscillations, buoyancy plume collapse, opposing jet collisions, bioaerosol clearance, and canister hypoxia.</p>
       </div>
       <div class="grid-2">
         <!-- Animation 1 -->
@@ -149,16 +150,25 @@
           <div class="media-card-body">
             <span class="media-badge accent">Biosecurity Trade Space</span>
             <h4>4D Bioaerosol Plume Clearance & Containment</h4>
-            <p>Comparative tracking of aerosolized fungal spores (*Fusarium oxysporum*): VEGGIE exports \(100\%\) directly into astronaut living quarters (\(t_{50} = 13.8\text{ s}\)), whereas APH achieves rapid internal HEPA scrubbing (\(t_{50} = 18.4\text{ s}\)).</p>
+            <p>Comparative tracking of aerosolized fungal spores (*Fusarium oxysporum*): VEGGIE exports \(100\%\) directly into astronaut living quarters (\(t_{50} = 13.8\text{ s}\)), whereas APH achieves internal HEPA scrubbing (\(t_{50} = 18.4\text{ s}\)).</p>
+          </div>
+        </div>
+        <!-- Animation 5 -->
+        <div class="media-card" style="grid-column: span 2;">
+          <img src="assets/animations/4D_chromex_hypoxia_depletion.gif" alt="4D CHROMEX Hypoxia Dynamics">
+          <div class="media-card-body">
+            <span class="media-badge primary">NASA Space Shuttle CHROMEX / PGU</span>
+            <h4>4D Canister Hypoxia Depletion & Transcriptomic ADH Induction Dynamics</h4>
+            <p>Time-resolved 4D multi-component transport in sealed PGC canisters: root respiration depletes dissolved/gaseous \(O_2\) within the synthetic foam block, crossing the critical \(5\%\) hypoxia threshold at \(t = 35\text{ min}\) and triggering 9.8-fold alcohol dehydrogenase (*ADH*) transcriptomic upregulation.</p>
           </div>
         </div>
       </div>
     </section>
 
-    <!-- SECTION: PUBLICATION FIGURES 1-7 -->
+    <!-- SECTION: PUBLICATION FIGURES 1-8 -->
     <section id="figures">
       <div class="section-header">
-        <h2><i class="fas fa-chart-area"></i> Publication Figures (1–7)</h2>
+        <h2><i class="fas fa-chart-area"></i> Publication Figures (1–8)</h2>
         <p>High-resolution vector figures from the <em>npj Microgravity</em> manuscript.</p>
       </div>
       <div class="grid-2">
@@ -217,12 +227,21 @@
           </div>
         </div>
         <!-- Fig 7 -->
-        <div class="media-card" style="grid-column: span 2;">
+        <div class="media-card">
           <img src="assets/figures/Fig7_airflow_extremes.png" alt="Figure 7">
           <div class="media-card-body">
             <span class="media-badge accent">Figure 7</span>
             <h4>Operational Airflow Extremes Matrix (\(3\times 4\))</h4>
-            <p>Comparative cross-sectional velocity matrix mapping Zero Airflow (Fan Failure), Low Draft (Seedling/Low Fan), Flight Nominal, and High Blast across all platforms with boundary layer conductance badges.</p>
+            <p>Comparative cross-sectional velocity matrix mapping Zero Airflow (Fan Failure), Low Draft, Flight Nominal, and High Blast across all platforms.</p>
+          </div>
+        </div>
+        <!-- Fig 8 -->
+        <div class="media-card">
+          <img src="assets/figures/Fig8_chromex_multiscale_hypoxia.png" alt="Figure 8">
+          <div class="media-card-body">
+            <span class="media-badge primary">Figure 8</span>
+            <h4>CHROMEX Multi-Scale Dynamics & Transcriptomic Hypoxia Linkage</h4>
+            <p>Macro PGU thermal field (20–28°C), micro PGC Péclet number (\(\text{Pe} = uL/D\)), transient \(O_2\) depletion, and biophysical linkage to 9.8-fold *ADH* upregulation in flight.</p>
           </div>
         </div>
       </div>
@@ -238,7 +257,7 @@
       <!-- Table 1 -->
       <div class="card">
         <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1rem;">
-          <h3 style="color: var(--primary-dark); font-size: 1.1rem;">Table 1 | Hardware Physical & Aerodynamic Specifications</h3>
+          <h3 style="color: var(--primary-dark); font-size: 1.1rem;">Table 1 | Physical & Aerodynamic Specifications Across Platforms</h3>
           <a href="assets/tables/T1_hardware_dimensions.csv" class="btn btn-outline" style="color: var(--primary); border-color: var(--primary); padding: 0.4rem 0.8rem; font-size: 0.8rem;" download>
             <i class="fas fa-download"></i> Download CSV
           </a>
@@ -248,22 +267,23 @@
             <thead>
               <tr>
                 <th>Parameter</th>
-                <th>Microgreen Chamber</th>
+                <th>Microgreen</th>
                 <th>VEGGIE (VPS)</th>
-                <th>Advanced Plant Habitat (APH)</th>
+                <th>Advanced Plant Habitat</th>
+                <th>CHROMEX (PGU / PGC)</th>
               </tr>
             </thead>
             <tbody>
-              <tr><td><strong>Payload Class</strong></td><td>Benchtop Phenotyping</td><td>Deployable Space Garden</td><td>Closed-Loop Research Phytotron</td></tr>
-              <tr><td><strong>Growth Area (\(A\))</strong></td><td>0.0224 m² (120×187 mm)</td><td>0.1075 m² (292×368 mm)</td><td>0.1708 m² (454×408 mm)</td></tr>
-              <tr><td><strong>Canopy Air Vol. (\(V_{air}\))</strong></td><td>2.33 L</td><td>37.61 L (nominal)</td><td>83.36 L (shoot zone)</td></tr>
-              <tr><td><strong>Growth Height</strong></td><td>96.7 mm</td><td>350.0 mm</td><td>450.0 mm</td></tr>
-              <tr><td><strong>Flow Driver</strong></td><td>1× Axial Fan (Ø40mm)</td><td>1× Top Suction Fan (Ø50mm)</td><td>2× Symmetric ECS Blowers</td></tr>
-              <tr><td><strong>Airflow Topology</strong></td><td>Through-flow confined jet</td><td>Bottom-up forced suction</td><td>Opposing lateral cross-flow → sweep</td></tr>
-              <tr><td><strong>Nominal Flow Rate (\(Q\))</strong></td><td>11.8 m³/h (3.27 L/s)</td><td>85.0 m³/h (23.61 L/s)</td><td>26.4 m³/h (7.34 L/s)</td></tr>
-              <tr><td><strong>Forced Velocity</strong></td><td>0.262 m/s (bulk)</td><td>0.150 m/s (mean draft)</td><td>0.300 - 1.500 m/s (regulated)</td></tr>
-              <tr><td><strong>Air Exchange (\(\text{ACH}\))</strong></td><td>5,051 h⁻¹ (\(\tau = 0.71\text{ s}\))</td><td>2,260 h⁻¹ (\(\tau = 1.60\text{ s}\))</td><td>317 h⁻¹ (\(\tau = 11.35\text{ s}\))</td></tr>
-              <tr><td><strong>Cabin Coupling</strong></td><td>Sealed phenotyping unit</td><td>Open continuous exchange</td><td>Closed-loop in EXPRESS Rack</td></tr>
+              <tr><td><strong>Payload Class</strong></td><td>Benchtop Phenotyping</td><td>Deployable Space Garden</td><td>Closed Phytotron</td><td>Shuttle Middeck Locker</td></tr>
+              <tr><td><strong>Growth Area (\(A\))</strong></td><td>0.0224 m² (120×187 mm)</td><td>0.1075 m² (292×368 mm)</td><td>0.1708 m² (454×408 mm)</td><td>0.0274 m² (6× 95×48 mm)</td></tr>
+              <tr><td><strong>Canopy Air Vol.</strong></td><td>2.33 L</td><td>37.61 L (nominal)</td><td>83.36 L (shoot zone)</td><td>4.10 L total (0.684 L / PGC)</td></tr>
+              <tr><td><strong>Growth Height</strong></td><td>96.7 mm</td><td>350.0 mm</td><td>450.0 mm</td><td>190.0 mm (canister)</td></tr>
+              <tr><td><strong>Flow Driver</strong></td><td>1× Axial Fan (Ø40mm)</td><td>1× Top Suction (Ø50mm)</td><td>2× Symmetric Blowers</td><td>PGU Fan + PGC Needle AES</td></tr>
+              <tr><td><strong>Airflow Topology</strong></td><td>Through-flow confined jet</td><td>Bottom-up forced suction</td><td>Opposing cross-flow sweep</td><td>Creeping percolation / Diffusion</td></tr>
+              <tr><td><strong>Nominal Flow (\(Q\))</strong></td><td>11.8 m³/h (3.27 L/s)</td><td>85.0 m³/h (23.61 L/s)</td><td>26.4 m³/h (7.34 L/s)</td><td>0.001 m³/h (1.0 L/h AES)</td></tr>
+              <tr><td><strong>Forced Velocity</strong></td><td>0.262 m/s (bulk)</td><td>0.150 m/s (draft)</td><td>0.300 - 1.500 m/s</td><td>0.001 - 0.010 m/s (\(\text{Re} \ll 100\))</td></tr>
+              <tr><td><strong>Air Exchange (\(\text{ACH}\))</strong></td><td>5,051 h⁻¹ (\(\tau = 0.71\text{ s}\))</td><td>2,260 h⁻¹ (\(\tau = 1.60\text{ s}\))</td><td>317 h⁻¹ (\(\tau = 11.35\text{ s}\))</td><td>1.16 h⁻¹ (AES \(\tau = 51.9\text{ min}\))</td></tr>
+              <tr><td><strong>Cabin Coupling</strong></td><td>Sealed phenotyping</td><td>Open continuous exchange</td><td>Closed EXPRESS payload</td><td>Shuttle Middeck Locker</td></tr>
             </tbody>
           </table>
         </div>
@@ -301,6 +321,8 @@
               <tr><td><strong>APH</strong></td><td>1.0 g</td><td>Nominal (0.6 m/s)</td><td>0.600</td><td>1.24e-2</td><td>1.58</td><td>1.102</td><td>2.1%</td></tr>
               <tr><td><strong>APH</strong></td><td>0.0 g</td><td>Nominal (0.6 m/s)</td><td>0.600</td><td>1.19e-2</td><td>1.63</td><td>1.071</td><td>2.6%</td></tr>
               <tr><td><strong>APH</strong></td><td>0.0 g</td><td>High (1.5 m/s)</td><td>1.500</td><td>3.65e-2</td><td>0.98</td><td>1.745</td><td>0.4%</td></tr>
+              <tr><td><strong>CHROMEX</strong></td><td>0.0 g</td><td>AES Active (1.0 L/h)</td><td>0.0098</td><td>2.50e-5</td><td>12.40</td><td>0.097 (Creeping)</td><td>68.5%</td></tr>
+              <tr><td><strong>CHROMEX</strong></td><td>0.0 g</td><td>Static Sealed</td><td>0.0000</td><td>0.00e+00</td><td>25.00</td><td><strong style="color: var(--accent);">0.031 (Hypoxic)</strong></td><td><strong style="color: var(--accent);">100.0% (Diffusion)</strong></td></tr>
             </tbody>
           </table>
         </div>
@@ -323,6 +345,9 @@
 // Energy / Enthalpy Equation
 ∂(ρh)/∂t + ∇·(ρuh) = ∇·(α_eff ∇h) + ρ(u·g) + S_h
 
+// Brinkman-extended Darcy-Forchheimer porous formulation (Synthetic Rooting Foam):
+∇p = -(μ/α)u - C_2 (1/2) ρ |u| u
+
 // Turbulence Model: k-ω SST (Menter 1994) with near-wall y⁺ ~ 1-5 prism layers</pre>
       </div>
     </section>
@@ -341,7 +366,7 @@
   journal = {npj Microgravity},
   year    = {2026},
   volume  = {12},
-  pages   = {1--9},
+  pages   = {1--10},
   doi     = {10.1038/s41526-026-00000-x}
 }</pre>
       </div>

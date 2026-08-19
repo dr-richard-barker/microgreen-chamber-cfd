@@ -1,0 +1,63 @@
+/*--------------------------------*- C++ -*----------------------------------*\
+| NASA Space Shuttle CHROMEX / PGC Canister - Porous & Reaction fvOptions    |
+\*---------------------------------------------------------------------------*/
+FoamFile
+{
+    version     2.0;
+    format      ascii;
+    class       dictionary;
+    object      fvOptions;
+}
+// * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //
+
+// 1. Brinkman-extended Darcy-Forchheimer Porous Media for Rooting Foam Block
+porousFoamZone
+{
+    type            porousMedia;
+    cellZone        foamBlockZone;
+
+    porousMediaCoeffs
+    {
+        coordinateSystem
+        {
+            origin  (0.0475 0.024 0.020);
+            e1      (1 0 0);
+            e2      (0 1 0);
+            e3      (0 0 1);
+        }
+
+        DarcyForchheimerCoeffs
+        {
+            d   (1e9 1e9 1e9);  // Inverse permeability 1/alpha (alpha ~ 1e-9 m2)
+            f   (100 100 100);  // Inertial drag coefficient C2 (porosity eps ~ 0.80)
+        }
+    }
+}
+
+// 2. Root Hypoxic O2 Consumption Sink at Foam-Root Interface
+rootO2Sink
+{
+    type            scalarSemiImplicitSource;
+    cellZone        foamBlockZone;
+    selectionMode   cellZone;
+
+    volumeMode      specific; // [1/s]
+    injectionRateSuSp
+    {
+        O2          (-1.5e-6 0); // Root respiration sink -> induces localized hypoxia
+    }
+}
+
+// 3. Canopy CO2 Photosynthetic Sink (Light cycle) / Respiratory Source (Dark cycle)
+canopyCO2Source
+{
+    type            scalarSemiImplicitSource;
+    cellZone        canopyZone;
+    selectionMode   cellZone;
+
+    volumeMode      specific;
+    injectionRateSuSp
+    {
+        CO2         (-4.2e-6 0); // Photosynthetic net assimilation sink
+    }
+}

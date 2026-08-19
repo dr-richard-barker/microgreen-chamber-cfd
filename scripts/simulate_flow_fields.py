@@ -34,6 +34,11 @@ class ChamberFlowModel:
             self.left_inlet_pos = np.array([0.000, 0.204, 0.058])
             self.right_inlet_pos = np.array([0.454, 0.204, 0.058])
             self.speeds = {"nominal": 0.60, "high": 1.50, "low": 0.30, "zero": 0.00}
+        elif self.chamber_type in ("chromex", "chromex_pgc"):
+            self.dims = (0.095, 0.048, 0.190) # 95 x 48 x 190 mm PGC canister
+            self.canopy_z = (0.040, 0.150)
+            self.inlet_pos = np.array([0.0475, 0.024, 0.000])
+            self.speeds = {"nominal": 0.0098, "high": 0.025, "low": 0.002, "zero": 0.000}
         else:
             raise ValueError(f"Unknown chamber type: {chamber_type}")
 
@@ -196,6 +201,53 @@ class ChamberFlowModel:
             TKE = 0.09 * (Speed**2) + 0.003 * (self.u_ref**2) * collision_mask
             Age = 3.5 + 14.0 * (1.0 - Z/Lz)
 
+        # -------------------------------------------------------------
+        # NASA SPACE SHUTTLE CHROMEX / PGC (Creeping laminar / Darcy foam)
+        # -------------------------------------------------------------
+        elif self.chamber_type in ("chromex", "chromex_pgc"):
+            # Lower manifold needle port at (Lx/2, Ly/2, 0)
+            x_c, y_c = Lx / 2.0, Ly / 2.0
+            r_needle = np.sqrt((X - x_c)**2 + (Y - y_c)**2) + 1e-4
+            
+            # Foam block Darcy resistance: z in [0, 0.040]
+            in_foam = Z <= 0.040
+            foam_attenuation = np.where(in_foam, 0.25, 1.0)
+            
+            # Needle jet spreading
+            w_needle = self.u_ref * np.exp(-((r_needle)**2) / (2 * (0.008 + 0.05 * Z)**2)) * foam_attenuation
+            
+            # Creeping upward percolation toward top lid perimeter slots
+            w_percolation = 0.45 * self.u_ref * (1.0 - np.exp(-Z / 0.03)) * (1.0 - 4*(X - Lx/2)**2 / Lx**2)
+            
+            # Slow lateral diffusion dispersion
+            u_disp = 0.15 * self.u_ref * np.sign(X - x_c) * np.exp(-r_needle / 0.02)
+            v_disp = 0.15 * self.u_ref * np.sign(Y - y_c) * np.exp(-r_needle / 0.02)
+            
+            U = u_disp
+            V = v_disp
+            W = w_needle + w_percolation
+
+            # Wall damping
+            wall_damp = np.tanh(40 * X) * np.tanh(40 * (Lx - X)) * np.tanh(40 * Y) * np.tanh(40 * (Ly - Y))
+            U *= wall_damp; V *= wall_damp; W *= wall_damp
+
+            Speed = np.sqrt(U**2 + V**2 + W**2)
+            TKE = 0.01 * (Speed**2) + 1e-6 # Ultra-low turbulence, creeping laminar
+            
+            # Péclet number: Pe = u * d / D
+            D_O2 = 2.0e-5
+            d_leaf = 0.015
+            Peclet = (Speed * d_leaf) / D_O2
+            
+            # Local O2 Mass Fraction / Hypoxia mapping
+            # In sealed/zero mode: O2 decays rapidly in foam and boundary layers
+            if self.regime == "zero":
+                O2_conc = 0.02 + 0.04 * (Z / Lz) * np.exp(-r_needle / 0.03) # severe hypoxia < 5%
+            else:
+                O2_conc = 0.18 + 0.0295 * (1.0 - np.exp(-Z / 0.05)) # replenished by AES
+                
+            Age = 15.0 + 120.0 * (1.0 - Z/Lz)
+
         return {
             "X": X, "Y": Y, "Z": Z,
             "U": U, "V": V, "W": W,
@@ -218,6 +270,16 @@ class ChamberFlowModel:
         elif self.chamber_type == "aph":
             # Seeds along left and right lower diffusers
             n_half = num_seeds // 2
+            xs_left = np.full(n_half, 0.01)
+            xs_right = np.full(num_seeds - n_half, Lx - 0.01)
+            xs = np.concatenate([xs_left, xs_right])
+            ys = np.random.uniform(0.02, Ly - 0.02, num_seeds)
+            zs = np.random.uniform(0.052, 0.065, num_seeds)
+        elif self.chamber_type in ("chromex", "chromex_pgc"):
+            # Seeds near base needle manifold
+            xs = np.random.uniform(Lx/2 - 0.008, Lx/2 + 0.008, num_seeds)
+            ys = np.random.uniform(Ly/2 - 0.008, Ly/2 + 0.008, num_seeds)
+            zs = np.random.uniform(0.002, 0.010, num_seeds)
             xs_left = np.full(n_half, 0.008)
             xs_right = np.full(num_seeds - n_half, Lx - 0.008)
             xs = np.concatenate([xs_left, xs_right])

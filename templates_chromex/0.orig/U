@@ -1,0 +1,37 @@
+/*--------------------------------*- C++ -*----------------------------------*\
+| NASA Space Shuttle CHROMEX / PGU Macro-Chassis CFD - Velocity Field        |
+\*---------------------------------------------------------------------------*/
+FoamFile
+{
+    version     2.0;
+    format      ascii;
+    class       volVectorField;
+    object      U;
+}
+// * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //
+
+dimensions      [0 1 -1 0 0 0 0];
+
+internalField   uniform (0 0 0);
+
+boundaryField
+{
+    cooling_inlet
+    {
+        type            flowRateInletVelocity;
+        volumetricFlowRate 0.015; // ~31 CFM chassis cooling fan flow
+        value           uniform (0 0 0.5);
+    }
+
+    cooling_exhaust
+    {
+        type            inletOutlet;
+        inletValue      uniform (0 0 0);
+        value           uniform (0 0 0);
+    }
+
+    "(pgu_shell|lamp_bank|pgc_bay_.*)"
+    {
+        type            noSlip;
+    }
+}

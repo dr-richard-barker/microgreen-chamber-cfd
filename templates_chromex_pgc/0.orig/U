@@ -1,0 +1,39 @@
+/*--------------------------------*- C++ -*----------------------------------*\
+| NASA Space Shuttle CHROMEX / PGC Canister CFD - Creeping Flow Velocity     |
+\*---------------------------------------------------------------------------*/
+FoamFile
+{
+    version     2.0;
+    format      ascii;
+    class       volVectorField;
+    object      U;
+}
+// * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //
+
+dimensions      [0 1 -1 0 0 0 0];
+
+internalField   uniform (0 0 0);
+
+boundaryField
+{
+    inlet_port
+    {
+        // Case 2: Active Air Exchange System (AES Active) -> 1.0 L/h (2.778e-7 m3/s)
+        // Case 3: Static / Sealed -> Q = 0
+        type            flowRateInletVelocity;
+        volumetricFlowRate 2.7778e-7; // 1.0 L/h
+        value           uniform (0 0 0.0098); // ~9.8 mm/s needle exit velocity
+    }
+
+    exhaust_ports
+    {
+        type            inletOutlet;
+        inletValue      uniform (0 0 0);
+        value           uniform (0 0 0);
+    }
+
+    "(floor|walls|lid)"
+    {
+        type            noSlip;
+    }
+}

@@ -1,0 +1,36 @@
+/*--------------------------------*- C++ -*----------------------------------*\
+| NASA Space Shuttle CHROMEX / PGC Canister CFD - CO2 Mass Fraction          |
+\*---------------------------------------------------------------------------*/
+FoamFile
+{
+    version     2.0;
+    format      ascii;
+    class       volScalarField;
+    object      CO2;
+}
+// * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //
+
+dimensions      [0 0 0 0 0 0 0];
+
+internalField   uniform 0.0050; // Initial 0.5% (5000 ppm) elevated Shuttle middeck CO2
+
+boundaryField
+{
+    inlet_port
+    {
+        type            fixedValue;
+        value           uniform 0.0050;
+    }
+
+    exhaust_ports
+    {
+        type            inletOutlet;
+        inletValue      uniform 0.0050;
+        value           uniform 0.0050;
+    }
+
+    "(floor|walls|lid)"
+    {
+        type            zeroGradient;
+    }
+}

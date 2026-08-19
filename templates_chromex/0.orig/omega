@@ -1,0 +1,38 @@
+/*--------------------------------*- C++ -*----------------------------------*\
+| APH Chamber CFD -- specific dissipation rate                                 |
+\*---------------------------------------------------------------------------*/
+FoamFile
+{
+    version     2.0;
+    format      ascii;
+    class       volScalarField;
+    object      omega;
+}
+// * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //
+
+dimensions      [0 0 -1 0 0 0 0];
+
+internalField   uniform 1;
+
+boundaryField
+{
+    "(left_inlet|right_inlet)"
+    {
+        type            turbulentMixingLengthFrequencyInlet;
+        mixingLength    0.005; // 5mm length scale
+        value           uniform 1;
+    }
+
+    "exhaust_.*"
+    {
+        type            inletOutlet;
+        inletValue      uniform 1;
+        value           uniform 1;
+    }
+
+    "(floor|walls|ceiling|carrier_tray)"
+    {
+        type            omegaWallFunction;
+        value           uniform 1;
+    }
+}

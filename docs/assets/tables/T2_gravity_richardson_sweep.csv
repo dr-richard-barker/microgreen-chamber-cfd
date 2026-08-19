@@ -11,3 +11,7 @@ APH,Earth 1g,9.81,0.4500,0.600,3.0,3.90e+07,1.78e+04,0.1246,Forced convection do
 APH,Mars 0.38g,3.72,0.4500,0.600,3.0,1.48e+07,1.78e+04,0.0473,Strongly forced convection,0.034
 APH,Moon 0.166g,1.62,0.4500,0.600,3.0,6.44e+06,1.78e+04,0.0206,Strongly forced convection,0.015
 APH,Microgravity 0g,0.00,0.4500,0.600,3.0,0.00e+00,1.78e+04,0.0000,Purely forced convection,0.000
+CHROMEX PGC,Earth 1g,9.81,0.1900,0.0098,2.0,1.98e+06,1.23e+02,131.29,Buoyancy-dominated (creeping flow),0.742
+CHROMEX PGC,Mars 0.38g,3.72,0.1900,0.0098,2.0,7.51e+05,1.23e+02,49.78,Buoyancy-dominated (creeping flow),0.410
+CHROMEX PGC,Moon 0.166g,1.62,0.1900,0.0098,2.0,3.27e+05,1.23e+02,21.68,Mixed / Buoyancy-assisted,0.215
+CHROMEX PGC,Microgravity 0g,0.00,0.1900,0.0098,2.0,0.00e+00,1.23e+02,0.0000,Purely creeping laminar / diffusion,0.000

@@ -1,0 +1,50 @@
+/*--------------------------------*- C++ -*----------------------------------*\
+| NASA Space Shuttle CHROMEX / PGU Macro-Chassis CFD - Temperature Field     |
+\*---------------------------------------------------------------------------*/
+FoamFile
+{
+    version     2.0;
+    format      ascii;
+    class       volScalarField;
+    object      T;
+}
+// * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //
+
+dimensions      [0 0 0 1 0 0 0];
+
+internalField   uniform 295.15; // 22 deg C ambient Middeck cabin baseline
+
+boundaryField
+{
+    cooling_inlet
+    {
+        type            fixedValue;
+        value           uniform 295.15; // 22 deg C cabin air draw
+    }
+
+    cooling_exhaust
+    {
+        type            inletOutlet;
+        inletValue      uniform 295.15;
+        value           uniform 295.15;
+    }
+
+    lamp_bank
+    {
+        type            externalWallHeatFluxTemperature;
+        mode            power;
+        Q               25.0; // 25 W thermal dissipation from fluorescent lamps
+        value           uniform 305.15;
+        kappaMethod     fluidThermo;
+    }
+
+    pgu_shell
+    {
+        type            zeroGradient;
+    }
+
+    "pgc_bay_.*"
+    {
+        type            zeroGradient;
+    }
+}

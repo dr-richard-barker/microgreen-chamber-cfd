@@ -14,6 +14,7 @@ from fig4_scalar_ventilation import create_fig4
 from fig5_biosecurity_trades import create_fig5
 from fig6_3d_flow_topologies import create_fig6
 from fig7_airflow_extremes import create_fig7
+from fig8_chromex_multiscale_hypoxia import generate_figure_8
 
 def main():
     root = os.path.dirname(os.path.abspath(__file__))
@@ -28,7 +29,8 @@ def main():
     create_fig5(out)
     create_fig6(out)
     create_fig7(out)
-    print("=== All 7 Figures Generated Successfully! ===")
+    generate_figure_8(out)
+    print("=== All 8 Figures Generated Successfully! ===")
 
 if __name__ == "__main__":
     main()

@@ -326,6 +326,72 @@ def make_bioaerosol_clearance_animation(out_dir, num_frames=24):
     images[0].save(gif_path, save_all=True, append_images=images[1:], duration=90, loop=0)
     print(f"Generated: {gif_path}")
 
+def make_chromex_4d_animation(out_dir, num_frames=20):
+    print("Generating 4D Animation: CHROMEX PGC Hypoxia & Peclet Transition...")
+    
+    # 4D Simulation of O2 decay inside static sealed PGC vs active AES flow
+    t_vals = np.linspace(0, 120, num_frames) # 0 to 120 minutes of closed metabolism
+    
+    ny_grid, nz_grid = 40, 60
+    y_g, z_g = np.meshgrid(np.linspace(0, 48, ny_grid), np.linspace(0, 190, nz_grid))
+    
+    images = []
+    for frame_idx, t_min in enumerate(t_vals):
+        fig, (ax1, ax2) = plt.subplots(1, 2, figsize=(11, 5), dpi=150)
+        
+        # 1. Static Sealed PGC: O2 Depletion Field (% O2)
+        # Root respiration consumes O2 from bottom foam (z < 40mm)
+        decay_factor = np.exp(-t_min / 35.0)
+        o2_canopy = 20.95 * decay_factor
+        o2_foam = np.maximum(0.5, 20.95 * np.exp(-t_min / 18.0) * (1.0 - np.exp(-z_g / 25.0)))
+        o2_field = np.where(z_g <= 40, o2_foam, o2_canopy * (0.4 + 0.6 * (z_g / 190.0)))
+        
+        im1 = ax1.contourf(y_g, z_g, o2_field, levels=np.linspace(0, 21, 22), cmap="RdYlGn_r", vmin=0, vmax=21)
+        ax1.axhspan(0, 40, color="brown", alpha=0.35, label="Synthetic Foam Matrix Block")
+        ax1.axhspan(40, 150, color="green", alpha=0.15, label="Shoot Canopy Zone")
+        ax1.set_title(f"a  Sealed PGC O₂ Depletion ($t = {t_min:.0f}\\text{{ min}}$)", fontsize=10, fontweight="bold")
+        ax1.set_xlabel("Depth $y$ [mm]", fontsize=9)
+        ax1.set_ylabel("Height $z$ [mm]", fontsize=9)
+        ax1.set_xlim(0, 48); ax1.set_ylim(0, 190)
+        
+        if o2_field.min() < 5.0:
+            ax1.text(24, 20, "CRITICAL HYPOXIA\nADH Upregulated", color="red", fontweight="bold",
+                     fontsize=9, ha="center", va="center", bbox=dict(boxstyle="round", facecolor="white", edgecolor="red"))
+        
+        cb1 = plt.colorbar(im1, ax=ax1, fraction=0.046, pad=0.04)
+        cb1.set_label("O₂ Concentration [%]", fontsize=8.5)
+        ax1.legend(loc="upper left", fontsize=7.5)
+        
+        # 2. Péclet Number Pe & ADH Expression Correlation
+        t_arr = np.linspace(0, 120, 100)
+        o2_root_arr = 20.95 * np.exp(-t_arr / 18.0)
+        adh_fold_induction = 1.0 + 8.5 / (1.0 + np.exp((o2_root_arr - 5.0)/1.2)) # Sigmoidal induction
+        
+        ax2.plot(t_arr, o2_root_arr, "b-", lw=2.5, label="Root O₂ Level [%]")
+        ax2.plot(t_arr, adh_fold_induction, "r--", lw=2.5, label="ADH Transcript Induction [Fold]")
+        ax2.axhline(5.0, color="darkred", linestyle=":", label="Hypoxia Trigger Threshold (5% O₂)")
+        ax2.axvline(t_min, color="black", linestyle="-", lw=1.5, alpha=0.7)
+        ax2.scatter([t_min], [20.95 * np.exp(-t_min / 18.0)], color="blue", s=60, zorder=5)
+        
+        ax2.set_title("b  Microgravity Hypoxia & ADH Gene Induction", fontsize=10, fontweight="bold")
+        ax2.set_xlabel("Time Post-Sealing [minutes]", fontsize=9)
+        ax2.set_ylabel("O₂ [%] / ADH Induction [Fold]", fontsize=9)
+        ax2.set_xlim(0, 120); ax2.set_ylim(0, 22)
+        ax2.grid(True, linestyle=":", alpha=0.6)
+        ax2.legend(loc="upper right", fontsize=8)
+        
+        plt.suptitle("4D CHROMEX / PGC Canister Hypoxia & Transcriptomic Stress Dynamics", fontsize=11, fontweight="bold", y=0.98)
+        plt.tight_layout()
+        
+        fig.canvas.draw()
+        rgba = np.asarray(fig.canvas.buffer_rgba())
+        images.append(Image.fromarray(rgba))
+        plt.close(fig)
+        
+    gif_path = os.path.join(out_dir, "4D_chromex_hypoxia_depletion.gif")
+    images[0].save(gif_path, save_all=True, append_images=images[1:], duration=100, loop=0)
+    print(f"Generated: {gif_path}")
+
 def main():
     root = os.path.dirname(os.path.abspath(__file__))
     anim_dir = os.path.join(root, "animations")
@@ -336,6 +402,7 @@ def main():
     make_veggie_4d_animation(anim_dir, num_frames=20)
     make_aph_4d_animation(anim_dir, num_frames=20)
     make_bioaerosol_clearance_animation(anim_dir, num_frames=20)
+    make_chromex_4d_animation(anim_dir, num_frames=20)
     print("=== All 4D Animations Generated Successfully! ===")
 
 if __name__ == "__main__":

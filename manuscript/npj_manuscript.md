@@ -9,7 +9,7 @@ $^*$Corresponding author: `rbarker@purdue.edu`
 
 ## Abstract
 
-Plants cultivated in extraterrestrial habitats encounter a physical environment devoid of natural gravity-driven buoyancy ($Gr \to 0$), expanding unstirred fluid boundary layers around vegetative canopies and drastically elevating aerodynamic resistance ($r_a = 1/g_{bl}$). Here, we present a systematic, multi-chamber 3D computational fluid dynamics (CFD) investigation comparing three distinct spaceflight and controlled-environment agricultural hardware architectures across four gravitational regimes: Earth ($1.0\text{ g}$), Mars ($0.38\text{ g}$), Moon ($0.166\text{ g}$), and Microgravity ($0\text{ g}$). Using an OpenFOAM v2606 finite-volume framework with conformal multi-solid analytic geometries, we model: (i) the compact **Microgreen Chamber** ($2.33\text{ L}$, through-flow confined jet), (ii) the **NASA Vegetable Production System (VEGGIE/VPS)** ($37.6\text{ L}$, top suction with passive cabin air induction), and (iii) the **NASA Advanced Plant Habitat (APH)** ($83.4\text{ L}$, ducted closed-loop opposing cross-flow). Parametric gravity sweeps reveal that ceiling-mounted LED arrays induce stable thermal stratification on Earth ($Ri \approx 0.14 - 1.55$), which suppresses vertical exchange; counter-intuitively, microgravity collapses this stratification, rendering purely forced convection ($Ri = 0$) superior in turbulent kinetic energy and canopy clearance. In VEGGIE, low-fan microgravity operation leads to a critical $52.8\%$ canopy stagnation volume and a $39.5\%$ reduction in $CO_2$ boundary layer conductance ($g_{bl} = 0.219\text{ mol m}^{-2}\text{s}^{-1}$), elevating fungal mold vulnerability and guttation stress. Conversely, APH's opposing lateral supply jets ($0.3 - 1.5\text{ m/s}$) maintain near-ideal displacement ventilation (air exchange efficiency $\varepsilon_a \approx 45\%$) and invariant $g_{bl} \approx 1.07\text{ mol m}^{-2}\text{s}^{-1}$ across all gravity levels. Analysis of suspended bioaerosols establishes a fundamental biosecurity trade-off: VEGGIE exports $100\%$ of aerosolized fungal spores directly into astronaut living quarters ($t_{50} = 13.8\text{ s}$), whereas APH achieves rapid internal HEPA scrubbing ($t_{50} = 18.4\text{ s}$) with zero cabin burden. These findings establish quantitative aerodynamic criteria for designing next-generation bioregenerative life support systems for Lunar and Martian surface missions.
+Plants cultivated in extraterrestrial habitats encounter a physical environment devoid of natural gravity-driven buoyancy ($Gr \to 0$), expanding unstirred fluid boundary layers around vegetative canopies and drastically elevating aerodynamic resistance ($r_a = 1/g_{bl}$). Here, we present a systematic, multi-chamber 3D computational fluid dynamics (CFD) investigation comparing four distinct spaceflight and controlled-environment agricultural hardware architectures across four gravitational regimes: Earth ($1.0\text{ g}$), Mars ($0.38\text{ g}$), Moon ($0.166\text{ g}$), and Microgravity ($0\text{ g}$). Using an OpenFOAM v2606 finite-volume framework with conformal multi-solid analytic geometries, we model: (i) the compact **Microgreen Chamber** ($2.33\text{ L}$, through-flow confined jet), (ii) the **NASA Vegetable Production System (VEGGIE/VPS)** ($37.6\text{ L}$, top suction with passive cabin air induction), (iii) the **NASA Advanced Plant Habitat (APH)** ($83.4\text{ L}$, ducted closed-loop opposing cross-flow), and (iv) the **NASA Space Shuttle CHROMEX / Plant Growth Unit (PGU/PGC)** ($49.57\text{ L}$ macro chassis, $0.866\text{ L}$ canisters with Brinkman-Darcy rooting foam). Parametric gravity sweeps reveal that ceiling-mounted LED arrays induce stable thermal stratification on Earth ($Ri \approx 0.14 - 1.55$), which suppresses vertical exchange; in microgravity, this stratification collapses, rendering purely forced convection ($Ri = 0$) superior in turbulent kinetic energy. In VEGGIE, low-fan microgravity operation leads to a critical $52.8\%$ canopy stagnation volume ($g_{bl} = 0.219\text{ mol m}^{-2}\text{s}^{-1}$), elevating fungal mold vulnerability. In CHROMEX sealed canisters, pure diffusion ($Pe < 1$) drives root-zone hypoxia ($O_2 < 5\%$) within 35 minutes, providing a biophysical basis for historical flight transcriptomic alcohol dehydrogenase ($ADH$) upregulation. Conversely, APH maintains invariant $g_{bl} \approx 1.07\text{ mol m}^{-2}\text{s}^{-1}$ across all gravities. Analysis of suspended bioaerosols establishes a fundamental biosecurity trade-off: VEGGIE exports $100\%$ of aerosolized fungal spores directly into astronaut living quarters ($t_{50} = 13.8\text{ s}$), whereas APH achieves rapid internal HEPA scrubbing ($t_{50} = 18.4\text{ s}$) with zero cabin burden. These findings establish quantitative aerodynamic criteria for designing next-generation bioregenerative life support systems for Lunar and Martian surface missions.
 
 ---
 
@@ -36,20 +36,20 @@ In tandem with carbon starvation, thick boundary layers trap transpired water va
 
 ## 2. Hardware Architecture & Dimensional Specifications
 
-| Parameter | Microgreen Chamber | VEGGIE (VPS) | Advanced Plant Habitat (APH) |
-|:---|:---|:---|:---|
-| **Payload Classification** | Benchtop Phenotyping | Deployable Space Garden | Closed-Loop Research Phytotron |
-| **Enclosure Structure** | Rigid acrylic + parabolic hood | Collapsible FEP bellows | Carbon-fiber composite & titanium frame |
-| **Growth Footprint ($A$)** | $0.0224\text{ m}^2$ ($120 \times 187\text{ mm}$) | $0.1075\text{ m}^2$ ($292 \times 368\text{ mm}$) | $0.1708\text{ m}^2$ ($454 \times 408\text{ mm}$) |
-| **Canopy Air Volume ($V_{air}$)** | $2.33\text{ L}$ | $37.61\text{ L}$ (nominal) | $83.36\text{ L}$ (shoot zone) |
-| **Total Canopy Height** | $96.7\text{ mm}$ (to hood spring) | $350.0\text{ mm}$ (nominal height) | $450.0\text{ mm}$ (clear shoot zone) |
-| **Primary Flow Driver** | 1$\times$ Axial Fan ($\varnothing40\text{ mm}$ port) | 1$\times$ Top Suction Fan ($\varnothing50\text{ mm}$) | 2$\times$ Symmetric ECS Recirculation Blowers |
-| **Airflow Topology** | Through-flow confined jet | Bottom-up forced suction | Opposing lateral cross-flow $\to$ sweep |
-| **Nominal Flow Rate ($Q$)** | $11.8\text{ m}^3/\text{h}$ ($3.27\text{ L/s}$) | $85.0\text{ m}^3/\text{h}$ ($23.61\text{ L/s}$) | $26.4\text{ m}^3/\text{h}$ ($7.34\text{ L/s}$) |
-| **Canopy Forced Velocity** | $0.262\text{ m/s}$ (bulk mean) | $0.150\text{ m/s}$ (mean draft) | $0.300 - 1.500\text{ m/s}$ (regulated) |
-| **Air Exchange Rate ($\text{ACH}$)** | $5,051\text{ h}^{-1}$ ($\tau = 0.71\text{ s}$) | $2,260\text{ h}^{-1}$ ($\tau = 1.60\text{ s}$) | $317\text{ h}^{-1}$ ($\tau = 11.35\text{ s}$) |
-| **Environmental Control** | Ambient laboratory | Cabin-coupled ($\Delta T = +2^\circ\text{C}$) | Closed loop ($18-30^\circ\text{C} \pm0.5^\circ\text{C}$, $50-90\%$ RH) |
-| **Cabin Interface Coupling** | Sealed phenotyping unit | Open continuous exchange | Closed-loop payload in EXPRESS Rack |
+| Parameter | Microgreen Chamber | VEGGIE (VPS) | Advanced Plant Habitat (APH) | CHROMEX (PGU / PGC) |
+|:---|:---|:---|:---|:---|
+| **Payload Classification** | Benchtop Phenotyping | Deployable Space Garden | Closed-Loop Research Phytotron | Shuttle Middeck Locker Replacement |
+| **Enclosure Structure** | Rigid acrylic + hood | Collapsible FEP bellows | Carbon-fiber composite | Middeck chassis + 6 Lexan PGCs |
+| **Growth Footprint ($A$)** | $0.0224\text{ m}^2$ ($120 \times 187\text{ mm}$) | $0.1075\text{ m}^2$ ($292 \times 368\text{ mm}$) | $0.1708\text{ m}^2$ ($454 \times 408\text{ mm}$) | $0.0274\text{ m}^2$ (6× $95 \times 48\text{ mm}$) |
+| **Canopy Air Volume ($V_{air}$)** | $2.33\text{ L}$ | $37.61\text{ L}$ (nominal) | $83.36\text{ L}$ (shoot zone) | $4.10\text{ L}$ total ($0.684\text{ L}$ / PGC) |
+| **Total Growth Height** | $96.7\text{ mm}$ (to hood) | $350.0\text{ mm}$ (nominal height) | $450.0\text{ mm}$ (clear shoot zone) | $190.0\text{ mm}$ (canister height) |
+| **Primary Flow Driver** | 1$\times$ Axial Fan ($\varnothing40\text{ mm}$) | 1$\times$ Top Suction Fan ($\varnothing50\text{ mm}$) | 2$\times$ Symmetric ECS Blowers | PGU chassis fan + PGC needle AES |
+| **Airflow Topology** | Through-flow confined jet | Bottom-up forced suction | Opposing cross-flow sweep | Creeping percolation / Pure diffusion |
+| **Nominal Flow Rate ($Q$)** | $11.8\text{ m}^3/\text{h}$ ($3.27\text{ L/s}$) | $85.0\text{ m}^3/\text{h}$ ($23.61\text{ L/s}$) | $26.4\text{ m}^3/\text{h}$ ($7.34\text{ L/s}$) | $0.001\text{ m}^3/\text{h}$ ($1.0\text{ L/h}$ AES) |
+| **Canopy Forced Velocity** | $0.262\text{ m/s}$ (bulk mean) | $0.150\text{ m/s}$ (mean draft) | $0.300 - 1.500\text{ m/s}$ (regulated) | $0.001 - 0.010\text{ m/s}$ ($\text{Re} \ll 100$) |
+| **Air Exchange Rate ($\text{ACH}$)** | $5,051\text{ h}^{-1}$ ($\tau = 0.71\text{ s}$) | $2,260\text{ h}^{-1}$ ($\tau = 1.60\text{ s}$) | $317\text{ h}^{-1}$ ($\tau = 11.35\text{ s}$) | $1.16\text{ h}^{-1}$ (AES $\tau = 51.9\text{ min}$) |
+| **Environmental Control** | Ambient laboratory | Cabin-coupled ($\Delta T = +2^\circ\text{C}$) | Closed loop (±0.5°C, ±5% RH) | PGU lamp cooling / optional AES |
+| **Cabin Interface Coupling** | Sealed phenotyping unit | Open continuous exchange | Closed EXPRESS Rack payload | Shuttle Middeck Locker Replacement |
 
 ---
 
@@ -71,6 +71,8 @@ In tandem with carbon starvation, thick boundary layers trap transpired water va
 | | Mars ($0.38\text{ g}$) | $3.72$ | $1.48 \times 10^{7}$ | $17,810$ | $0.0473$ | Strongly Forced | Piston-like upward sweep across shoot zone |
 | | Moon ($0.166\text{ g}$) | $1.62$ | $6.44 \times 10^{6}$ | $17,810$ | $0.0206$ | Strongly Forced | Uniform boundary layer across Science Carrier |
 | | Microgravity ($0\text{ g}$) | $0.00$ | $0.00$ | $17,810$ | $0.0000$ | Purely Forced | Fully engineered forced recirculation sweep |
+| **CHROMEX PGC** | Earth ($1.0\text{ g}$) | $9.81$ | $1.98 \times 10^{6}$ | $123$ | $131.29$ | Buoyant Creeping | Creeping laminar jet; natural convection dominates |
+| | Microgravity ($0\text{ g}$) | $0.00$ | $0.00$ | $123$ | $0.0000$ | Purely Creeping | Darcy percolation / pure diffusion ($Pe < 1$) |
 
 ### 3.2 Canopy Aerodynamic Conductance ($g_{bl}$) & Stagnation Risk
 
@@ -85,19 +87,8 @@ In tandem with carbon starvation, thick boundary layers trap transpired water va
 | **APH** | $1.0\text{ g}$ | Nominal ($0.6\text{ m/s}$) | $0.600$ | $1.24 \times 10^{-2}$ | $1.58$ | $43.2$ | $1.102$ | $2.1\%$ |
 | | $0.0\text{ g}$ | Nominal ($0.6\text{ m/s}$) | $0.600$ | $1.19 \times 10^{-2}$ | $1.63$ | $42.0$ | $1.071$ | $2.6\%$ |
 | | $0.0\text{ g}$ | High ($1.5\text{ m/s}$) | $1.500$ | $3.65 \times 10^{-2}$ | $0.98$ | $68.4$ | $1.745$ | $0.4\%$ |
-
-### 3.3 Ventilation Efficiency & Habitat Biosecurity
-
-| Chamber | Gravity | Flow Rate ($Q$) | $\tau_0\text{ (s)}$ | $\overline{\tau}_{canopy}\text{ (s)}$ | $\varepsilon_a\text{ (\%)}$ | $t_{50}\text{ (s)}$ | Biosecurity \& Aerosol Fate |
-|:---|:---|:---|:---|:---|:---|:---|:---|
-| **Microgreen** | $1.0\text{ g}$ | $11.8\text{ m}^3/\text{h}$ | $0.71$ | $6.85$ | $10.4\%$ | $14.2$ | Sealed unit: zero cabin export; corner recirculation |
-| | $0.0\text{ g}$ | $11.8\text{ m}^3/\text{h}$ | $0.71$ | $5.20$ | $13.7\%$ | $11.5$ | Unstratified jet improves canopy clearance |
-| **VEGGIE** | $1.0\text{ g}$ | Low ($42.5\text{ m}^3/\text{h}$) | $3.19$ | $14.20$ | $22.5\%$ | $28.6$ | Direct cabin exhaust: $100\%$ spore export to ISS |
-| | $0.0\text{ g}$ | Low ($42.5\text{ m}^3/\text{h}$) | $3.19$ | $22.40$ | $14.2\%$ | $45.2$ | Critical mold risk ($52.8\%$ stagnant volume) |
-| | $0.0\text{ g}$ | High ($85.0\text{ m}^3/\text{h}$) | $1.60$ | $6.10$ | $26.2\%$ | $13.8$ | High fan restores boundary layer stripping |
-| **APH** | $1.0\text{ g}$ | Nom ($26.4\text{ m}^3/\text{h}$) | $11.35$ | $24.80$ | $45.8\%$ | $18.4$ | Closed loop: internal HEPA filtration ($\le25\text{ ppb}$) |
-| | $0.0\text{ g}$ | Nom ($26.4\text{ m}^3/\text{h}$) | $11.35$ | $25.20$ | $45.0\%$ | $18.9$ | Piston sweep maintains $45\%$ efficiency |
-| | $0.0\text{ g}$ | High ($66.0\text{ m}^3/\text{h}$) | $4.54$ | $9.60$ | $47.3\%$ | $7.2$ | Near-ideal displacement flow ($\varepsilon_a \to 50\%$) |
+| **CHROMEX** | $0.0\text{ g}$ | AES Active ($1.0\text{ L/h}$) | $0.0098$ | $2.50 \times 10^{-5}$ | $12.40$ | $3.8$ | $0.097$ (Creeping) | $68.5\%$ |
+| | $0.0\text{ g}$ | Static Sealed | $0.0000$ | $0.00$ | $25.00$ | $1.2$ | **$0.031$ (Hypoxic)** | **$100.0\%$ (Diffusion)** |
 
 ---
 
@@ -110,6 +101,7 @@ In tandem with carbon starvation, thick boundary layers trap transpired water va
 - **Figure 5:** Biosecurity, Pathogen Containment, and Bioaerosol Dispersion Trade Space (`figures/output/Fig5_biosecurity_trades.pdf` / `.png`)
 - **Figure 6:** 3D Spatial Flow Topologies, Streamline Ribbons, and Canopy Shear Distributions (`figures/output/Fig6_3d_flow_topologies.pdf` / `.png`)
 - **Figure 7:** Operational Airflow Extremes Matrix: Zero Stagnation vs. Low Draft vs. Nominal vs. High Blast (`figures/output/Fig7_airflow_extremes.pdf` / `.png`)
+- **Figure 8:** NASA Space Shuttle CHROMEX / PGU Multi-Scale Thermal-Fluid & PGC Hypoxia Dynamics (`figures/output/Fig8_chromex_multiscale_hypoxia.pdf` / `.png`)
 
 ### Interactive 3D WebGL Explorer & 4D Animations:
 - **Interactive 3D WebGL Dashboard:** [`visualizations/interactive_3d_explorer.html`](visualizations/interactive_3d_explorer.html)
@@ -117,3 +109,4 @@ In tandem with carbon starvation, thick boundary layers trap transpired water va
 - **4D NASA VEGGIE Suction & Stagnation Dynamics:** [`visualizations/animations/4D_veggie_suction_dynamics.gif`](visualizations/animations/4D_veggie_suction_dynamics.gif)
 - **4D NASA APH Lateral Cross-Flow Collision & Updraft:** [`visualizations/animations/4D_aph_lateral_collision.gif`](visualizations/animations/4D_aph_lateral_collision.gif)
 - **4D Bioaerosol Plume Clearance & Containment Trade Space:** [`visualizations/animations/4D_bioaerosol_plume_clearance.gif`](visualizations/animations/4D_bioaerosol_plume_clearance.gif)
+- **4D CHROMEX PGC Hypoxia & ADH Induction:** [`visualizations/animations/4D_chromex_hypoxia_depletion.gif`](visualizations/animations/4D_chromex_hypoxia_depletion.gif)
