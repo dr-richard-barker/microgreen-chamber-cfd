@@ -1,0 +1,39 @@
+/*--------------------------------*- C++ -*----------------------------------*\
+| VEGGIE CFD -- turbulent kinetic energy                                       |
+\*---------------------------------------------------------------------------*/
+FoamFile
+{
+    version     2.0;
+    format      ascii;
+    class       volScalarField;
+    object      k;
+}
+// * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //
+
+dimensions      [0 2 -2 0 0 0 0];
+
+internalField   uniform 0.016;
+
+boundaryField
+{
+    fan_exhaust
+    {
+        type            inletOutlet;
+        inletValue      uniform 0.016;
+        value           uniform 0.016;
+    }
+
+    "base_inlet_.*"
+    {
+        // Cabin air drawn in over edges.
+        type            turbulentIntensityKineticEnergyInlet;
+        intensity       0.05;
+        value           uniform 0.016;
+    }
+
+    "(baseplate|bellows|lightcap|pillow_.*)"
+    {
+        type            kqRWallFunction;
+        value           uniform 0.016;
+    }
+}

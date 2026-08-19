@@ -1,0 +1,43 @@
+/*--------------------------------*- C++ -*----------------------------------*\
+| VEGGIE CFD -- kinematic pressure                                             |
+\*---------------------------------------------------------------------------*/
+FoamFile
+{
+    version     2.0;
+    format      ascii;
+    class       volScalarField;
+    object      p;
+}
+// * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //
+
+dimensions      [0 2 -2 0 0 0 0];
+
+internalField   uniform 0;
+
+boundaryField
+{
+    fan_exhaust
+    {
+        // Fan enforces the flow rate, pressure floats to match.
+        // Wait, flowRateInletVelocity at an outlet needs a zeroGradient pressure
+        // or a fixedValue? Actually flowRateInletVelocity works with zeroGradient.
+        type            zeroGradient;
+    }
+
+    "base_inlet_.*"
+    {
+        // Cabin air total pressure.
+        type            totalPressure;
+        p0              uniform 0;
+        U               U;
+        phi             phi;
+        rho             none;
+        gamma           1;
+        value           uniform 0;
+    }
+
+    "(baseplate|bellows|lightcap|pillow_.*)"
+    {
+        type            zeroGradient;
+    }
+}

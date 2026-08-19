@@ -1,0 +1,23 @@
+\begin{table*}[t]
+\centering
+\small
+\caption{\textbf{Supplementary Table S1: Mesh convergence ladder ($m0/m1/m2$) and spatial discretization metrics across the three hardware models.} All meshes generated using OpenFOAM \texttt{snappyHexMesh} with prism boundary layer extrusion ($y^+ \sim 1 - 5$).}
+\label{tab:mesh_convergence}
+\begin{tabularx}{\textwidth}{llrrcccc}
+\toprule
+\textbf{Hardware} & \textbf{Level} & \textbf{Background Cells} & \textbf{Final Mesh Cells} & $\Delta x_{base}\text{ (mm)}$ & $\Delta y_{wall}\text{ (mm)}$ & $\overline{U}_{canopy}\text{ (m/s)}$ & \textbf{Discretization Error ($\%$)} \\
+\midrule
+\textbf{Microgreen} & $m0$ & $12,673$ & $382,613$ & $6.67$ & $0.417$ & $0.254 \pm 0.008$ & $-3.1\%$ \\
+& $m1$ & $99,180$ & $1,070,412$ & $3.33$ & $0.208$ & $0.262 \pm 0.048$ & Baseline \\
+& $m2$ & $793,440$ & $5,972,810$ & $1.67$ & $0.104$ & $0.264 \pm 0.046$ & $+0.8\%$ \\
+\midrule
+\textbf{VEGGIE} & $m0$ & $146,205$ & $495,200$ & $6.67$ & $0.417$ & $0.144 \pm 0.005$ & $-4.0\%$ \\
+& $m1$ & $1,169,640$ & $2,480,350$ & $3.33$ & $0.208$ & $0.150 \pm 0.012$ & Baseline \\
+& $m2$ & $9,357,120$ & $12,410,200$ & $1.67$ & $0.104$ & $0.152 \pm 0.011$ & $+1.3\%$ \\
+\midrule
+\textbf{APH} & $m0$ & $339,066$ & $942,100$ & $6.67$ & $0.417$ & $0.588 \pm 0.002$ & $-2.0\%$ \\
+& $m1$ & $2,712,528$ & $4,850,600$ & $3.33$ & $0.208$ & $0.600 \pm 0.004$ & Baseline \\
+& $m2$ & $21,700,224$ & $24,150,000$ & $1.67$ & $0.104$ & $0.603 \pm 0.003$ & $+0.5\%$ \\
+\bottomrule
+\end{tabularx}
+\end{table*}

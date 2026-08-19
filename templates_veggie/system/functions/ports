@@ -1,0 +1,77 @@
+/*--------------------------------*- C++ -*----------------------------------*\
+| Mass balance at the ports -- CLAUDE.md 9.4                                   |
+|                                                                              |
+| "inlet flux + outlet flux ~ 0. This catches bad BC pairings faster than       |
+|  anything else." Watch log.solve / postProcessing/ for these two summing to   |
+|  zero. If they do not, stop and fix the BCs -- nothing downstream is valid.   |
+|                                                                              |
+| Target at Q = 5 m3/h:  |phi| = 1.3889e-3 m3/s (simpleFoam, volumetric)        |
+|                        |phi| = 1.667e-3 kg/s  (buoyantSimpleFoam, mass)       |
+\*---------------------------------------------------------------------------*/
+
+inletFlux
+{
+    type            surfaceFieldValue;
+    libs            (fieldFunctionObjects);
+    writeControl    timeStep;
+    writeInterval   20;
+    log             true;
+    writeFields     false;
+    regionType      patch;
+    name            "base_inlet_.*";
+    operation       sum;
+    fields          (phi);
+}
+
+outletFlux
+{
+    type            surfaceFieldValue;
+    libs            (fieldFunctionObjects);
+    writeControl    timeStep;
+    writeInterval   20;
+    log             true;
+    writeFields     false;
+    regionType      patch;
+    name            fan_exhaust;
+    operation       sum;
+    fields          (phi);
+}
+
+// Area-averaged outlet velocity -- sanity check against Q / A_port.
+outletU
+{
+    type            surfaceFieldValue;
+    libs            (fieldFunctionObjects);
+    writeControl    timeStep;
+    writeInterval   20;
+    log             false;
+    writeFields     false;
+    regionType      patch;
+    name            fan_exhaust;
+    operation       areaAverage;
+    fields          (U);
+}
+
+// REMOVED 2026-08-16 -- traySlotFlux.
+//
+// It measured how much of Q went down the 2.5 mm tray side slots. The tray is
+// now flush with all four walls and fills the whole floor (CLAUDE.md 6.1), so
+// there are no slots, no end gaps, and no fluid at all below z = 25 mm.
+//
+// This FO could NOT simply be left in place. Its sampledSurface would find zero
+// faces, and CLAUDE.md 7 records what that does: the run dies at the FIRST WRITE,
+// after the solve has already looked healthy for however long writeInterval is.
+// Deleting it is not tidying, it is the fix.
+//
+// Its measured answer, for the record: the slots carried ~0.23 % of Q (steady
+// m1, Q = 5 m3/h). That number described a flow path that no longer exists.
+//
+// Worth keeping if a sampledSurface FO is ever written again here: do NOT ask a
+// sampledSurface for `phi`. Patches carry the face flux directly, but a
+// sampledSurface INTERPOLATES VOLUME fields onto a cut plane and has no access
+// to the surfaceScalarField -- the request silently degrades to "Requested field
+// phi not found in database and not processed" and the quantity never gets
+// measured. `areaNormalIntegrate` on U gives sum(U & Sf), the same thing, and
+// reports it in the x-component of the returned vector.
+
+// ************************************************************************* //

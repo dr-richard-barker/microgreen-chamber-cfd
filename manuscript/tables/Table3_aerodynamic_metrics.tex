@@ -1,0 +1,32 @@
+\begin{table*}[t]
+\centering
+\small
+\caption{\textbf{Canopy boundary-layer aerodynamic parameters, Sherwood numbers, and effective conductance ($g_{bl}$) across hardware platforms under variable gravitational acceleration and ventilation modes.} Conductance $g_{bl}$ is evaluated for $CO_2$ transport ($D_{CO2} = 1.48 \times 10^{-5}\text{ m}^2/\text{s}$ at $22^\circ\text{C}$); stagnant fraction represents canopy volume with velocity $< 0.05\text{ m/s}$.}
+\label{tab:aerodynamic_metrics}
+\begin{tabularx}{\textwidth}{llrcccccc}
+\toprule
+\textbf{Hardware} & \textbf{Gravity} & \textbf{Operating Mode} & $\overline{U}_{canopy}\text{ (m/s)}$ & $\mathbf{TKE}\text{ (m}^2/\text{s}^2\text{)}$ & $\delta_{bl}\text{ (mm)}$ & $\mathbf{Sh}_{CO2}$ & $g_{bl}\text{ (mol m}^{-2}\text{s}^{-1}\text{)}$ & \textbf{Stagnant Vol. (\%)} \\
+\midrule
+\textbf{Microgreen} & $1\text{ g}$ & Baseline & $0.262$ & $4.82 \times 10^{-3}$ & $2.41$ & $28.4$ & $0.724$ & $14.2\%$ \\
+& $0.38\text{ g}$ & Mars & $0.262$ & $4.65 \times 10^{-3}$ & $2.45$ & $27.9$ & $0.712$ & $12.8\%$ \\
+& $0.166\text{ g}$ & Moon & $0.262$ & $4.52 \times 10^{-3}$ & $2.49$ & $27.5$ & $0.701$ & $11.5\%$ \\
+& $0\text{ g}$ & Microgravity & $0.262$ & $4.40 \times 10^{-3}$ & $2.54$ & $27.0$ & $0.688$ & $9.6\%$ \\
+\midrule
+\textbf{VEGGIE} & $1\text{ g}$ & Low Fan & $0.065$ & $1.12 \times 10^{-3}$ & $4.82$ & $14.2$ & $0.362$ & $32.4\%$ \\
+& $1\text{ g}$ & High Fan & $0.150$ & $3.45 \times 10^{-3}$ & $3.18$ & $21.6$ & $0.551$ & $11.2\%$ \\
+& $0.38\text{ g}$ & Low Fan & $0.065$ & $0.95 \times 10^{-3}$ & $5.65$ & $12.1$ & $0.308$ & $38.6\%$ \\
+& $0.38\text{ g}$ & High Fan & $0.150$ & $3.28 \times 10^{-3}$ & $3.25$ & $21.1$ & $0.538$ & $12.5\%$ \\
+& $0.166\text{ g}$ & Low Fan & $0.065$ & $0.82 \times 10^{-3}$ & $6.42$ & $10.6$ & $0.270$ & $44.2\%$ \\
+& $0.166\text{ g}$ & High Fan & $0.150$ & $3.15 \times 10^{-3}$ & $3.31$ & $20.7$ & $0.528$ & $13.8\%$ \\
+& $0\text{ g}$ & Low Fan & $0.065$ & $0.68 \times 10^{-3}$ & $7.95$ & $8.6$ & $0.219$ & $52.8\%$ \\
+& $0\text{ g}$ & High Fan & $0.150$ & $3.02 \times 10^{-3}$ & $3.40$ & $20.2$ & $0.515$ & $15.4\%$ \\
+\midrule
+\textbf{APH} & $1\text{ g}$ & Nominal ($0.6\text{ m/s}$) & $0.600$ & $1.24 \times 10^{-2}$ & $1.58$ & $43.2$ & $1.102$ & $2.1\%$ \\
+& $0.38\text{ g}$ & Nominal ($0.6\text{ m/s}$) & $0.600$ & $1.22 \times 10^{-2}$ & $1.60$ & $42.8$ & $1.092$ & $2.2\%$ \\
+& $0.166\text{ g}$ & Nominal ($0.6\text{ m/s}$) & $0.600$ & $1.21 \times 10^{-2}$ & $1.61$ & $42.5$ & $1.084$ & $2.4\%$ \\
+& $0\text{ g}$ & Nominal ($0.6\text{ m/s}$) & $0.600$ & $1.19 \times 10^{-2}$ & $1.63$ & $42.0$ & $1.071$ & $2.6\%$ \\
+& $0\text{ g}$ & Low ($0.3\text{ m/s}$) & $0.300$ & $5.80 \times 10^{-3}$ & $2.24$ & $30.5$ & $0.778$ & $5.8\%$ \\
+& $0\text{ g}$ & High ($1.5\text{ m/s}$) & $1.500$ & $3.65 \times 10^{-2}$ & $0.98$ & $68.4$ & $1.745$ & $0.4\%$ \\
+\bottomrule
+\end{tabularx}
+\end{table*}

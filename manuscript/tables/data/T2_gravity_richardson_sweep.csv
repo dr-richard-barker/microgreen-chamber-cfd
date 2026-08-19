@@ -1,0 +1,13 @@
+hardware,gravity_regime,g_mps2,characteristic_length_m,reference_velocity_mps,delta_T_K,Grashof_number,Reynolds_number,Richardson_number,convection_regime,thermal_stratification_index
+Microgreen,Earth 1g,9.81,0.0967,0.262,3.0,3.87e+05,1.67e+03,0.1405,Mixed convection (moderately forced),0.421
+Microgreen,Mars 0.38g,3.72,0.0967,0.262,3.0,1.47e+05,1.67e+03,0.0533,Forced convection dominated,0.185
+Microgreen,Moon 0.166g,1.62,0.0967,0.262,3.0,6.39e+04,1.67e+03,0.0232,Forced convection dominated,0.082
+Microgreen,Microgravity 0g,0.00,0.0967,0.262,3.0,0.00e+00,1.67e+03,0.0000,Purely forced convection,0.000
+VEGGIE,Earth 1g,9.81,0.3500,0.150,3.0,1.83e+07,3.46e+03,1.5511,Mixed convection (buoyancy significant),0.684
+VEGGIE,Mars 0.38g,3.72,0.3500,0.150,3.0,6.95e+06,3.46e+03,0.5880,Mixed convection (transitional),0.312
+VEGGIE,Moon 0.166g,1.62,0.3500,0.150,3.0,3.03e+06,3.46e+03,0.2561,Moderately forced convection,0.145
+VEGGIE,Microgravity 0g,0.00,0.3500,0.150,3.0,0.00e+00,3.46e+03,0.0000,Purely forced convection,0.000
+APH,Earth 1g,9.81,0.4500,0.600,3.0,3.90e+07,1.78e+04,0.1246,Forced convection dominated,0.089
+APH,Mars 0.38g,3.72,0.4500,0.600,3.0,1.48e+07,1.78e+04,0.0473,Strongly forced convection,0.034
+APH,Moon 0.166g,1.62,0.4500,0.600,3.0,6.44e+06,1.78e+04,0.0206,Strongly forced convection,0.015
+APH,Microgravity 0g,0.00,0.4500,0.600,3.0,0.00e+00,1.78e+04,0.0000,Purely forced convection,0.000

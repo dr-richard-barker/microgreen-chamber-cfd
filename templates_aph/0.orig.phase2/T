@@ -1,0 +1,86 @@
+/*--------------------------------*- C++ -*----------------------------------*\
+| Microgreen chamber CFD -- temperature (Phase 2)                              |
+|                                                                              |
+| THE LED HEAT LOAD LIVES ON THE `hood` PATCH BELOW.                            |
+\*---------------------------------------------------------------------------*/
+FoamFile
+{
+    version     2.0;
+    format      ascii;
+    class       volScalarField;
+    object      T;
+}
+// * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //
+
+dimensions      [0 0 0 1 0 0 0];
+
+internalField   uniform 293.15;
+
+boundaryField
+{
+    inlet
+    {
+        type            fixedValue;
+        value           uniform 293.15;     // TBD -- ambient room air, 20 C
+    }
+
+    outlet
+    {
+        type            inletOutlet;
+        inletValue      uniform 293.15;
+        value           uniform 293.15;
+    }
+
+    hood
+    {
+        // WS2812B 16x16 panel, curved over the hood interior, 0.0256 m^2.
+        //
+        // *** WORKING VALUE: 38.4 W = 50 % of full white. PLACEHOLDER. ***
+        //
+        // Per the CLAUDE.md 6.3 energy balance, dT = P / (mdot*cp) and so scales
+        // as 1/Q. Updated 2026-08-15 -- the working flow rate moved to
+        // 1.25 m3/h (CLAUDE.md 10.2), which is 4x worse than the 5 m3/h figures
+        // this comment used to quote:
+        //
+        //     Q = 5     m3/h   38.4 W -> dT 22.9 K ->  43 C   (viable: ~5.0 W)
+        //     Q = 2.5   m3/h   38.4 W -> dT 45.8 K ->  66 C   (viable: ~2.5 W)
+        //     Q = 1.25  m3/h   38.4 W -> dT 91.7 K -> 112 C   (viable: ~1.3 W)
+        //          ^ the working value
+        //
+        // Microgreens want 22-25 C, so at the working Q this panel is ~30x over
+        // budget on power. Runs at 38.4 W characterise the FLOW AND
+        // STRATIFICATION STRUCTURE; their absolute temperatures are NOT a
+        // prediction of the built chamber. Say so in NOTES.md and on every axis.
+        //
+        // This is an energy balance, not a CFD result -- no mesh, turbulence
+        // model or mixing improvement changes the MEAN. CFD decides uniformity.
+        // scripts/generate_case.sh prints the per-Q ceiling as a warning.
+        //
+        // Change with:
+        //   foamDictionary -entry boundaryField/hood/Q -set 1.3 0/T
+        // or at generation time:  --led 1.3
+        type            externalWallHeatFluxTemperature;
+        mode            power;
+        Q               38.4;              // W over the whole patch
+        kappaMethod     fluidThermo;
+        value           uniform 293.15;
+    }
+
+    // Adiabatic first cut (CLAUDE.md 6.3). Real 3.33 mm plastic loses heat to
+    // the room, which RAISES the allowable LED power -- swap to
+    // externalWallHeatFluxTemperature with mode coefficient once h is known.
+    "(floor|walls)"
+    {
+        type            zeroGradient;
+    }
+
+    tray
+    {
+        // TBD. Evaporative cooling makes the substrate COLDER than the air,
+        // which strengthens the stable stratification. zeroGradient understates
+        // the effect; revisit for Phase 4.
+        type            zeroGradient;
+    }
+}
+
+// ************************************************************************* //

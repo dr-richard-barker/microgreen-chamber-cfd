@@ -1,0 +1,75 @@
+/*--------------------------------*- C++ -*----------------------------------*\
+| The metric surface for VEGGIE                                                |
+\*---------------------------------------------------------------------------*/
+
+magU
+{
+    type            mag;
+    libs            (fieldFunctionObjects);
+    field           U;
+    executeControl  timeStep;
+    executeInterval 1;
+    writeControl    writeTime;
+    log             false;
+}
+
+veggiePlane
+{
+    type            surfaceFieldValue;
+    libs            (fieldFunctionObjects);
+    writeControl    timeStep;
+    writeInterval   20;
+    log             true;
+    writeFields     false;
+    regionType      sampledSurface;
+    name            canopyTop;
+    sampledSurfaceDict
+    {
+        type        plane;
+        planeType   pointAndNormal;
+        pointAndNormalDict
+        {
+            // Center of chamber, 10mm above the 40mm plant pillows (z=0.050)
+            point   (0.146 0.184 0.050);
+            normal  (0 0 1);
+        }
+        // Full chamber bounds
+        bounds      (-0.001 -0.001 0) (0.293 0.369 1);
+        interpolate true;
+    }
+    operation       areaAverage;
+    fields          (U mag(U));
+}
+
+veggieUniformity
+{
+    $veggiePlane;
+    operation       CoV;
+    fields          (mag(U));
+}
+
+veggieMinMax
+{
+    type            volFieldValue;
+    libs            (fieldFunctionObjects);
+    writeControl    timeStep;
+    writeInterval   20;
+    log             true;
+    writeFields     false;
+    regionType      cellZone;
+    name            canopyZone;
+    operation       min;
+    fields          (mag(U));
+}
+
+domainMinMax
+{
+    type            fieldMinMax;
+    libs            (fieldFunctionObjects);
+    writeControl    timeStep;
+    writeInterval   20;
+    log             true;
+    fields          ("(U|p|p_rgh|T)");
+}
+
+// ************************************************************************* //

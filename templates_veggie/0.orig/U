@@ -1,0 +1,42 @@
+/*--------------------------------*- C++ -*----------------------------------*\
+| VEGGIE CFD -- velocity                                                       |
+\*---------------------------------------------------------------------------*/
+FoamFile
+{
+    version     2.0;
+    format      ascii;
+    class       volVectorField;
+    object      U;
+}
+// * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //
+
+dimensions      [0 1 -1 0 0 0 0];
+
+internalField   uniform (0 0 0);
+
+boundaryField
+{
+    fan_exhaust
+    {
+        // VEGGIE is a SUCTION system. Flow is driven by the exhaust fan at the top.
+        // NEGATIVE flow rate pulls fluid out of the domain.
+        // 0.025 m3/s (~53 CFM) is a reasonable estimate for a small centrifugal fan.
+        type            flowRateInletVelocity;
+        volumetricFlowRate  -0.025;
+        extrapolateProfile  false;
+        value           uniform (0 0 0);
+    }
+
+    "base_inlet_.*"
+    {
+        // Passive air inlets. Drawn in from the cabin air.
+        type            pressureInletOutletVelocity;
+        inletValue      uniform (0 0 0);
+        value           uniform (0 0 0);
+    }
+
+    "(baseplate|bellows|lightcap|pillow_.*)"
+    {
+        type            noSlip;
+    }
+}

@@ -1,0 +1,36 @@
+/*--------------------------------*- C++ -*----------------------------------*\
+| APH Chamber CFD                                                              |
+\*---------------------------------------------------------------------------*/
+FoamFile
+{
+    version     2.0;
+    format      ascii;
+    class       dictionary;
+    object      topoSetDict;
+}
+// * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //
+
+actions
+(
+    {
+        name    rootZone;
+        type    cellSet;
+        action  new;
+        source  boxToCell;
+        box     (0 0 0) (0.454 0.408 0.051);
+    }
+    {
+        name    canopyZone;
+        type    cellSet;
+        action  new;
+        source  boxToCell;
+        box     (0 0 0.051) (0.454 0.408 0.300);
+    }
+    {
+        name    upperZone;
+        type    cellSet;
+        action  new;
+        source  boxToCell;
+        box     (0 0 0.300) (0.454 0.408 0.501);
+    }
+);

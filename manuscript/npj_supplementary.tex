@@ -1,0 +1,60 @@
+% npj Microgravity Supplementary Information
+\documentclass[12pt,a4paper]{article}
+\usepackage[utf8]{inputenc}
+\usepackage[margin=2.5cm]{geometry}
+\usepackage{graphicx}
+\usepackage{booktabs}
+\usepackage{tabularx}
+\usepackage{hyperref}
+\usepackage[numbers,sort&compress]{natbib}
+\usepackage{amsmath,amssymb}
+\usepackage{caption}
+\usepackage{subcaption}
+\usepackage{helvet}
+\renewcommand{\familydefault}{\sfdefault}
+
+\title{\textbf{Supplementary Information for:\\
+Aerodynamic Boundary-Layer Scaling and Enclosure Regimes Across Spaceflight Plant Growth Hardware: A Multi-Chamber OpenFOAM CFD Framework under Variable Gravity}}
+
+\author{Richard Barker$^{1,*}$, Henry Ewald$^{1}$, and Astrobotany Consortium$^{1,2}$}
+
+\date{
+\small
+$^{1}$Department of Botany, University of Wisconsin--Madison, Madison, WI, USA\\
+$^{2}$NASA GeneLab Plant Analysis Working Group (AWG), Moffett Field, CA, USA\\
+$^*$Corresponding author: \texttt{rbarker2@wisc.edu}
+}
+
+\begin{document}
+\maketitle
+
+\setcounter{table}{0}
+\renewcommand{\thetable}{S\arabic{table}}
+\setcounter{figure}{0}
+\renewcommand{\thefigure}{S\arabic{figure}}
+
+\section*{Supplementary Note 1: Mesh Convergence and Spatial Independence}
+
+Spatial discretization error was quantified using a three-level systematic refinement ladder ($m0$, $m1$, $m2$) spanning background cell base sizes of $6.67\text{ mm}$ ($m0$), $3.33\text{ mm}$ ($m1$), and $1.67\text{ mm}$ ($m2$). SnappyHexMesh surface and volume refinement criteria were held constant across levels.
+
+As detailed in Table~\ref{tab:mesh_convergence}, volume-averaged canopy velocity ($\overline{U}_{canopy}$) converged within $<1.3\%$ between the intermediate $m1$ and fine $m2$ grids across all three hardware geometries, while reducing computational runtime by $\sim8\times$. Consequently, the $m1$ level ($\sim1.07\text{M} - 4.85\text{M}$ cells) was selected as the optimal production baseline for all multi-gravity sweeps.
+
+\input{tables/TableS1_mesh_convergence.tex}
+
+\section*{Supplementary Note 2: OpenFOAM Numerical Discretization and Solver Settings}
+
+All simulations utilized second-order spatial discretization schemes:
+\begin{itemize}
+    \item Gradient terms: \texttt{cellLimited Gauss linear 1.0}
+    \item Convective divergence terms for momentum ($\nabla \cdot (\rho \mathbf{u}\mathbf{u})$): \texttt{bounded Gauss linearUpwind grad(U)}
+    \item Turbulent kinetic energy and dissipation rate ($\nabla \cdot (\rho \mathbf{u} k)$, $\nabla \cdot (\rho \mathbf{u} \omega)$): \texttt{bounded Gauss limitedLinear 0.33}
+    \item Enthalpy divergence ($\nabla \cdot (\rho \mathbf{u} h)$): \texttt{bounded Gauss linearUpwind grad(h)}
+    \item Laplacian terms: \texttt{Gauss linear limited corrected 0.33}
+\end{itemize}
+
+Pressure-velocity coupling for steady state utilized the SIMPLE algorithm with relaxation factors of $0.3$ for pressure and $0.7$ for momentum/turbulence. Transient simulations used PIMPLE with 3 outer correctors and adaptive time-stepping bound to a maximum Courant number $Co_{max} \le 6.0$ ($Co_{jet} \le 2.6$).
+
+\bibliographystyle{naturemag}
+\bibliography{references}
+
+\end{document}

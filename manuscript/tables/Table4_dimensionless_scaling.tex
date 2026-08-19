@@ -1,0 +1,24 @@
+\begin{table*}[t]
+\centering
+\small
+\caption{\textbf{Ventilation efficiency, local age of air ($\tau$), and biosecurity containment dynamics across hardware platforms in Earth ($1\text{ g}$) and Microgravity ($0\text{ g}$).} Air exchange efficiency $\varepsilon_a = \tau_0 / (2 \overline{\tau}_{canopy}) \times 100\%$ ($50\%$ indicates perfect uniform mixing); $t_{50}$ represents the median residence half-life of suspended bioaerosols/spores before exhaust or filtration.}
+\label{tab:ventilation_metrics}
+\begin{tabularx}{\textwidth}{llrcccccX}
+\toprule
+\textbf{Chamber} & \textbf{Gravity} & \textbf{Flow Rate ($Q$)} & $\tau_0\text{ (s)}$ & $\overline{\tau}_{canopy}\text{ (s)}$ & $\tau_{max}\text{ (s)}$ & $\varepsilon_a\text{ (\%)}$ & $t_{50}\text{ (s)}$ & \textbf{Biosecurity \& Aerosol Fate} \\
+\midrule
+\textbf{Microgreen} & $1\text{ g}$ & $11.8\text{ m}^3/\text{h}$ & $0.71$ & $6.85$ & $18.4$ & $10.4\%$ & $14.2$ & Sealed unit: zero cabin export; local corner buildup \\
+& $0\text{ g}$ & $11.8\text{ m}^3/\text{h}$ & $0.71$ & $5.20$ & $12.6$ & $13.7\%$ & $11.5$ & Unstratified jet improves canopy clearance \\
+\midrule
+\textbf{VEGGIE} & $1\text{ g}$ & Low ($42.5\text{ m}^3/\text{h}$) & $3.19$ & $14.20$ & $48.5$ & $22.5\%$ & $28.6$ & Direct cabin exhaust: $100\%$ spore export to ISS \\
+& $1\text{ g}$ & High ($85.0\text{ m}^3/\text{h}$) & $1.60$ & $4.85$ & $16.2$ & $33.0\%$ & $10.2$ & High velocity reduces stagnant pockets \\
+& $0\text{ g}$ & Low ($42.5\text{ m}^3/\text{h}$) & $3.19$ & $22.40$ & $86.0$ & $14.2\%$ & $45.2$ & Critical mold risk ($53\%$ stagnant volume) \\
+& $0\text{ g}$ & High ($85.0\text{ m}^3/\text{h}$) & $1.60$ & $6.10$ & $22.4$ & $26.2\%$ & $13.8$ & High fan restores boundary layer stripping \\
+\midrule
+\textbf{APH} & $1\text{ g}$ & Nom ($26.4\text{ m}^3/\text{h}$) & $11.35$ & $24.80$ & $42.0$ & $45.8\%$ & $18.4$ & Closed loop: internal HEPA filtration ($\le25\text{ ppb}$) \\
+& $0\text{ g}$ & Nom ($26.4\text{ m}^3/\text{h}$) & $11.35$ & $25.20$ & $43.5$ & $45.0\%$ & $18.9$ & Piston-like sweep maintains $45\%$ efficiency \\
+& $0\text{ g}$ & Low ($13.2\text{ m}^3/\text{h}$) & $22.70$ & $52.40$ & $92.0$ & $43.3\%$ & $39.5$ & Seedling stage: controlled low-shear sweep \\
+& $0\text{ g}$ & High ($66.0\text{ m}^3/\text{h}$) & $4.54$ & $9.60$ & $16.5$ & $47.3\%$ & $7.2$ & Near-ideal displacement flow ($\varepsilon_a \to 50\%$) \\
+\bottomrule
+\end{tabularx}
+\end{table*}

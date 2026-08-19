@@ -1,0 +1,113 @@
+/*--------------------------------*- C++ -*----------------------------------*\
+| Mean age of air -- ventilation effectiveness, THE key chamber metric         |
+| CLAUDE.md 8.4                                                                |
+|                                                                              |
+| Sanity target: the volume-mean age should land near the nominal residence     |
+| time tau = V_air / Q.                                                         |
+|                                                                              |
+|     Q = 5 m3/h    tau = 1.82 s                                                |
+|     Q = 2.5       tau = 3.6 s                                                 |
+|     Q = 1.25      tau = 7.3 s                                                 |
+|                                                                              |
+| A mean well above tau means dead volume. Expect the hood (0.72 L, ~29 % of    |
+| the chamber, sitting entirely above the jet) to be the worst region by a wide |
+| margin -- this function object is how that gets demonstrated rather than      |
+| asserted.                                                                     |
+\*---------------------------------------------------------------------------*/
+
+age
+{
+    type            age;
+    libs            (fieldFunctionObjects);
+
+    // Steady run: solve once at write time. It is a transport solve, not free.
+    writeControl    writeTime;
+    executeControl  writeTime;
+
+    diffusion       on;      // include turbulent diffusion, not just advection
+    tolerance       1e-6;
+    nCorr           5;
+    schemesField    age;
+    log             true;
+}
+
+// Volume mean, so the number can be tracked and compared against tau directly.
+ageMean
+{
+    type            volFieldValue;
+    libs            (fieldFunctionObjects);
+    writeControl    writeTime;
+    log             true;
+    writeFields     false;
+    regionType      all;
+    operation       volAverage;
+    fields          (age);
+}
+
+ageMax
+{
+    $ageMean;
+    operation       max;
+}
+
+// ---------------------------------------------------------------------------
+// THE VERIFICATION. Do not report an age result without reading this number.
+// ---------------------------------------------------------------------------
+// Sandberg's ventilation theory gives one EXACT identity: the flux-weighted
+// mean age of the air LEAVING the domain equals the nominal time constant
+//
+//     <age>_exhaust  ==  tau  =  V_air / Q
+//
+// for ANY steady flow, whatever the internal recirculation looks like. It is a
+// statement of mass conservation on the age field, not a modelling result, so
+// it holds for a short-circuiting chamber exactly as it does for a well-mixed
+// one. That makes it a free, sharp check on the age SOLVE:
+//
+//     ageOutlet ~ tau   ->  the transport equation converged
+//     ageOutlet != tau  ->  it did not, and ageMean/ageMax are meaningless
+//
+// This matters here because the age equation is essentially pure advection
+// (in a laminar case nu_eff is molecular, so there is almost no diffusion to
+// conditionit) and it is genuinely hard to solve in a chamber with a stagnant
+// hood and closed recirculation streamlines -- regions whose age is set by
+// almost no boundary information at all.
+//
+// Measured 2026-08-15 at Q = 1.25 m3/h, m0: tau = 7.29 s.
+//
+// weightedAreaAverage + weightField phi is the FLUX weighting the identity
+// requires. A plain areaAverage is NOT the same quantity and will not equal tau.
+ageOutlet
+{
+    type            surfaceFieldValue;
+    libs            (fieldFunctionObjects);
+    writeControl    writeTime;
+    log             true;
+    writeFields     false;
+    regionType      patch;
+    name            fan_exhaust;
+    operation       weightedAreaAverage;
+    weightField     phi;
+    fields          (age);
+}
+
+// ---------------------------------------------------------------------------
+// Where the dead volume actually is
+// ---------------------------------------------------------------------------
+
+ageCanopy
+{
+    $ageMean;
+    regionType      cellZone;
+    name            canopyZone;
+    operation       volAverage;
+}
+
+ageExhaust
+{
+    $ageMean;
+    regionType      cellZone;
+    name            exhaustZone;
+    operation       volAverage;
+}
+
+// ************************************************************************* //

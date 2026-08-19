@@ -1,0 +1,38 @@
+/*--------------------------------*- C++ -*----------------------------------*\
+| VEGGIE CFD -- cell zones for post-processing                                 |
+\*---------------------------------------------------------------------------*/
+FoamFile
+{
+    version     2.0;
+    format      ascii;
+    class       dictionary;
+    object      topoSetDict;
+}
+// * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //
+
+actions
+(
+    {
+        name    canopyZone;
+        type    cellSet;
+        action  new;
+        source  boxToCell;
+        sourceInfo
+        {
+            box (0.0 0.0 0.040) (0.292 0.368 0.250);
+        }
+    }
+    {
+        name    exhaustZone;
+        type    cellSet;
+        action  new;
+        source  boxToCell;
+        sourceInfo
+        {
+            // Close to the exhaust fan
+            box (0.096 0.134 0.250) (0.196 0.234 0.360);
+        }
+    }
+);
+
+// ************************************************************************* //

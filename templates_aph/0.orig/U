@@ -1,0 +1,52 @@
+/*--------------------------------*- C++ -*----------------------------------*\
+| APH Chamber CFD -- Velocity                                                  |
+\*---------------------------------------------------------------------------*/
+FoamFile
+{
+    version     2.0;
+    format      ascii;
+    class       volVectorField;
+    object      U;
+}
+// * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //
+
+dimensions      [0 1 -1 0 0 0 0];
+
+internalField   uniform (0 0 0);
+
+boundaryField
+{
+    left_inlet
+    {
+        // Lateral supply inlet. Flow rate is computed based on 0.6 m/s target.
+        // Area = 0.00612 m2, so Q = 0.003672 m3/s
+        type            flowRateInletVelocity;
+        volumetricFlowRate  0.003672;
+        extrapolateProfile  false;
+        value           uniform (0 0 0);
+    }
+    
+    right_inlet
+    {
+        // Opposing lateral supply inlet. Same Q as left.
+        type            flowRateInletVelocity;
+        volumetricFlowRate  0.003672;
+        extrapolateProfile  false;
+        value           uniform (0 0 0);
+    }
+
+    "exhaust_.*"
+    {
+        // 4 exhaust strips on the perimeter of the ceiling.
+        type            pressureInletOutletVelocity;
+        inletValue      uniform (0 0 0);
+        value           uniform (0 0 0);
+    }
+
+    "(floor|walls|ceiling|carrier_tray)"
+    {
+        // No-slip boundaries for all solid chamber components.
+        // The ceiling is the GLA (LED panel). The carrier_tray is the science carrier.
+        type            noSlip;
+    }
+}

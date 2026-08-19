@@ -1,0 +1,33 @@
+#!/bin/sh
+cd "${0%/*}" || exit
+. /usr/lib/openfoam/openfoam2606/etc/bashrc
+
+runPinned() {
+    echo "Running $1"
+    "$@" > log."$1" 2>&1
+}
+
+# 1. Generate geometry
+python3 ../scripts/make_aph_geometry.py --case .
+
+# 2. Extract features
+runPinned surfaceFeatureExtract
+
+# 3. BlockMesh
+runPinned blockMesh
+
+# 4. SnappyHexMesh
+runPinned snappyHexMesh -overwrite
+
+# 5. CheckMesh
+runPinned checkMesh
+
+# 6. Renumber
+runPinned renumberMesh -overwrite
+
+# 7. TopoSet
+runPinned topoSet
+
+# 8. Solve
+runPinned simpleFoam
+

@@ -1,0 +1,301 @@
+#!/bin/sh
+cd "$(dirname "$0")" || exit 1
+
+# CLAUDE.md 2 -- ~/.bashrc does not source OpenFOAM. Every script activates it.
+#
+# NOTE: source etc/bashrc, NOT /usr/bin/openfoam2606. The latter is
+# `exec .../etc/openfoam`, which REPLACES this shell with an interactive
+# OpenFOAM session -- sourcing it silently discards the rest of the script.
+# shellcheck disable=SC1091
+. /usr/lib/openfoam/openfoam2606/etc/bashrc
+
+# shellcheck disable=SC1091
+. "$WM_PROJECT_DIR/bin/tools/RunFunctions"
+
+APP=$(getApplication)
+
+# CLAUDE.md 3.2 -- pin to physical cores. RunFunctions' runParallel calls
+# `mpirun --oversubscribe` with no binding at all; unpinned ranks get migrated
+# across CCDs and lose the L3 they warmed, which is the whole point of the
+# V-cache die. Use this instead of runParallel.
+#
+# FOAM_CPUSET overrides the default `0-(np-1)` core list, so two cases can run
+# at once on disjoint core groups instead of both piling onto cores 0-3 and
+# time-slicing at half speed each. Set it to an mpirun --cpu-set list:
+#
+#     FOAM_CPUSET=0-3  ./Allrun &     # CCD0, 96 MB V-cache
+#     FOAM_CPUSET=8-11 ./Allrun &     # CCD1
+#
+# Leave it unset for a solo run -- the default is the CLAUDE.md 3.2 policy of
+# filling CCD0 from core 0 up, which is what a single case should always do.
+# The override does NOT change the rank count; that is still decided by the
+# 50 k-cells/rank floor below.
+#
+# ⚠ The cpu-set must be AT LEAST as wide as the rank count, and that is checked
+# below rather than left as advice. Getting it wrong is silent and expensive:
+# measured 2026-08-15, `FOAM_CPUSET=0-3` on a case the 50 k floor had sized at
+# 8 ranks packed 8 MPI ranks onto 4 physical cores and ran at 7.0 s/step against
+# 3.2 s/step properly placed -- a 2.2x loss, with mpirun reporting nothing and
+# the Allrun log cheerfully printing "8 ranks, pinned to cores 0-3". This is the
+# SMT oversubscription CLAUDE.md 3.2 forbids, arrived at by accident.
+cpuset_width()
+{
+    # Counts cores in an mpirun --cpu-set list: "0-7", "0-3,8-11", "2", ...
+    echo "$1" | tr ',' '\n' | awk -F- '
+        NF==2 {n += $2 - $1 + 1; next}
+        NF==1 && $1 != "" {n += 1}
+        END {print n+0}'
+}
+
+runPinned()
+{
+    _np=$1 ; _app=$2 ; shift 2
+    _log="log.$_app"
+    [ -f "$_log" ] && { echo "$_app already run: remove $_log to re-run"; return 0; }
+    _cpuset=${FOAM_CPUSET:-"0-$((_np - 1))"}
+    _width=$(cpuset_width "$_cpuset")
+    if [ "$_width" -lt "$_np" ]; then
+        echo
+        echo "!! FOAM_CPUSET='$_cpuset' is $_width cores but $_app needs $_np ranks."
+        echo "!! mpirun would pack $_np ranks onto $_width cores -- the SMT"
+        echo "!! oversubscription CLAUDE.md 3.2 forbids (measured 2.2x slower)."
+        echo "!! Widen FOAM_CPUSET to >= $_np cores, or lower numberOfSubdomains"
+        echo "!! in system/decomposeParDict. Not solving."
+        exit 1
+    fi
+    echo "Running $_app ($_np ranks, pinned to cores $_cpuset -- $_width cores) on $PWD"
+    mpirun --cpu-set "$_cpuset" --bind-to core -np "$_np" \
+        "$_app" "$@" -parallel </dev/null > "$_log" 2>&1
+}
+
+# ---------------------------------------------------------------------------
+# Geometry. Generated analytically -- there is no CAD input (CLAUDE.md 6.1).
+# ---------------------------------------------------------------------------
+if [ ! -f constant/triSurface/chamber.stl ]; then
+    echo "== generating geometry"
+    # generate_case.sh wrote the port size and diffuser tilt here. Regenerating
+    # WITHOUT them would silently rebuild the template default geometry -- a
+    # different chamber from the one this case was set up for, and nothing else
+    # would say so. Missing file is fatal rather than defaulted, for that reason.
+    # system/geometryArgs not strictly needed here for default 350mm bellows, 
+    # but we will just pass nothing or read from it if it exists.
+    _geomargs=""
+    [ -f system/geometryArgs ] && read -r _geomargs < system/geometryArgs
+    echo "   geometry args: $_geomargs"
+    # shellcheck disable=SC2086
+    python3 ../../scripts/make_veggie_geometry.py --case . $_geomargs --verify \
+        > log.makeGeometry 2>&1 \
+        || { echo "geometry generation FAILED, see log.makeGeometry"; cat log.makeGeometry; exit 1; }
+    cat log.makeGeometry
+fi
+
+# ---------------------------------------------------------------------------
+# Mesh
+# ---------------------------------------------------------------------------
+runApplication blockMesh
+runApplication surfaceFeatureExtract
+
+NPROCS=$(foamDictionary -entry numberOfSubdomains -value system/decomposeParDict)
+
+# Background cell count, straight from the resolution entries. Do NOT try to
+# parse the `blocks` entry -- the leading `hex (0 1 2 3 4 5 6 7)` vertex list
+# makes any positional field extraction pick up the vertex labels instead.
+NX=$(foamDictionary -entry nx -value system/blockMeshDict)
+NY=$(foamDictionary -entry ny -value system/blockMeshDict)
+NZ=$(foamDictionary -entry nz -value system/blockMeshDict)
+NCELLS=$((NX * NY * NZ))
+
+# MESHING only. This is the one decision that genuinely has to use the background
+# count, because it is taken before there is a mesh to count. snappy's own cost
+# tracks the background block closely enough for the purpose.
+#
+# Do NOT reuse it for the solve -- see the MESHCELLS block below.
+if [ "$NCELLS" -lt 200000 ]; then
+    echo "== small mesh (${NCELLS} background cells): meshing serial"
+    runApplication snappyHexMesh -overwrite
+else
+    echo "== ${NCELLS} background cells: meshing on $NPROCS ranks"
+    # -no-fields: there is no 0/ yet (restore0Dir runs after the mesh is built),
+    # so there is nothing to decompose but the mesh.
+    runApplication -s mesh decomposePar -no-fields
+    runPinned "$NPROCS" snappyHexMesh -overwrite
+    runApplication reconstructParMesh -constant
+    rm -rf processor*
+fi
+
+runApplication topoSet
+
+# CLAUDE.md 3.3 -- 10-25 % gain for a bandwidth-limited code, and it matters
+# MORE than usual on the V-cache die. Always before decomposePar.
+runApplication renumberMesh -overwrite
+
+# Two passes, on purpose.
+#
+#   log.checkMesh          the STANDARD checks. This is the acceptance gate.
+#   log.checkMesh.extra    -allTopology -allGeometry, for the report.
+#
+# The extra pass is informational only, because on ANY snappy mesh with layers
+# it reports `***Concave cells (using face planes)` -- 2 % of cells at m1, 1.3 %
+# at m2 -- and gating on a bare `***` grep therefore aborts every single run
+# before it solves. Concavity by face planes is a property of layer cells and
+# refinement transitions, not a defect; the standard checks are the bar
+# CLAUDE.md 7 actually names (non-orthogonality < 65, skewness < 4).
+runApplication checkMesh
+runApplication -s extra checkMesh -allTopology -allGeometry
+
+# CLAUDE.md 9.1 -- a mesh that fails checkMesh is not a mesh. Stop here and read
+# the log rather than solving on it and discovering the problem in the results.
+if ! grep -q "^Mesh OK" log.checkMesh; then
+    echo
+    echo "!! checkMesh FAILED -- see log.checkMesh"
+    echo "!! Fix the mesh or justify every failure explicitly (CLAUDE.md 9.1)."
+    echo "!! Not solving."
+    exit 1
+fi
+
+# Non-orthogonality drives nNonOrthogonalCorrectors (CLAUDE.md 7). Surface it
+# here so it is not something you have to remember to go and look up.
+echo "== mesh accepted:"
+grep -E "cells:|non-orthogonality Max|Max skewness|Total volume" log.checkMesh.extra \
+    | sed 's/^/   /'
+echo "   (V_air should be 2.3296e-3 m3 -- CLAUDE.md 6.1, flush tray)"
+
+# ---------------------------------------------------------------------------
+# Solve
+# ---------------------------------------------------------------------------
+# How many cells are there ACTUALLY? Not the background count.
+#
+# The two differ by ~5x -- CLAUDE.md 7 records m1 as 99 k background cells and
+# 1.07 M real ones, because surface-driven refinement dominates. Sizing the
+# SOLVE off the background count therefore put a 1.07 M-cell case on a single
+# core: ~4 hours at the measured 3.6 s/iteration, against well under an hour on
+# 8 ranks. CLAUDE.md 3.2 sizes ranks by the FINAL cell count, and by this point
+# checkMesh has already reported it, so use that.
+MESHCELLS=$(sed -n 's/^ *cells: *\([0-9][0-9]*\).*/\1/p' log.checkMesh | head -1)
+[ -n "$MESHCELLS" ] || MESHCELLS=$NCELLS   # fall back rather than divide by nothing
+
+# The CLAUDE.md 3.2 floor, stated as the rule rather than as a magic number:
+# below ~50 k cells/rank halo exchange dominates and scaling inverts. With
+# NPROCS from decomposeParDict this adapts on its own if the rank count changes.
+MINPERRANK=50000
+
+# HALVE the rank count until the floor is met, rather than falling straight from
+# $NPROCS to serial. The all-or-nothing version threw away most of the machine on
+# any mesh between 50 k and 400 k cells: measured 2026-08-14, the 380 k-cell m0
+# rung failed the 8-rank test (needs 400 k) and went SERIAL at ~1 s/iteration,
+# when 4 ranks gives it 95 k cells/rank -- comfortably above the floor, and the
+# CLAUDE.md 3.2 tier table asks for exactly 4 ranks below 0.5 M anyway.
+#
+# Halving, not $((MESHCELLS / MINPERRANK)), so the count stays a power of two and
+# keeps landing on whole CCD0 core groups (CLAUDE.md 3.2).
+SOLVERANKS=$NPROCS
+while [ "$SOLVERANKS" -gt 1 ] && [ "$MESHCELLS" -lt $((SOLVERANKS * MINPERRANK)) ]; do
+    SOLVERANKS=$((SOLVERANKS / 2))
+done
+
+if [ "$SOLVERANKS" -le 1 ]; then
+    echo "== ${MESHCELLS} cells: below ${MINPERRANK} even on 2 ranks, solving serial"
+else
+    echo "== ${MESHCELLS} cells: solving on $SOLVERANKS ranks ($((MESHCELLS / SOLVERANKS)) cells/rank)"
+    [ "$SOLVERANKS" -ne "$NPROCS" ] && \
+        echo "   (decomposeParDict says $NPROCS; reduced to hold >=${MINPERRANK} cells/rank)"
+    # decomposePar reads this, so it has to actually change -- not just the label.
+    foamDictionary -entry numberOfSubdomains -set "$SOLVERANKS" system/decomposeParDict > /dev/null
+fi
+
+# CLAUDE.md 1.4 -- 0.orig is the source of truth. 0/ is a copy made here.
+restore0Dir
+
+solve_ok=1
+if [ "$SOLVERANKS" -le 1 ]; then
+    runApplication "$APP" || solve_ok=0
+else
+    # -force: the mesh changed under snappy and processor*/ was removed above.
+    # Separate log suffix, or runApplication would see log.decomposePar from the
+    # meshing stage and silently skip this -- leaving no fields to solve on.
+    runApplication -s fields decomposePar -force
+    runPinned "$SOLVERANKS" "$APP" || solve_ok=0
+
+    # A steady run only has one meaningful time; a transient one has a history,
+    # and -latestTime would silently throw it away. Match the solver by name --
+    # NOT a `*impleFoam` glob, which also matches simpleFoam.
+    #
+    # ⚠ Bare `reconstructPar` RECONSTRUCTS NOTHING. Measured 2026-08-15 on the
+    # finished m0+jetRefine transient: it printed
+    #
+    #     --> FOAM Warning : ... No times selected
+    #
+    # and exited 0, leaving the case with only 0/ in its root while
+    # processor*/ held 46 .. 48. Allrun then printed its cheerful acceptance
+    # checklist. Nothing downstream said the fields were missing until
+    # age_of_air.sh went looking for phiMean and found no reconstructed time.
+    #
+    # Cause: reconstructPar builds its time list from the CASE ROOT, which on a
+    # decomposed case contains only `constant` and `0`, and the default
+    # selection excludes 0 (see `reconstructPar -help`: `-withZero  Include
+    # '0/' dir in the times list`). So the selection comes out empty. It is
+    # `-latestTime` and explicit `-time` ranges that consult the processor
+    # directories.
+    #
+    # Fix: read the range straight off processor0 and pass it explicitly. Both
+    # `-latestTime` and `-time 'a:b'` were verified working on this case.
+    # Exclude time 0 from the range: it is the initial condition, restore0Dir
+    # already put it in the case root, and reconstructing it wastes a pass.
+    if [ -d processor0 ]; then
+        PT=$(ls processor0 | grep -E '^[0-9]' | grep -vx '0' | sort -g)
+        PFIRST=$(echo "$PT" | head -1)
+        PLAST=$(echo "$PT" | tail -1)
+    fi
+    case "$APP" in
+        pimpleFoam|buoyantPimpleFoam)
+            if [ -n "${PFIRST:-}" ] && [ -n "${PLAST:-}" ]; then
+                echo "== reconstructing transient history $PFIRST:$PLAST"
+                runApplication reconstructPar -time "$PFIRST:$PLAST"
+            else
+                runApplication reconstructPar -latestTime
+            fi
+            ;;
+        *)  runApplication reconstructPar -latestTime ;;
+    esac
+
+    # Assert it actually produced something -- the failure above was silent.
+    #
+    # Must require a time GREATER THAN ZERO. `0/` is always present (restore0Dir
+    # writes it) and `0.orig/` matches `[0-9]*` too, so the obvious check
+    # `ls [0-9]* | grep -v orig` succeeds on a case where nothing whatsoever was
+    # reconstructed. First draft of this guard did exactly that and would have
+    # passed the very failure it exists to catch.
+    RECON=$(ls -d [0-9]* 2>/dev/null | grep -vx '0.orig' | grep -vx '0' | tr '\n' ' ')
+    if [ -z "$RECON" ]; then
+        echo
+        echo "!! reconstructPar produced NO time directories beyond 0/, though"
+        echo "!! processor0 holds: ${PT:-<none>}"
+        echo "!! See log.reconstructPar. Do NOT treat this run as complete --"
+        echo "!! post-processing will find no fields and say so much later."
+        exit 1
+    fi
+    echo "== reconstructed: $RECON"
+fi
+
+# runApplication does not propagate the solver's exit status, so without this
+# a crashed solve still prints the cheerful checklist below and looks like a
+# success. A FATAL IO ERROR in a function object dies on iteration 1 and is
+# very easy to miss.
+if [ "$solve_ok" -eq 0 ] || ! grep -q "^End" "log.$APP"; then
+    echo
+    echo "!! $APP did NOT finish cleanly -- see log.$APP"
+    tail -20 "log.$APP" | sed 's/^/   /'
+    exit 1
+fi
+
+echo
+echo "== done. Before calling this a result, check CLAUDE.md 9:"
+echo "   1. checkMesh passed                    log.checkMesh"
+echo "   2. residuals dropped >=3-4 orders AND flattened"
+echo "   3. global continuity error small, not growing"
+echo "   4. inlet + outlet flux ~ 0             postProcessing/inletFlux, outletFlux"
+echo "   5. monitored quantities flat           postProcessing/trayPlane"
+echo "   6. mesh independence demonstrated"
+echo "   7. steady assumption validated"
+echo
+echo "   foamLog log.$APP     # -> residual series for plotting"

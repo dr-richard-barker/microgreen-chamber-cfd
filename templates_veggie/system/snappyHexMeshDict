@@ -1,0 +1,165 @@
+/*--------------------------------*- C++ -*----------------------------------*\
+| VEGGIE CFD -- internal flow, meshing the chamber void                        |
+\*---------------------------------------------------------------------------*/
+FoamFile
+{
+    version     2.0;
+    format      ascii;
+    class       dictionary;
+    object      snappyHexMeshDict;
+}
+// * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //
+
+castellatedMesh true;
+snap            true;
+addLayers       true;
+
+geometry
+{
+    veggie_chamber.stl
+    {
+        type        triSurfaceMesh;
+        name        chamber;
+        regions
+        {
+            baseplate   { name baseplate;  }
+            bellows     { name bellows;  }
+            lightcap    { name lightcap;   }
+            fan_exhaust { name fan_exhaust;  }
+            base_inlet_front { name base_inlet_front; }
+            base_inlet_back  { name base_inlet_back; }
+            base_inlet_left  { name base_inlet_left; }
+            base_inlet_right { name base_inlet_right; }
+        }
+    }
+
+    veggie_pillows.stl
+    {
+        type        triSurfaceMesh;
+        name        pillows;
+        // Regions pillow_A through pillow_F
+    }
+
+    exhaustJet
+    {
+        type        searchableBox;
+        min         (0.096 0.134 0.250);
+        max         (0.196 0.234 0.360);
+    }
+    
+    canopyLevel
+    {
+        type        searchableBox;
+        min         (0.0 0.0 0.0);
+        max         (0.292 0.368 0.100);
+    }
+}
+
+castellatedMeshControls
+{
+    maxLocalCells       2000000;
+    maxGlobalCells      20000000;
+    minRefinementCells  10;
+    maxLoadUnbalance    0.10;
+    nCellsBetweenLevels 3;
+
+    features
+    (
+        { file "veggie_chamber.eMesh"; level 2; }
+        { file "veggie_pillows.eMesh"; level 2; }
+    );
+
+    refinementSurfaces
+    {
+        chamber
+        {
+            level       (1 1);
+            regions
+            {
+                baseplate   { level (1 1); patchInfo { type wall; } }
+                bellows     { level (1 1); patchInfo { type wall; } }
+                lightcap    { level (2 2); patchInfo { type wall; } }
+                fan_exhaust { level (2 2); patchInfo { type patch; } }
+                "base_inlet_.*" { level (2 2); patchInfo { type patch; } }
+            }
+        }
+
+        pillows
+        {
+            level       (2 2);
+            patchInfo   { type wall; }
+        }
+    }
+
+    resolveFeatureAngle     30;
+
+    refinementRegions
+    {
+        exhaustJet    { mode inside; levels ((1e15 2)); }
+        canopyLevel   { mode inside; levels ((1e15 2)); }
+    }
+
+    locationInMesh          (0.146 0.184 0.150);
+
+    allowFreeStandingZoneFaces true;
+}
+
+snapControls
+{
+    nSmoothPatch        3;
+    tolerance           2.0;
+    nSolveIter          50;
+    nRelaxIter          5;
+
+    nFeatureSnapIter    15;
+    implicitFeatureSnap false;
+    explicitFeatureSnap true;
+    multiRegionFeatureSnap false;
+}
+
+addLayersControls
+{
+    relativeSizes       true;
+
+    layers
+    {
+        baseplate   { nSurfaceLayers 4; }
+        bellows     { nSurfaceLayers 4; }
+        lightcap    { nSurfaceLayers 4; }
+        "pillow_.*" { nSurfaceLayers 4; }
+    }
+
+    expansionRatio      1.2;
+    finalLayerThickness 0.5;
+    minThickness        0.1;
+
+    nGrow               0;
+    featureAngle        130;
+    slipFeatureAngle    30;
+    nRelaxIter          5;
+    nSmoothSurfaceNormals 1;
+    nSmoothNormals      3;
+    nSmoothThickness    10;
+    maxFaceThicknessRatio 0.5;
+    maxThicknessToMedialRatio 0.3;
+    minMedialAxisAngle  90;
+    nBufferCellsNoExtrude 0;
+    nLayerIter          50;
+    nRelaxedIter        20;
+}
+
+meshQualityControls
+{
+    #include "meshQualityDict"
+}
+
+writeFlags
+(
+    scalarLevels
+    layerSets
+    layerFields
+);
+
+mergeTolerance  1e-6;
+
+// ************************************************************************* //

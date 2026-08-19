@@ -1,0 +1,120 @@
+/*--------------------------------*- C++ -*----------------------------------*\
+| The metric surface -- CLAUDE.md 10.4 Q8                                      |
+|                                                                              |
+| Everything this project is trying to answer is evaluated on the tray top:     |
+| 0.0224 m^2 at z = 25 mm -- the FULL internal floor footprint since the tray   |
+| went flush on 2026-08-16 (it was 0.014375 m^2). These are the quantities      |
+| FLAT over the last N iterations before a run counts (CLAUDE.md 9.5).          |
+|                                                                              |
+| "What decides good?" is still open. Until it is answered these three are the  |
+| candidates: mean speed over the canopy, its uniformity, and the worst spot.   |
+\*---------------------------------------------------------------------------*/
+
+// `mag(U)` is NOT a field OpenFOAM registers on its own -- it is just a name.
+// Without this function object every consumer of it below gets a WARNING, not an
+// error ("Requested field mag(U) not found in database and not processed"), and
+// silently produces no output. That would leave trayUniformity and trayMinMax
+// completely empty and trayPlane reporting only the vector U -- i.e. the run
+// would look fine and the project's headline metric would not exist.
+//
+// Declared FIRST: function objects execute in the order they are declared, and
+// the fieldValues below consume its output in the same timestep. `mag` names its
+// result `mag(<field>)` by default, which is exactly the name they ask for.
+//
+// executeInterval 1 rather than 20: one sqrt per cell is negligible against a
+// SIMPLE iteration, and it removes any question of the interval lining up with
+// the consumers'. writeControl writeTime so the field lands in the time dirs for
+// ParaView -- ~48 MB per write at m2, against purgeWrite 3.
+magU
+{
+    type            mag;
+    libs            (fieldFunctionObjects);
+    field           U;
+    executeControl  timeStep;
+    executeInterval 1;
+    writeControl    writeTime;
+    log             false;
+}
+
+// Plane 5 mm above the tray surface -- inside a young canopy, below a mature one.
+trayPlane
+{
+    type            surfaceFieldValue;
+    libs            (fieldFunctionObjects);
+    writeControl    timeStep;
+    writeInterval   20;
+    log             true;
+    writeFields     false;
+    regionType      sampledSurface;
+    name            trayTop;
+    sampledSurfaceDict
+    {
+        type        plane;
+        planeType   pointAndNormal;
+        pointAndNormalDict
+        {
+            point   (0.06 0.0933 0.030);
+            normal  (0 0 1);
+        }
+        // FULL internal footprint since the tray went flush (2026-08-16). Was
+        // (0.0025 0.0308 0) (0.1175 0.1558 1), the old inset tray. The sample
+        // plane is clipped by the mesh anyway, so running the bounds 1 mm past
+        // the walls just guarantees no edge face is dropped.
+        //
+        // ⚠ This CHANGES THE METRIC, it does not merely widen it. The headline
+        // tray-plane mean is now an average over 0.0224 m2 including the
+        // near-wall boundary layers, where the old 0.014375 m2 window sat
+        // entirely in the chamber interior. Expect a LOWER mean speed on the
+        // flush geometry for that reason alone -- it is not comparable
+        // like-for-like with the 0.02947 m/s Phase 1 headline result.
+        bounds      (-0.001 -0.001 0) (0.121 0.187667 1);
+        interpolate true;
+    }
+    operation       areaAverage;
+    fields          (U mag(U));
+}
+
+// Uniformity. A high mean with a high CoV is not a well-mixed chamber.
+//
+// `areaNormalisedIntegrate` does NOT exist in v2606 -- it is not in the
+// surfaceFieldValue operation enum and the solver dies on the first timestep
+// with a FATAL IO ERROR. The available spread measures are `CoV` (coefficient
+// of variation, used here because the comment above is about CoV) and
+// `uniformity` (the mixing uniformity index, 1 = perfectly uniform), which is
+// the other reasonable choice if a bounded 0-1 metric reads better on a plot.
+trayUniformity
+{
+    $trayPlane;
+    operation       CoV;
+    fields          (mag(U));
+}
+
+// The worst spot on the tray -- the dead zone that decides the answer.
+trayMinMax
+{
+    type            volFieldValue;
+    libs            (fieldFunctionObjects);
+    writeControl    timeStep;
+    writeInterval   20;
+    log             true;
+    writeFields     false;
+    regionType      cellZone;
+    name            canopyZone;
+    operation       min;
+    fields          (mag(U));
+}
+
+// Whole-domain extremes. max(T) is the number that would damage the LED panel;
+// report it separately from the bulk mean (CLAUDE.md 6.3).
+domainMinMax
+{
+    type            fieldMinMax;
+    libs            (fieldFunctionObjects);
+    writeControl    timeStep;
+    writeInterval   20;
+    log             true;
+    // Regex so T is picked up in Phase 2 and silently absent in Phase 1.
+    fields          ("(U|p|p_rgh|T)");
+}
+
+// ************************************************************************* //

@@ -1,0 +1,26 @@
+\begin{table*}[t]
+\centering
+\small
+\caption{\textbf{Dimensionless aerodynamic scaling and convection regime matrix across the three hardware platforms under Earth, Mars, Moon, and Microgravity environments.} Calculated with $\Delta T = 3.0\text{ K}$, $\beta = 3.39 \times 10^{-3}\text{ K}^{-1}$, and kinematic viscosity $\nu = 1.516 \times 10^{-5}\text{ m}^2/\text{s}$.}
+\label{tab:gravity_sweep}
+\begin{tabularx}{\textwidth}{llrrrrll}
+\toprule
+\textbf{Chamber} & \textbf{Gravity Regime} & $\mathbf{g}\text{ (m/s}^2\text{)}$ & $\mathbf{Gr}$ & $\mathbf{Re}$ & $\mathbf{Ri}\text{ } (Gr/Re^2)$ & \textbf{Convective Regime} & \textbf{Dominant Mechanism} \\
+\midrule
+\textbf{Microgreen} & Earth ($1\text{ g}$) & $9.81$ & $3.87 \times 10^{5}$ & $1,669$ & $0.1405$ & Mixed Convection & Fan jet + ceiling stratification \\
+& Mars ($0.38\text{ g}$) & $3.72$ & $1.47 \times 10^{5}$ & $1,669$ & $0.0533$ & Forced-Dominated & Jet momentum dominates \\
+& Moon ($0.166\text{ g}$) & $1.62$ & $6.39 \times 10^{4}$ & $1,669$ & $0.0232$ & Forced-Dominated & Buoyancy negligible \\
+& Microgravity ($0\text{ g}$) & $0.00$ & $0.00$ & $1,669$ & $0.0000$ & Purely Forced & Flapping confined jet only \\
+\midrule
+\textbf{VEGGIE (VPS)} & Earth ($1\text{ g}$) & $9.81$ & $1.83 \times 10^{7}$ & $3,463$ & $1.5511$ & Mixed (Buoyant) & Thermal plume assists upward fan \\
+& Mars ($0.38\text{ g}$) & $3.72$ & $6.95 \times 10^{6}$ & $3,463$ & $0.5880$ & Mixed (Transitional) & Weak plume, fan required \\
+& Moon ($0.166\text{ g}$) & $1.62$ & $3.03 \times 10^{6}$ & $3,463$ & $0.2561$ & Forced-Dominated & Low draft, high mold risk at low fan \\
+& Microgravity ($0\text{ g}$) & $0.00$ & $0.00$ & $3,463$ & $0.0000$ & Purely Forced & Unstirred boundary layer without high fan \\
+\midrule
+\textbf{APH} & Earth ($1\text{ g}$) & $9.81$ & $3.90 \times 10^{7}$ & $17,810$ & $0.1246$ & Forced-Dominated & Dual opposing cross-jets suppress plumes \\
+& Mars ($0.38\text{ g}$) & $3.72$ & $1.48 \times 10^{7}$ & $17,810$ & $0.0473$ & Strongly Forced & Piston-like upward sweep \\
+& Moon ($0.166\text{ g}$) & $1.62$ & $6.44 \times 10^{6}$ & $17,810$ & $0.0206$ & Strongly Forced & Uniform canopy boundary layer \\
+& Microgravity ($0\text{ g}$) & $0.00$ & $0.00$ & $17,810$ & $0.0000$ & Purely Forced & Fully engineered forced circulation \\
+\bottomrule
+\end{tabularx}
+\end{table*}
