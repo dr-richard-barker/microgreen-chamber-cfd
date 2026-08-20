@@ -16,6 +16,7 @@ from fig6_3d_flow_topologies import create_fig6
 from fig7_airflow_extremes import create_fig7
 from fig8_chromex_multiscale_hypoxia import generate_figure_8
 from fig9_fan_failure_dynamics import generate_figure_9
+from fig10_petridish_microclimates import generate_figure10
 
 def main():
     root = os.path.dirname(os.path.abspath(__file__))
@@ -32,7 +33,8 @@ def main():
     create_fig7(out)
     generate_figure_8(out)
     generate_figure_9(out)
-    print("=== All 9 Figures Generated Successfully! ===")
+    generate_figure10(out)
+    print("=== All 10 Figures Generated Successfully! ===")
 
 if __name__ == "__main__":
     main()

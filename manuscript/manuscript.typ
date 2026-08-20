@@ -442,76 +442,132 @@ Evaluating the transient resilience index across hardware architectures establis
 #pagebreak()
 
 // ==========================================
-// PAGE 10: TABLES 4 & 5, METHODS & REFERENCES
+// PAGE 10: FIGURE 10 (PETRI DISH MICROCLIMATES & MICROPORE TAPE)
+// ==========================================
+
+#align(center)[
+  #image("figures/output/Fig10_petridish_microclimates.png", width: 80%)
+  #v(0.04cm)
+  #text(size: 6.8pt)[
+    *Figure 10 | Petri dish science sample carrier microenvironments, micropore tape gas exchange, and boundary-layer scaling across spaceflight hardware under variable gravity.* *a*, 3D domain schematics of square dishes ($100 times 100 times 20" mm"$, $P = 400" mm"$) in VEGGIE under suction vs round dishes ($diameter 90 times 15" mm"$, $P = 283" mm"$) in APH under cross-flow. *b*, External boundary-layer velocity $u(z)$ and seam wall shear ($tau_w$) in $1.0" g"$, Moon $0.166" g"$, and $0" g"$. *c*, Resistance breakdown ($r_("ext")$, $r_("tape")$, $r_("int")$). *d*, Headspace trajectories: $"O"_2$ depletion, $"CO"_2$ drawdown, ethylene ($"C"_2"H"_4$), and condensation.
+  ]
+]
+
+#v(0.1cm)
+
+#columns(2, gutter: 14pt)[
+
+== Science Sample Carrier Microenvironments: Micropore Tape Gas Exchange in Dishes
+
+=== Multi-Scale Boundary Coupling & Tape Permeability
+Spaceflight biological investigations frequently cultivate specimens within semi-sealed sample carriers—square Petri dishes ($100 times 100 times 20" mm"$) for *Arabidopsis thaliana* seedlings in VEGGIE, and round Petri dishes ($diameter 90 times 15" mm"$) for cotton cell cultures / calli in APH. To preserve sterility while permitting respiration, the perimeter gap ($delta_("gap") approx 1.0" mm"$) is wrapped with porous surgical micropore tape ($A_("seam") = P dot delta_("gap")$).
+
+Coupled CFD transport modeling reveals that gaseous exchange ($J_("gas")$) is governed by a three-tier series resistance network ($r_("tot") = r_("ext") + r_("tape") + r_("int")$, Fig. 10a):
+$ J_("gas") = (C_("ext") - C_("int")) / (r_("ext") + r_("tape") + r_("int")) $
+where $r_("tape") = (d_("tape") tau_("tort")) / (D_("eff") epsilon_("por") A_("seam"))$ is the micropore membrane resistance ($650" s/m"$ for square dishes; $920" s/m"$ for round dishes).
+
+=== External Aerodynamic Shielding Across Gravities
+In APH, forced lateral cross-flow ($0.60" m/s"$) sweeps across dish lids, thinning the boundary layer to $delta_("ext") = 2.4" mm"$ with robust wall shear ($tau_w = 30.8" mPa"$, Fig. 10b). External resistance accounts for $lt 4\%$ of total transport barrier ($r_("ext") = 50" s/m"$). In contrast, VEGGIE relies on low vertical suction ($0.15" m/s"$). In microgravity ($0" g"$), absence of buoyant updraft causes the external boundary layer to expand into a stagnant shield ($delta_("ext") = 8.5" mm"$, $tau_w = 2.1" mPa"$), elevating external resistance by $+21\%$ ($r_("ext") = 380" s/m"$, Fig. 10c).
+
+=== Internal Ethylene Accumulation & Hypoxia Margins
+Inside the unstirred headspace ($"Pe" << 0.1$, pure diffusion), dark respiration and hormone biosynthesis dictate microclimates (Fig. 10d). In sealed dishes lacking tape, respiration drives rapid hypoxia ($"O"_2 < 5\%$) within $1.8" hours"$ and toxic ethylene ($"C"_2"H"_4 > 3.5" ppm"$). Micropore tape stabilizes oxygen ($"O"_2 = 14.2\%$ in VEGGIE $0" g"$; $17.8\%$ in APH $0" g"$). However, under VEGGIE $0" g"$ stagnation, ethylene accumulates to $0.85" ppm"$ (exceeding the $0.50" ppm"$ epinasty threshold) and humidity saturates ($"RH" > 98\%$) within $6.5" hours"$, inducing severe lid condensation.
+
+]
+
+#pagebreak()
+
+// ==========================================
+// PAGE 11: TABLES 4, 5, 6, METHODS & REFERENCES
 // ==========================================
 
 #grid(
   columns: (1fr, 1fr),
   gutter: 12pt,
   [
-    #align(center)[#text(weight: "bold", size: 7.5pt, fill: rgb("#005696"))[Table 4 | Ventilation efficiency & biosecurity containment.]]
+    #align(center)[#text(weight: "bold", size: 7.0pt, fill: rgb("#005696"))[Table 4 | Ventilation efficiency & biosecurity.]]
     #table(
-      columns: (1.2fr, 0.8fr, 0.9fr, 1.4fr),
+      columns: (1.1fr, 0.8fr, 0.7fr, 1.4fr),
       stroke: 0.3pt + rgb("#d0d0d0"),
       fill: (x, y) => if y == 0 { rgb("#eef4f8") } else if calc.even(y) { rgb("#fafbfc") } else { none },
-      inset: 3.5pt,
+      inset: 3.0pt,
       align: (left, left, right, left),
-      table.header([*Hardware*], [*Gravity*], [*$epsilon_a$*], [*Biosecurity Containment*]),
-      [Microgreen], [1.0g], [10.4%], [Sealed (0% cabin export)],
-      [], [0.0g], [13.7%], [Unstratified jet clearance],
-      [VEGGIE], [1.0g Low], [22.5%], [Direct cabin exhaust (100%)],
-      [], [0.0g Low], [14.2%], [Critical mold risk (52.8% stag.)],
-      [], [0.0g High], [26.2%], [Rapid cabin spore dispersion],
-      [APH], [1.0g Nom], [45.8%], [Closed loop HEPA (0% export)],
-      [], [0.0g Nom], [45.0%], [Uniform upward displacement],
-      [], [0.0g High], [47.3%], [Near-ideal displacement flow],
-      [CHROMEX], [0.0g AES], [32.3%], [Closed canister (0% export)],
-      [], [0.0g Sealed], [0.0%], [Sealed Lexan (zero clearance)]
+      table.header([*Hardware*], [*Gravity*], [*$epsilon_a$*], [*Biosecurity*]),
+      [Microgreen], [1.0g], [10.4%], [Sealed (0% export)],
+      [], [0.0g], [13.7%], [Unstratified jet],
+      [VEGGIE], [1.0g Low], [22.5%], [Direct cabin exhaust],
+      [], [0.0g Low], [14.2%], [Mold risk (52.8% stag.)],
+      [], [0.0g High], [26.2%], [Cabin spore dispersion],
+      [APH], [1.0g Nom], [45.8%], [Closed loop HEPA],
+      [], [0.0g Nom], [45.0%], [Uniform upward sweep],
+      [], [0.0g High], [47.3%], [Near-ideal displacement],
+      [CHROMEX], [0.0g AES], [32.3%], [Closed (0% export)],
+      [], [0.0g Sealed], [0.0%], [Sealed Lexan]
     )
   ],
   [
-    #align(center)[#text(weight: "bold", size: 7.5pt, fill: rgb("#005696"))[Table 5 | Fan failure resilience & hypoxia onset thresholds.]]
+    #align(center)[#text(weight: "bold", size: 7.0pt, fill: rgb("#005696"))[Table 5 | Fan failure resilience & hypoxia.]]
     #table(
-      columns: (1.2fr, 0.8fr, 0.9fr, 1.3fr),
+      columns: (1.1fr, 0.7fr, 0.8fr, 1.4fr),
       stroke: 0.3pt + rgb("#d0d0d0"),
       fill: (x, y) => if y == 0 { rgb("#eef4f8") } else if calc.even(y) { rgb("#fafbfc") } else { none },
-      inset: 3.5pt,
+      inset: 3.0pt,
       align: (left, left, right, left),
-      table.header([*Hardware*], [*Gravity*], [*$t_("Hypoxia")$*], [*Resilience Rating*]),
-      [Microgreen], [1.0g], [18.0 min], [Moderate (buoyant convection)],
-      [], [0.0g], [6.5 min], [Critical (rapid suffocation)],
-      [VEGGIE], [1.0g], [22.0 min], [High (chimney buoyancy)],
-      [], [0.0g], [7.2 min], [Critical (100% stagnation)],
-      [APH], [1.0g], [28.0 min], [High (large ducted volume)],
-      [], [0.0g], [8.9 min], [Moderate-Low (larger buffer)],
-      [CHROMEX], [0.0g], [3.5 min], [Extremely Critical (foam hypoxia)]
+      table.header([*Hardware*], [*Gravity*], [*$t_("Hypoxia")$*], [*Resilience*]),
+      [Microgreen], [1.0g], [18.0 min], [Moderate (buoyancy)],
+      [], [0.0g], [6.5 min], [Critical (suffocation)],
+      [VEGGIE], [1.0g], [22.0 min], [High (chimney updraft)],
+      [], [0.0g], [7.2 min], [Critical (stagnation)],
+      [APH], [1.0g], [28.0 min], [High (large volume)],
+      [], [0.0g], [8.9 min], [Moderate-Low],
+      [CHROMEX], [0.0g], [3.5 min], [Extremely Critical]
     )
   ]
 )
 
-#v(0.3cm)
+#v(0.08cm)
 
-#columns(2, gutter: 16pt)[
+#align(center)[
+  #text(weight: "bold", size: 7.0pt, fill: rgb("#005696"))[Table 6 | Petri dish science sample carrier gas-exchange & boundary-layer scaling metrics.]
+  #v(0.04cm)
+  #table(
+    columns: (1.3fr, 1.0fr, 0.8fr, 0.8fr, 0.8fr, 0.8fr, 0.8fr, 0.9fr, 1.0fr),
+    stroke: 0.3pt + rgb("#d0d0d0"),
+    fill: (x, y) => if y == 0 { rgb("#eef4f8") } else if calc.even(y) { rgb("#fafbfc") } else { none },
+    inset: 2.2pt,
+    align: (left, left, left, right, right, right, right, right, right),
+    table.header([*Dish Geometry*], [*Flight Habitat*], [*Gravity*], [*$delta_("ext")$ (mm)*], [*$r_("ext")$*], [*$r_("tape")$*], [*$r_("tot")$*], [*$"O"_2$ (%)*], [*$"C"_2"H"_4$ (ppm)*]),
+    [Square ($100 times 100$)], [VEGGIE (VPS)], [1.0g], [4.8], [120], [650], [1220], [18.4%], [0.32 ppm],
+    [Square ($100 times 100$)], [VEGGIE (VPS)], [Moon (0.166g)], [6.2], [210], [650], [1310], [16.8%], [0.52 ppm],
+    [Square ($100 times 100$)], [VEGGIE (VPS)], [0.0g], [8.5], [380], [650], [1480], [14.2%], [*0.85 ppm (Toxic)*],
+    [Round ($diameter 90" mm"$)], [APH], [1.0g], [2.2], [45], [920], [1285], [18.6%], [0.18 ppm],
+    [Round ($diameter 90" mm"$)], [APH], [Moon (0.166g)], [2.3], [48], [920], [1288], [18.2%], [0.22 ppm],
+    [Round ($diameter 90" mm"$)], [APH], [0.0g], [2.4], [50], [920], [1290], [17.8%], [0.28 ppm],
+    [Square (Sealed)], [Static (No Tape)], [0.0g], [$> 25.0$], [$> 2000$], [$> 100"k"$], [$> 102"k"$], [*$< 2.0\%$ (Hypoxic)*], [*$> 3.50" ppm"$*]
+  )
+]
+
+#v(0.1cm)
+
+#columns(2, gutter: 14pt)[
 
 == Methods & Numerical Framework
 
-=== OpenFOAM v2606 Finite-Volume Solver Settings
-Simulations were executed within OpenFOAM v2606 using finite-volume discretization of the Low-Mach compressible Navier-Stokes equations:
+=== OpenFOAM Finite-Volume Solver Settings
+Simulations were executed within OpenFOAM v2606 using finite-volume discretization of Low-Mach compressible Navier-Stokes equations:
 $ (partial rho) / (partial t) + nabla dot (rho bold(u)) = 0 $
 $ (partial (rho bold(u))) / (partial t) + nabla dot (rho bold(u) bold(u)) = -nabla p_("rgh") + bold(g) rho + nabla dot bold(tau)_("eff") + bold(S)_m $
 $ (partial (rho h)) / (partial t) + nabla dot (rho bold(u) h) = nabla dot (alpha_("eff") nabla h) + S_h $
-where $bold(tau)_("eff") = mu_("eff")[nabla bold(u) + (nabla bold(u))^T - 2/3 (nabla dot bold(u)) bold(I)]$. Turbulence was modeled using the Shear Stress Transport ($k$-$omega" SST"$) model (Menter 1994) with near-wall prism layers ($y^+ approx 1 - 5$). Porous root substrates were resolved using the Brinkman-Darcy formulation:
+where $bold(tau)_("eff") = mu_("eff")[nabla bold(u) + (nabla bold(u))^T - 2/3 (nabla dot bold(u)) bold(I)]$. Turbulence was modeled using $k$-$omega" SST"$ (Menter 1994) with near-wall prism layers ($y^+ approx 1 - 5$). Porous root substrates and micropore tape interfaces were resolved using Brinkman-Darcy:
 $ nabla p = -(mu / alpha) bold(u) - C_2 1/2 rho |bold(u)| bold(u) $
 
-=== Interactive 3D WebGL Dashboard & 4D Multimedia Assets
-Interactive WebGL 3D visualizations, animated 4D time-resolved simulations, and all mesh dictionaries are openly accessible:
+=== Interactive 3D WebGL Dashboard & Multimedia
+Interactive WebGL 3D visualizations, animated 4D simulations, and mesh dictionaries are openly accessible:
 - *Live Web Portal*: #link("https://dr-richard-barker.github.io/microgreen-chamber-cfd/")[https://dr-richard-barker.github.io/microgreen-chamber-cfd/]
-- *Interactive 3D Web Explorer with Fan Stop Test*: `interactive_3d_explorer.html`
-- *4D Time-Resolved Animation Suite*: `4D_*.gif`
+- *Interactive 3D Web Explorer*: `interactive_3d_explorer.html`
 - *Open-Source Code Repository*: #link("https://github.com/dr-richard-barker/microgreen-chamber-cfd")[https://github.com/dr-richard-barker/microgreen-chamber-cfd]
 
 == References
-#set text(size: 6.6pt)
+#set text(size: 6.0pt)
 1. Massa, G. D. et al. VEG-01: Veggie hardware validation testing on the ISS. *Open Agric.* 2, 33–41 (2017).
 2. Morrow, R. C. et al. A new plant habitat facility for the ISS. *46th ICES*, ICES-2016-320 (2016).
 3. Monje, O. et al. Hardware validation of the Advanced Plant Habitat on ISS. *49th ICES*, ICES-2019-247 (2019).
@@ -529,3 +585,4 @@ Interactive WebGL 3D visualizations, animated 4D time-resolved simulations, and 
 15. Ewald, H. & Barker, R. Microgreen Chamber CFD: 3D Internal-Flow and Gravity Parametric Analysis in OpenFOAM (2026).
 
 ]
+

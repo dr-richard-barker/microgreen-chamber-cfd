@@ -245,12 +245,21 @@
           </div>
         </div>
         <!-- Fig 9 -->
-        <div class="media-card" style="grid-column: span 2;">
+        <div class="media-card">
           <img src="assets/figures/Fig9_fan_failure_dynamics.png" alt="Figure 9">
           <div class="media-card-body">
             <span class="media-badge accent">Figure 9</span>
             <h4>Transient Aerodynamics of Fan Failure & Stagnation Response Across Gravities</h4>
             <p>Mechanical fan spin-down decay (\(U(t)\)), boundary layer collapse (\(g_{bl}(t)\)) across Earth, Mars, Moon, and 0g, canopy thermal accumulation (\(+7.8^\circ\text{C}\)), and RuBisCO \(CO_2\) starvation trajectory (\(C_i < 150\text{ ppm}\)).</p>
+          </div>
+        </div>
+        <!-- Fig 10 -->
+        <div class="media-card">
+          <img src="assets/figures/Fig10_petridish_microclimates.png" alt="Figure 10">
+          <div class="media-card-body">
+            <span class="media-badge primary">Figure 10</span>
+            <h4>Petri Dish Science Sample Carrier Microenvironments & Micropore Tape Gas Exchange</h4>
+            <p>Square dishes (VEGGIE Arabidopsis) vs. Round dishes (APH cotton cell cultures), external boundary layer shielding (\(\delta_{ext}\)), micropore tape diffusion resistance (\(r_{tape}\)), \(O_2\) hypoxia margins, and volatile ethylene (\(C_2H_4\)) accumulation.</p>
           </div>
         </div>
       </div>
@@ -329,6 +338,43 @@
               <tr><td><strong>APH</strong></td><td>1.0 g</td><td>4.8 s</td><td>14.4 s</td><td>0.362</td><td>18.0 min</td><td>28.0 min</td><td>+2.1 K</td><td>High (large ducted volume)</td></tr>
               <tr><td><strong>APH</strong></td><td>0.0 g</td><td>4.8 s</td><td>14.4 s</td><td>0.042</td><td>4.5 min</td><td>8.9 min</td><td>+5.8 K</td><td>Moderate-Low (larger buffer)</td></tr>
               <tr><td><strong>CHROMEX PGC</strong></td><td>0.0 g</td><td>0.8 s</td><td>2.4 s</td><td>0.031</td><td>1.8 min</td><td>3.5 min</td><td>+8.4 K</td><td><strong style="color: var(--accent);">Extremely Critical (foam hypoxia)</strong></td></tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+      <!-- Table 6 -->
+      <div class="card">
+        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1rem;">
+          <h3 style="color: var(--primary-dark); font-size: 1.1rem;">Table 6 | Petri Dish Science Sample Carrier Gas-Exchange & Boundary-Layer Metrics</h3>
+          <a href="assets/tables/T6_petridish_gas_exchange.csv" class="btn btn-outline" style="color: var(--primary); border-color: var(--primary); padding: 0.4rem 0.8rem; font-size: 0.8rem;" download>
+            <i class="fas fa-download"></i> Download CSV
+          </a>
+        </div>
+        <div class="table-wrapper">
+          <table class="scientific-table">
+            <thead>
+              <tr>
+                <th>Dish Geometry</th>
+                <th>Flight Habitat</th>
+                <th>Gravity</th>
+                <th>\(\delta_{ext}\) (mm)</th>
+                <th>\(r_{ext}\) (s/m)</th>
+                <th>\(r_{tape}\) (s/m)</th>
+                <th>\(r_{tot}\) (s/m)</th>
+                <th>Equil. \(O_2\)</th>
+                <th>Equil. \(C_2H_4\)</th>
+                <th>Condensation</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr><td><strong>Square (100×100)</strong></td><td>VEGGIE (VPS)</td><td>1.0 g</td><td>4.8</td><td>120</td><td>650</td><td>1220</td><td>18.4%</td><td>0.32 ppm</td><td>18.5 h</td></tr>
+              <tr><td><strong>Square (100×100)</strong></td><td>VEGGIE (VPS)</td><td>Moon (0.166g)</td><td>6.2</td><td>210</td><td>650</td><td>1310</td><td>16.8%</td><td>0.52 ppm</td><td>12.0 h</td></tr>
+              <tr><td><strong>Square (100×100)</strong></td><td>VEGGIE (VPS)</td><td>0.0 g</td><td>8.5</td><td>380</td><td>650</td><td>1480</td><td>14.2%</td><td><strong style="color: var(--accent);">0.85 ppm (Toxic)</strong></td><td>6.5 h</td></tr>
+              <tr><td><strong>Round (Ø90 mm)</strong></td><td>APH</td><td>1.0 g</td><td>2.2</td><td>45</td><td>920</td><td>1285</td><td>18.6%</td><td>0.18 ppm</td><td>>48 h</td></tr>
+              <tr><td><strong>Round (Ø90 mm)</strong></td><td>APH</td><td>Moon (0.166g)</td><td>2.3</td><td>48</td><td>920</td><td>1288</td><td>18.2%</td><td>0.22 ppm</td><td>>48 h</td></tr>
+              <tr><td><strong>Round (Ø90 mm)</strong></td><td>APH</td><td>0.0 g</td><td>2.4</td><td>50</td><td>920</td><td>1290</td><td>17.8%</td><td>0.28 ppm</td><td>38.0 h</td></tr>
+              <tr><td><strong>Square (Sealed)</strong></td><td>Static (No Tape)</td><td>0.0 g</td><td>>25.0</td><td>>2000</td><td>>100k</td><td>>102k</td><td><strong style="color: var(--accent);"><2.0% (Hypoxia)</strong></td><td><strong style="color: var(--accent);">>3.50 ppm</strong></td><td>1.8 h</td></tr>
             </tbody>
           </table>
         </div>
