@@ -1,6 +1,6 @@
 # Aerodynamic Boundary-Layer Scaling and Enclosure Regimes Across Spaceflight Plant Growth Hardware: A Multi-Chamber OpenFOAM CFD Framework under Variable Gravity
 
-**Richard Barker$^{1,*}$, Henry Ewald$^{1}$, and Astrobotany Consortium$^{1}$**
+**Richard Barker$^{1,*}$, Henry Ewald$^{1}$, Gram Zavos$^{1}$, Manisha Dagar$^{1}$, Mia Schecter$^{1}$, Adriana Sanchez$^{1}$, Marshall Porterfield$^{1}$, and Astrobotany Consortium$^{1}$**
 
 $^{1}$Department of Agricultural and Biological Engineering, Purdue University, West Lafayette, IN 47907, USA  
 $^*$Corresponding author: `rbarker@purdue.edu`

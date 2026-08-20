@@ -74,7 +74,7 @@
 
 #v(0.25cm)
 #text(font: "Helvetica", weight: "bold", size: 9.5pt, fill: rgb("#333333"))[
-  Richard Barker#super("1,*"), Henry Ewald#super("1"), and Astrobotany Consortium#super("1")
+  Richard Barker#super("1,*"), Henry Ewald#super("1"), Gram Zavos#super("1"), Manisha Dagar#super("1"), Mia Schecter#super("1"), Adriana Sanchez#super("1"), Marshall Porterfield#super("1"), and Astrobotany Consortium#super("1")
 ]
 
 #v(0.1cm)

@@ -226,7 +226,7 @@ def build_html_manuscript(html_path):
 <h1 class="title">Aerodynamic Boundary-Layer Scaling and Enclosure Regimes Across Spaceflight Plant Growth Hardware: A Multi-Chamber OpenFOAM CFD Framework under Variable Gravity</h1>
 
 <div class="authors">
-  Richard Barker<sup>1,*</sup>, Henry Ewald<sup>1</sup>, and Astrobotany Consortium<sup>1</sup>
+  Richard Barker<sup>1,*</sup>, Henry Ewald<sup>1</sup>, Gram Zavos<sup>1</sup>, Manisha Dagar<sup>1</sup>, Mia Schecter<sup>1</sup>, Adriana Sanchez<sup>1</sup>, Marshall Porterfield<sup>1</sup>, and Astrobotany Consortium<sup>1</sup>
 </div>
 
 <div class="affiliations">

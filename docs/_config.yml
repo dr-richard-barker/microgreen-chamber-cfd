@@ -1,7 +1,7 @@
 # GitHub Pages Configuration
 title: "Spaceflight Plant Growth CFD & Aerodynamics"
 description: "A Multi-Chamber OpenFOAM CFD Framework under Variable Gravity (Earth, Mars, Moon, Microgravity)"
-author: "Richard Barker, Henry Ewald, Astrobotany Consortium"
+author: "Richard Barker, Henry Ewald, Gram Zavos, Manisha Dagar, Mia Schecter, Adriana Sanchez, Marshall Porterfield, Astrobotany Consortium"
 affiliation: "Department of Agricultural and Biological Engineering, Purdue University"
 baseurl: ""
 url: "https://dr-richard-barker.github.io/microgreen-chamber-cfd"
