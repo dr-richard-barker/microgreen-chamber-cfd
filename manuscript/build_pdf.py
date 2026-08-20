@@ -226,13 +226,12 @@ def build_html_manuscript(html_path):
 <h1 class="title">Aerodynamic Boundary-Layer Scaling and Enclosure Regimes Across Spaceflight Plant Growth Hardware: A Multi-Chamber OpenFOAM CFD Framework under Variable Gravity</h1>
 
 <div class="authors">
-  Richard Barker<sup>1,*</sup>, Henry Ewald<sup>1</sup>, and Astrobotany Consortium<sup>1,2</sup>
+  Richard Barker<sup>1,*</sup>, Henry Ewald<sup>1</sup>, and Astrobotany Consortium<sup>1</sup>
 </div>
 
 <div class="affiliations">
-  <sup>1</sup> Department of Botany, University of Wisconsin–Madison, Madison, WI 53706, USA<br>
-  <sup>2</sup> NASA GeneLab Plant Analysis Working Group (AWG), Moffett Field, CA 94035, USA<br>
-  <sup>*</sup> Corresponding author: <code>rbarker2@wisc.edu</code>
+  <sup>1</sup> Department of Agricultural and Biological Engineering, Purdue University, West Lafayette, IN 47907, USA<br>
+  <sup>*</sup> Corresponding author: <code>rbarker@purdue.edu</code>
 </div>
 
 <div class="abstract-box">

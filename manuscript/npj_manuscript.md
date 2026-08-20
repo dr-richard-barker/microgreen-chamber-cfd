@@ -102,6 +102,18 @@ In tandem with carbon starvation, thick boundary layers trap transpired water va
 | | Microgravity ($0\text{ g}$) | $4.8\text{ s}$ | $14.4\text{ s}$ | $0.042$ | $4.5\text{ min}$ | $8.9\text{ min}$ | $+5.8\text{ K}$ | Moderate-Low (larger buffer) |
 | **CHROMEX PGC** | Microgravity ($0\text{ g}$) | $0.8\text{ s}$ | $2.4\text{ s}$ | $0.031$ | $1.8\text{ min}$ | $3.5\text{ min}$ | $+8.4\text{ K}$ | Extremely Critical (foam hypoxia) |
 
+### 3.4 Petri Dish Science Sample Carrier Microenvironments & Micropore Tape Gas Exchange
+
+| Dish Geometry | Flight Habitat | Gravity Regime | $\delta_{ext}\text{ (mm)}$ | $r_{ext}\text{ (s/m)}$ | $r_{tape}\text{ (s/m)}$ | $r_{tot}\text{ (s/m)}$ | Equil. $O_2\text{ (\%)}$ | Equil. $C_2H_4\text{ (ppm)}$ | Condensation ($RH>98\%$) |
+|:---|:---|:---|:---|:---|:---|:---|:---|:---|:---|
+| **Square ($100\times100$)** | VEGGIE (VPS) | Earth ($1.0\text{ g}$) | $4.8$ | $120$ | $650$ | $1220$ | $18.4\%$ | $0.32\text{ ppm}$ | $18.5\text{ h}$ |
+| **Square ($100\times100$)** | VEGGIE (VPS) | Moon ($0.166\text{ g}$) | $6.2$ | $210$ | $650$ | $1310$ | $16.8\%$ | $0.52\text{ ppm}$ | $12.0\text{ h}$ |
+| **Square ($100\times100$)** | VEGGIE (VPS) | Microgravity ($0\text{ g}$) | $8.5$ | $380$ | $650$ | $1480$ | $14.2\%$ | **$0.85\text{ ppm}$ (Toxic)** | **$6.5\text{ h}$ (Severe)** |
+| **Round ($\varnothing90\text{ mm}$)** | APH | Earth ($1.0\text{ g}$) | $2.2$ | $45$ | $920$ | $1285$ | $18.6\%$ | $0.18\text{ ppm}$ | $>48\text{ h}$ |
+| **Round ($\varnothing90\text{ mm}$)** | APH | Moon ($0.166\text{ g}$) | $2.3$ | $48$ | $920$ | $1288$ | $18.2\%$ | $0.22\text{ ppm}$ | $>48\text{ h}$ |
+| **Round ($\varnothing90\text{ mm}$)** | APH | Microgravity ($0\text{ g}$) | $2.4$ | $50$ | $920$ | $1290$ | $17.8\%$ | $0.28\text{ ppm}$ | $38.0\text{ h}$ |
+| **Square (Sealed)** | Static (No Tape) | Microgravity ($0\text{ g}$) | $>25.0$ | $>2000$ | $>100\text{k}$ | $>102\text{k}$ | **$<2.0\%$ (Hypoxic)** | **$>3.50\text{ ppm}$** | **$1.8\text{ h}$** |
+
 ---
 
 ## 4. Figures & Multimedia Assets
@@ -115,6 +127,7 @@ In tandem with carbon starvation, thick boundary layers trap transpired water va
 - **Figure 7:** Operational Airflow Extremes Matrix: Zero Stagnation vs. Low Draft vs. Nominal vs. High Blast (`figures/output/Fig7_airflow_extremes.pdf` / `.png`)
 - **Figure 8:** NASA Space Shuttle CHROMEX / PGU Multi-Scale Thermal-Fluid & PGC Hypoxia Dynamics (`figures/output/Fig8_chromex_multiscale_hypoxia.pdf` / `.png`)
 - **Figure 9:** Transient Aerodynamics of Fan Failure & Stagnation Response Across Gravities (`figures/output/Fig9_fan_failure_dynamics.pdf` / `.png`)
+- **Figure 10:** Petri Dish Science Sample Carrier Microenvironments, Micropore Tape Gas Exchange, and Boundary-Layer Scaling Across Spaceflight Hardware (`figures/output/Fig10_petridish_microclimates.pdf` / `.png`)
 
 ### Interactive 3D WebGL Explorer & 4D Animations:
 - **Interactive 3D WebGL Dashboard with Fan Failure Simulation:** [`visualizations/interactive_3d_explorer.html`](visualizations/interactive_3d_explorer.html)
