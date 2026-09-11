@@ -574,7 +574,7 @@ Interactive WebGL 3D visualizations, animated 4D simulations, and mesh dictionar
 4. Levine, H. G. & Krikorian, A. D. Chromosomes and plant cell division in space (CHROMEX-3). *J. Gravit. Physiol.* 3, 22–26 (1996).
 5. Porterfield, D. M. et al. Biomass production and gas exchange of wheat in the Plant Growth Unit. *Gravit. Space Biol. Bull.* 11, 45 (1997).
 6. Wheeler, R. M. Agriculture for space: People and places paving the way. *Open Agric.* 2, 14–32 (2017).
-7. Kitaya, Y. et al. Effects of air current on transpiration and photosynthesis under microgravity. *Adv. Space Res.* 31, 177–182 (2003).
+7. Kitaya, Y. et al. Effects of air current speed on gas exchange in plant leaves and plant canopies. *Adv. Space Res.* 31, 177–182 (2003).
 8. Kitaya, Y. et al. Gas exchange and temperature gradients of leaves under microgravity. *Adv. Space Res.* 28, 565–570 (2001).
 9. Porterfield, D. M. Biophysical limitations in physiological transport in microgravity. *Physiol. Plant.* 114, 333–340 (2002).
 10. Farquhar, G. D., von Caemmerer, S. & Berry, J. A. A biochemical model of photosynthetic CO2 assimilation. *Planta* 149, 78–90 (1980).
