@@ -576,12 +576,12 @@ Interactive WebGL 3D visualizations, animated 4D simulations, and mesh dictionar
 6. Wheeler, R. M. Agriculture for space: People and places paving the way. *Open Agric.* 2, 14–32 (2017).
 7. Kitaya, Y. et al. Effects of air current speed on gas exchange in plant leaves and plant canopies. *Adv. Space Res.* 31, 177–182 (2003).
 8. Kitaya, Y. et al. The effect of gravity on surface temperature and net photosynthetic rate of plant leaves. *Adv. Space Res.* 28, 659–664 (2001).
-9. Porterfield, D. M. Biophysical limitations in physiological transport in microgravity. *Physiol. Plant.* 114, 333–340 (2002).
+9. Porterfield, D. M. The biophysical limitations in physiological transport and exchange in plants grown in microgravity. *J. Plant Growth Regul.* 21, 177–190 (2002).
 10. Farquhar, G. D., von Caemmerer, S. & Berry, J. A. A biochemical model of photosynthetic CO2 assimilation. *Planta* 149, 78–90 (1980).
 11. Menter, F. R. Two-equation eddy-viscosity turbulence models for engineering applications. *AIAA J.* 32, 1598–1605 (1994).
 12. Khodadad, C. L. M. et al. Microbiological analysis of lettuce grown on the ISS. *Front. Plant Sci.* 11, 199 (2020).
-13. Urbaniak, C. et al. Microbiomes of the ISS and comparison with human environments. *Microbiome* 6, 1–18 (2018).
-14. Zabel, P. et al. The EDEN ISS greenhouse for space research. *Acta Astronaut.* 128, 344–358 (2016).
+13. Checinska Sielaff, A. et al. Characterization of the total and viable bacterial and fungal communities associated with the International Space Station surfaces. *Microbiome* 7, 50 (2019).
+14. Zabel, P. et al. Review and analysis of over 40 years of space plant growth systems. *Life Sci. Space Res.* 10, 1–16 (2016).
 15. Ewald, H. & Barker, R. Microgreen Chamber CFD: 3D Internal-Flow and Gravity Parametric Analysis in OpenFOAM (2026).
 
 ]
